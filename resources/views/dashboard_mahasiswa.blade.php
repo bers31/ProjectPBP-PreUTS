@@ -137,9 +137,9 @@
         }
 
         button {
-            display: flex;                /* Makes the button's content a flex container */
-            align-items: center;           /* Aligns items (text and image) vertically in the center */
-            justify-content: center;       /* Centers the content horizontally inside the button */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border: 1px solid #ddd;
             border-radius: 10px;
             background-color: white;
@@ -152,7 +152,7 @@
         }
 
         button img {
-            margin-left: 10px;              /* Adds space between text and the image */
+            margin-left: 10px; 
         }
 
         button:hover {
