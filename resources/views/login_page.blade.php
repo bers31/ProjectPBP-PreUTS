@@ -1,3 +1,4 @@
+<!-- resources/views/login_page.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,11 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SI-MAS Login Page</title>
 
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
+    <!-- Custom CSS -->
     <style>
+        /* Custom styles for the login page */
         * {
             margin: 0;
             box-sizing: border-box;
@@ -50,6 +54,7 @@
             font-weight: bold;
             color: #333;
         }
+
         .login-form {
             display: flex;
             flex-direction: column;
@@ -114,7 +119,7 @@
             }
 
             input[type="text"],
-            input[type="email"],
+            input[type="password"],
             button[type="submit"] {
                 width: 100%;
             }
@@ -122,10 +127,6 @@
     </style>
 </head>
 <body>
-    <?php 
-    $error_username = $error_password = '';
-    $username = $password = '';
-    ?>
     <div class="login-page">
         <div class="header">
             <h2>SI-MAS</h2>
@@ -134,19 +135,32 @@
         <div class="login-container">
             <div class="login-form">
                 <h3>Selamat Datang!</h3>
-                <form action="" method="POST" autocomplete="on">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="nama" name="nama" maxlength="50" placeholder="Username" value="<?php echo isset($nama) ? htmlspecialchars($nama) : ''; ?>">
-                        <div class="error"><?php if(!empty($error_username)) echo $error_username; ?></div>
+
+                <!-- Display validation errors if any -->
+                @if($errors->any())
+                    <div class="error">
+                        @foreach($errors->all() as $error)
+                            <p>{{ $error }}</p>
+                        @endforeach
                     </div>
+                @endif
+
+                <!-- Login form -->
+                <form action="{{ route('login') }}" method="POST">
+                    @csrf  <!-- Cross-Site Request Forgery token required in Laravel forms -->
+
+                    <!-- Username input -->
                     <div class="form-group">
-                        <input type="password" class="form-control" id="email" name="email" placeholder="Password" value="<?php echo isset($password) ? htmlspecialchars($password) : ''; ?>">
-                        <div class="error"><?php if(!empty($error_password)) echo $error_password; ?></div>
+                        <input type="text" id="username" name="username" placeholder="Username" value="{{ old('username') }}">
                     </div>
 
-                    <button type="submit" class="button" name="login" value="submit">
-                        Login
-                    </button>
+                    <!-- Password input -->
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" placeholder="Password">
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit">Login</button>
                 </form>
             </div>
         </div>
