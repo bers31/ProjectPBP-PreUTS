@@ -137,11 +137,9 @@
                 <h3>Selamat Datang!</h3>
 
                 <!-- Display validation errors if any -->
-                @if($errors->any())
+                @if(session('loginError'))
                     <div class="error">
-                        @foreach($errors->all() as $error)
-                            <p>{{ $error }}</p>
-                        @endforeach
+                        {{ session('loginError') }}
                     </div>
                 @endif
 
