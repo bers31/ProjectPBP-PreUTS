@@ -3,514 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SI-MAS</title>
+    <title>Dashboard Mahasiswa</title>
 
     <!--CSS-->
-    <link rel = "stylesheet" href="style.css" />
-
+    @vite('resources/css/app.css')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-
     <style>
-        * {
-            margin: 0;
-            box-sizing: border-box;
+        body {
             font-family: 'Poppins', sans-serif;
         }
-
-
-        .navbar-container {
-            height: 90px;
-            background-color: #DE2227;
-        }
-
-        .nav-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between; 
-            padding: 20px;
-            padding-left: 50px;
-            padding-right: 50px;    
-        }
-
-        .nav-bar ul{
-            display: flex;
-            justify-content: space-between;
-            gap: 70px;
-            color: white;
-        }
-
-        .nav-bar h2 {
-            font-size: 35px;
-            color: white;
-        }
-
-        .nav-bar ul li {
-            list-style: none;
-        }
-
-        .nav-bar ul li a {
-            font-size: 16px;
-            text-decoration: none;
-            color: #EEEEEE;
-            padding: 8px 16px;
-            transition: background-color 0.3s, color 0.3s;
-            border-radius: 20px;
-        }
-
-        .nav-bar ul li a:hover {
-            background-color: white;
-            color: #DE2227;
-        }
-
-        .dashboard-header {
-            height: 80px;
-            display: flex;
-            justify-content: space-between;
-            padding-bottom: 10px;
-        }
-
-        .description {
-            margin: 30px;
-            margin-left: 50px;
-        }
-
-        .notification-icon {
-            margin: 30px;
-            margin-right: 60px;
-        }
-
-        .identity-container {
-            padding: 50px;
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-
-
-        .identity-content {
-            display: flex;
-            border: 2px solid #80747475;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            background-color: white;
-        }
-
-        .profile {
-            display: flex;
-            align-items: center;
-        }
-
-        .profile-pic {
-            flex-shrink: 0;
-            margin-right: 30px;
-            width: 210px;
-            height: 210px;
-            border-radius: 50%;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .profile-pic img {
-            width: 100%;
-            height: 100%;
-        }
-
-        .info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .info h2 {
-            font-size: 50px;
-        }
-
-        .info p {
-            margin: 5px 0;
-            color: #555;
-        }
-
-        .button-container {
-            margin-left: auto;
-        }
-
-        button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background-color: white;
-            padding: 8px 16px;
-            cursor: pointer;
-            font-size: 1em;
-            color: #333;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s;
-        }
-
-        button img {
-            margin-left: 10px; 
-        }
-
-        button:hover {
-            background-color: #f0f0f0;
-        }
-
-        .main-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 30px;
-            margin: 30px 50px;
-        }
-
-        .menu {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            flex-grow: 1;
-        }
-
-
-        .jadwalkuliah, 
-        .registrasi {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            gap: 10px;
-            padding: 45px;
-            border: 2px solid #80747475;
-            border-radius: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            background-color: white;
-            font-size: 20px;
-        }
-        
-
-        .info-akademik-container {
-            flex-grow: 2;
-            width: 100%;
-            padding: 20px;
-            border: 2px solid #80747475;
-            border-radius: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .dosen-pembimbing {
-            display: flex;
-            justify-content: space-between;
-            margin: 40px 0;
-        }
-
-        .informasi-tambahan-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            flex-grow: 1;
-            width: 50%;
-        }
-
-        h4 {
-            font-size: 25px;
-        }
-
-        h5 {
-            font-size: 18px;
-        }
-
-        .informasi-dosen h5 {
-            font-style: normal;
-            font-weight: normal;
-        }
-
-        .informasi-status-akademik {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            text-align: center;
-            margin-top: 80px;
-        }
-
-        .prestasi-akademik, 
-        .informasi-mahasiswa {
-            font-size: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 0px;
-            padding: 20px;
-            border: 2px solid #80747475;
-            border-radius: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            background-color: white;
-            font-size: 16px;
-        }
-
-        .informasi-mahasiswa {
-            text-align: left;
-        }
-
-        .content-prestasi {
-            display: flex;
-            align-items: center;
-            justify-items: space-between;
-            gap: 30px;
-            margin-top: 15px;
-        }
-
-        .jadwalkuliah:hover,
-        .registrasi:hover {
-            transform: translateY(-5px);
-        }
-
-        .content-informasi{
-            height: 100px;
-            overflow-y: auto;
-            font-size: 16px;
-        }
-
-        @media (max-width: 1200px) {
-            .main-container {
-                flex-direction: column;
-            }
-
-            .info-akademik-container {
-                margin-top: 20px;
-            }
-
-            .menu, .informasi-tambahan-container {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-bar ul {
-                gap: 30px;
-            }
-
-            .nav-bar {
-                flex-direction: column;
-                align-items: flex-start;
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-
-            .nav-bar ul {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .dashboard-header {
-                flex-direction: column;
-                align-items: flex-start;
-                margin-left: 20px;
-            }
-
-            .identity-content {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .profile-pic {
-                width: 150px;
-                height: 150px;
-                margin-bottom: 20px;
-            }
-
-            .info h2 {
-                font-size: 30px;
-            }
-
-            .info p {
-                font-size: 14px;
-            }
-
-            button {
-                font-size: 0.9em;
-                padding: 8px;
-            }
-
-            .jadwalkuliah, .registrasi {
-                padding: 30px;
-                font-size: 16px;
-            }
-
-            .informasi-status-akademik {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .navbar-container {
-                height: auto;
-            }
-
-            .nav-bar h2 {
-                font-size: 24px;
-            }
-
-            .dashboard-header {
-                margin-left: 10px;
-            }
-
-            .identity-container {
-                padding: 20px;
-            }
-
-            .profile-pic {
-                width: 120px;
-                height: 120px;
-            }
-
-            .info h2 {
-                font-size: 24px;
-            }
-
-            .main-container {
-                margin: 10px;
-            }
-
-            .jadwalkuliah, .registrasi {
-                padding: 20px;
-                font-size: 14px;
-            }
-
-            h4 {
-                font-size: 20px;
-            }
-
-            h5 {
-                font-size: 16px;
-            }
-        }
-
     </style>
+
 </head>
 <body>
-    <div class="navbar-container">
-        <div class="nav-bar">
-            <h2>SI-MAS</h2>
-            <ul>
-                <li><a href="#">Status Akademik</a></li>
-                <li><a href="#">IRS</a></li>
-                <li><a href="#">KHS</a></li>
-                <li><a href="#">Transkrip</a></li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="dashboard-header">
-        <div class="description">
-            <h3>Dashboard Mahasiswa</h3>
-        </div>
-        <div class="notification-icon">
-            <img src="img/notification.svg">
-        </div>
-    </div>
-
-    <div class="identity-container">
-        <div class="identity-content">
-            <div class="profile">
-                <div class="profile-pic">
-                    <img src="img/Pasfoto.png" alt="pas-foto">
-                </div>
-                <div class="info">
-                    <div class="name">
-                        <h2>John Doe</h2>
-                    </div>
-                    <div class="nim">
-                        <p>24060122130190</p>
-                    </div>
-                    <div class="faculty">
-                        <p>Fakultas Sains dan Matematika</p>
-                    </div>
-                    <div class="prodi">
-                        <p>Informatika</p>
-                    </div>
-                    <div class="email">
-                        <p>JohnDoe@Students.undip.ac.id</p>
-                    </div>
-                </div>
+    <div class="flex flex-col">
+        <!--Navbar-->
+        <x-navbar_mhs></x-navbar_mhs>
+        
+        <!--Header-->
+        <div class="flex items-center justify-between py-3">
+            <div class="font-bold text-xl pl-12">
+                Dashboard Mahasiswa
             </div>
-            <div class="button-container">
-                <button>Biodata</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="main-container">
-        <div class="menu">
-            <div class="jadwalkuliah">
-                <img src="img/jadwalkuliah-logo.svg">
-                <p>Jadwal Kuliah</p>
-            </div>
-            <div class="registrasi">
-                <img src="img/registrasi.svg">
-                <p>Registrasi</p>
+            <div class="pr-10">
+                <button class="group hover:bg-[#DE2227] hover:rounded-xl p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="30" height="30" class="stroke-current text-black group-hover:text-white fill-none">
+                        <path d="M2.52992 14.394C2.31727 15.7471 3.268 16.6862 4.43205 17.1542C8.89481 18.9486 15.1052 18.9486 19.5679 17.1542C20.732 16.6862 21.6827 15.7471 21.4701 14.394C21.3394 13.5625 20.6932 12.8701 20.2144 12.194C19.5873 11.2975 19.525 10.3197 19.5249 9.27941C19.5249 5.2591 16.1559 2 12 2C7.84413 2 4.47513 5.2591 4.47513 9.27941C4.47503 10.3197 4.41272 11.2975 3.78561 12.194C3.30684 12.8701 2.66061 13.5625 2.52992 14.394Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M9 21C9.79613 21.6219 10.8475 22 12 22C13.1525 22 14.2039 21.6219 15 21" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
             </div>
         </div>
 
-        <div class="info-akademik-container">
-            <div class="content-info-akademik">
-                <h4>Informasi Akademik</h4>
-                <div class="dosen-pembimbing">
-                    <div class="informasi-dosen">
-                        <div class="nama-dosen">
-                            <h5>Dosen Wali: Dr. John Doe M.Kom</h5>
-                        </div>
-                        <div class="nip-dosen">
-                            <h5>NIP: 1234566777777</h5>
-                        </div>
-                    </div>
-                    <div class="hubungi-dosen">
-                        <button>Hubungi<img src='img/message-icon.svg'></button>
-                    </div>
+        <!-- Profile // Tanggal Penting Section -->
+        <div class="grid grid-cols-4 px-12 gap-5">    
+            <div class="col-span-3 flex p-8 border-2 border-[#80747475] rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                <!-- Foto Profile -->
+                <div class="p-5">
+                    <img class="rounded-full w-52 h-52 object-cover" src="img/Pasfoto.png" alt="pasfoto">
                 </div>
-                <div class="informasi-status-akademik">
-                    <div class="tahun-akademik">
-                        <h5>Tahun Akademik</h5>
-                        <p>2022/2023(Ganjil)</p>
-                    </div>
-                    <div class="semester-studi">
-                        <h5>Semester Studi</h5>
-                        <p>1</p>
-                    </div>
-                    <div class="status-akademik">
-                        <h5>Status Akademik</h5>
-                        <p>AKTIF</p>
-                    </div>
+                <!-- Info Profile -->
+                <div class="flex flex-col justify-center gap-2">
+                    <h2 class="text-5xl font-bold">John Doe</h2>                          <!-- Nama -->
+                    <p class="text-lg text-gray-600">24060122130190</p>                 <!-- NIM -->
+                    <p class="text-lg text-gray-600">Fakultas Sains dan Matematika</p>  <!-- Fakultas -->
+                    <p class="text-lg text-gray-600">Informatika</p>                    <!-- Prodi -->
+                    <p class="text-lg text-blue-500">JohnDoe@students.undip.ac.id</p>   <!-- Email -->
+                </div>
+                <!-- Biodata -->
+                <div class="ml-auto">
+                    <button class="px-4 py-2 border-2 rounded-lg text-black font-semibold text-lg hover:bg-[#f0f0f0]">
+                        Biodata
+                    </button>
                 </div>
             </div>
-        </div>
 
-        <div class="informasi-tambahan-container">
-            <div class="prestasi-akademik">
-                <h4>Prestasi Akademik</h4>
-                <div class="content-prestasi">
-                    <div class="ipk">
-                        <h5>IPk</h5>
-                        <p>value</p>
-                    </div>
-                    <div class="sks">
-                        <h5>SKSk</h5>
-                        <p>value</p>
-                    </div>
+            <!-- Tanggal Penting Section -->
+            <div class="col-span-1 flex flex-col border-2 border-[#80747475] rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)] items-center p-5 self-stretch ">
+                <div class="font-bold text-lg">
+                    Tanggal Penting
                 </div>
-            </div>
-            <div class="informasi-mahasiswa">
-                <h4>Informasi</h4>
-                <div class="content-informasi">
+                <div class="">
                     <ul>
-                        <li>Pilihan Mata kuliah tambahan “Kewirausahaan” anda  
-                        telah dibatalkan karena kuota kelas diperlukan untuk semester prioritas.</li>
+                        <li>Terakhir pengisian IRS: 10-juni-2024</li>       <!--List Tanggal Penting-->
                     </ul>
                 </div>
             </div>
         </div>
+
+
+        <div class="grid grid-cols-6 gap-5 px-12 py-6">
+            <!-- Jadwal Kuliah & Registrasi Section -->
+            <div class="grid grid-rows-2 col-span-1 gap-5">
+                <!-- Jadwal Kuliah -->
+                <div class="flex items-center justify-center p-8 border-2 border-[#80747475] rounded-xl gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                    <div class="flex items-center gap-5 p-1">  
+                        <img src="img\jadwalkuliah-logo.svg" alt="jadwal_kuliah">
+                        <p class="font-semibold text-lg">Jadwal Kuliah</p>
+                    </div>
+                </div>
+                <!-- Registrasi -->
+                <div class="flex items-center justify-center p-8 border-2 border-[#80747475] rounded-xl gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                    <div class="flex items-center gap-5 p-1">
+                        <img src="img\registrasi.svg" alt="jadwal_kuliah">
+                        <p class="font-semibold text-lg">Registrasi</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informasi Akademik Section -->
+            <div class="flex flex-col col-span-3 p-8 border-2 border-[#80747475] rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                <div class="font-bold text-xl mb-2">
+                    Informasi Akademik
+                </div>
+                <!-- Informasi Dosen -->
+                <div class="flex flex-col justify-between mb-4">
+                    <div class="">
+
+                    </div>
+                    <p>Dosen Wali: Dr. John Doe M.Kom</p>
+                    <p>NIP: 1234566777777</p>
+                    <button class="mt-2 p-2 bg-gray-200 rounded-md flex items-center">
+                        <img src="img/message-icon.svg" alt="">
+                        Hubungi
+                    </button>
+                </div>
+                <!-- Informasi Akademik Mahasiswa -->
+                <div class="flex justify-between font-bold">
+                    <div class="text-center">
+                        <p>Tahun Akademik</p>
+                        <p>2022/2023 (Ganjil)</p>
+                    </div>
+                    <div class="text-center">
+                        <p>Semester Studi</p>
+                        <p>1</p>
+                    </div>
+                    <div class="text-center">
+                        <p>Status Akademik</p>
+                        <p>AKTIF</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prestasi Akademik & Informasi Section -->
+            <div class="grid col-span-2 gap-5">
+                <!-- Prestasi Akademik -->
+                <div class="p-8 border-2 border-[#80747475] rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                    <div class="font-bold text-xl mb-2 items-center text-center">
+                        Prestasi Akademik
+                    </div>
+                    <div class="flex justify-center gap-10">
+                        <div class="text-center">
+                            <p class="font-semibold">IPK</p>
+                            <p>value</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-semibold">SKS</p>
+                            <p>value</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Informasi -->
+                <div class="p-8 border-2 border-[#80747475] rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                    <div class="font-bold text-xl mb-2">Informasi</div>
+                    <ul class="list-disc ml-4">
+                        <li>Pilihan Mata kuliah tambahan "Kewirausahaan" anda telah dibatalkan karena kuota kelas diperlukan untuk semester.</li>   <!--List Informasi-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
