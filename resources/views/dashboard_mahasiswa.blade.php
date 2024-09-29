@@ -100,19 +100,20 @@
                     Informasi Akademik
                 </div>
                 <!-- Informasi Dosen -->
-                <div class="flex flex-col justify-between mb-4">
-                    <div class="">
-
+                <div class="flex justify-between mb-4">
+                    <div class="flex flex-col text-lg">
+                        <p>Dosen Wali: Dr. John Doe M.Kom</p>
+                        <p>NIP: 1234566777777</p>
                     </div>
-                    <p>Dosen Wali: Dr. John Doe M.Kom</p>
-                    <p>NIP: 1234566777777</p>
-                    <button class="mt-2 p-2 bg-gray-200 rounded-md flex items-center">
+                    <div class="">
+                        <button class="mt-2 p-2 flex items-center border-2 border-[#80747475] rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)] hover:bg-[#f0f0f0] align-top">
                         <img src="img/message-icon.svg" alt="">
                         Hubungi
-                    </button>
+                        </button>
+                    </div>
                 </div>
                 <!-- Informasi Akademik Mahasiswa -->
-                <div class="flex justify-between font-bold">
+                <div class="flex justify-between font-bold pt-14">
                     <div class="text-center">
                         <p>Tahun Akademik</p>
                         <p>2022/2023 (Ganjil)</p>
