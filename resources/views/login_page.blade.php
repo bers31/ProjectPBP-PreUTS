@@ -26,11 +26,9 @@
                 <h3 class="text-5xl font-bold text-gray-800 mb-8">Selamat Datang!</h3>
                 
                 <!-- Display validation errors if any -->
-                @if($errors->any())
+                @if(session('loginError'))
                     <div class="error">
-                        @foreach($errors->all() as $error)
-                            <p>{{ $error }}</p>
-                        @endforeach
+                        {{ session('loginError') }}
                     </div>
                 @endif
 
