@@ -1,24 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Mahasiswa</title>
-
-    <!--CSS-->
-    @vite('resources/css/app.css')
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-    </style>
-
-</head>
-<body>
+@include('header')
     <div class="flex flex-col">
         <!--Navbar-->
         <x-navbar_mhs></x-navbar_mhs>
@@ -47,11 +27,11 @@
                 </div>
                 <!-- Info Profile -->
                 <div class="flex flex-col justify-center gap-2">
-                    <h2 class="text-5xl font-bold">John Doe</h2>                          <!-- Nama -->
+                    <h2 class="text-5xl font-bold"> {{ Auth::user()->mahasiswa->nama }}</h2>                          <!-- Nama -->
                     <p class="text-lg text-gray-600">24060122130190</p>                 <!-- NIM -->
                     <p class="text-lg text-gray-600">Fakultas Sains dan Matematika</p>  <!-- Fakultas -->
                     <p class="text-lg text-gray-600">Informatika</p>                    <!-- Prodi -->
-                    <p class="text-lg text-blue-500">JohnDoe@students.undip.ac.id</p>   <!-- Email -->
+                    <p class="text-lg text-blue-500">{{ Auth::user()->email }}</p>   <!-- Email -->
                 </div>
                 <!-- Biodata -->
                 <div class="ml-auto">
@@ -158,5 +138,5 @@
         </div>
 
     </div>
-</body>
-</html>
+
+    @include('footer')
