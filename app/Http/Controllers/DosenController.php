@@ -6,6 +6,8 @@ use App\Models\Dosen;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDosenRequest;
 use App\Http\Requests\UpdateDosenRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class DosenController extends Controller
 {
@@ -15,6 +17,8 @@ class DosenController extends Controller
     public function index()
     {
         //
+        $dosen = Dosen::all();
+        return view('admin.dosen.index', compact('dosen'));
     }
 
     /**
@@ -23,6 +27,7 @@ class DosenController extends Controller
     public function create()
     {
         //
+        return view('admin.dosen.create');
     }
 
     /**
@@ -30,7 +35,15 @@ class DosenController extends Controller
      */
     public function store(StoreDosenRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        Dosen::create($validated);
+        User::create([
+            'email' => $request->email,
+            'password' => Hash::make('12345'),
+            'role' => 'dosen',
+        ]);
+        return redirect()->route('dosen.index')->with('success', 'Dosen berhasil dibuat!');
     }
 
     /**
@@ -46,7 +59,7 @@ class DosenController extends Controller
      */
     public function edit(Dosen $dosen)
     {
-        //
+        return view('admin.dosen.edit', compact('dosen'));
     }
 
     /**
@@ -54,7 +67,11 @@ class DosenController extends Controller
      */
     public function update(UpdateDosenRequest $request, Dosen $dosen)
     {
-        //
+        $validated = $request->validated();
+
+        $dosen->update($validated);
+
+        return redirect()->route('dosen.index')->with('success', 'Dosen berhasil dibuat!');
     }
 
     /**
@@ -62,6 +79,7 @@ class DosenController extends Controller
      */
     public function destroy(Dosen $dosen)
     {
-        //
+        $dosen->delete();
+        return redirect()->route('dosen.index')->with('success', 'Dosen deleted successfully.');
     }
 }

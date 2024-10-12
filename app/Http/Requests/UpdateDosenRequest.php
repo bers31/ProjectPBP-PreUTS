@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Support\Facades\Auth;
 class UpdateDosenRequest extends FormRequest
 {
     /**
@@ -11,7 +11,7 @@ class UpdateDosenRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::user() && Auth::user()->role === 'admin';
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateDosenRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nip' => 'required|string|unique:dosen|size:12',
+            'nama' => 'required|string|max:255',
+            'email' => 'required|string|email|regex:/^[a-zA-Z0-9._%+-]+@lecturers\.undip\.ac\.id$/',
         ];
     }
 }

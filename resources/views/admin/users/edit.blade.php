@@ -1,6 +1,6 @@
 {{-- @extends('layouts.app') --}}
 
-@section('content')
+{{-- @section('content') --}}
     <div class="container">
         <h1>Edit User</h1>
 
@@ -25,4 +25,4 @@
             <button type="submit" class="btn btn-primary">Update User</button>
         </form>
     </div>
-@endsection
+{{-- @endsection --}}

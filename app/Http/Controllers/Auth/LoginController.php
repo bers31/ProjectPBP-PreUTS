@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Dosen;
+use App\Models\Mahasiswa;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,25 +40,52 @@ class LoginController extends Controller
          // If not authenticated, show the login page
      }
 
-    public function login(Request $request)
-    {
-        // Validate the credentials (email and password)
-        $credentials = $request->validate([
-            'email' => 'required', 'email',
-            'password' => 'required',
-        ]);
-        // $credentials = $request->only('email', 'password');
-        // Attempt to authenticate the user
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-
-            // Redirect based on user role
-            return $this->authenticated($request, Auth::user());
-        }
-
-        // If authentication fails, return with an error message
-        return back()->with('loginError','Email atau Password salah!');
-    }
+     public function login(Request $request)
+     {
+         // Validate the identifier and password
+         $request->validate([
+             'identifier' => 'required|string', // Change 'email' to 'identifier'
+             'password' => 'required|string',
+         ]);
+     
+         // Get the identifier and password from the request
+         $identifier = $request->input('identifier');
+         $password = $request->input('password');
+     
+         // Initialize the user variable
+         $user = null;
+     
+         // Check if the identifier is an email
+         if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+             $user = User::where('email', $identifier)->first();
+         } else {
+             // If it's not an email, check in Students and Lecturers tables
+             $student = Mahasiswa::where('nim', $identifier)->first();
+             $lecturer = Dosen::where('nip', $identifier)->first();
+     
+             if ($student) {
+                 // If the student exists, get their email to check for authentication
+                 $user = User::where('email', $student->email)->first();
+             } elseif ($lecturer) {
+                 // If the lecturer exists, get their email to check for authentication
+                 $user = User::where('email', $lecturer->email)->first();
+             } else {
+                 // Identifier not found in both tables
+                 return back()->withErrors(['comb-identifier' => 'The provided identifier does not match our records.'])->withInput();
+             }
+         }
+     
+         // Check if user exists and validate password
+         if ($user && Auth::attempt(['email' => $user->email, 'password' => $password])) {
+             $request->session()->regenerate();
+             // Redirect based on user role
+             return $this->authenticated($request, Auth::user());
+         }
+     
+         // If authentication fails, return with an error message
+         return back()->with('loginError', 'Email atau Password salah!');
+     }
+     
 
     /**
      * The user has been authenticated.

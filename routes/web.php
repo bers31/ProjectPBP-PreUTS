@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DosenController;
+use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -45,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('dosen.dashboard')
     ->middleware('role:dosen');  // Check for 'dosen' role
 
-    Route::get('/admin/dashboard', function(){
+    Route::get('/admin', function(){
         return view('admin.dashboard');
     })->name('admin.dashboard')
     ->middleware('role:admin');  // Check for 'admin' role
@@ -55,5 +57,18 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/admin/users', UserController::class)->name('index','users.index')
                                                         ->name('edit','users.edit')
-                                                        ->name('create','users.create'); // CRUD routes for users
+                                                        ->name('create','users.create')
+                                                        ->name('update','users.update'); // CRUD routes for users
+
+    Route::resource('/admin/mahasiswa', MahasiswaController::class)->name('index','mahasiswa.index')
+                                                        ->name('edit','mahasiswa.edit')
+                                                        ->name('create','mahasiswa.create')
+                                                        ->name('update','mahasiswa.update'); // CRUD routes for users
+
+    Route::resource('/admin/dosen', DosenController::class)->name('index','dosen.index')
+                                                        ->name('edit','dosen.edit')
+                                                        ->name('create','dosen.create')
+                                                        ->name('update','dosen.update'); // CRUD routes for users
+
+    Route::post('/admin/create-users', [AdminController::class, 'createUsersFromLecturersAndStudents'])->name('admin.createUsers');
 });

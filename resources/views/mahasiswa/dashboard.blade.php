@@ -27,11 +27,11 @@
                 </div>
                 <!-- Info Profile -->
                 <div class="flex flex-col justify-center gap-2">
-                    {{-- <h2 class="text-5xl font-bold"> {{ Auth::user()->email }}</h2>                          <!-- Nama --> --}}
-                    <p class="text-lg text-gray-600">24060122130190</p>                 <!-- NIM -->
-                    <p class="text-lg text-gray-600">Fakultas Sains dan Matematika</p>  <!-- Fakultas -->
-                    <p class="text-lg text-gray-600">Informatika</p>                    <!-- Prodi -->
-                    <p class="text-lg text-blue-500">{{ Auth::user()->email }}</p>   <!-- Email -->
+                    <h2 class="text-5xl font-bold"> {{ Auth::user()->mahasiswa->nama }}</h2>                          <!-- Nama -->
+                    <p class="text-lg text-gray-600">NIM: {{ Auth::user()->mahasiswa->nim }}</p>                 <!-- NIM -->
+                    <p class="text-lg text-gray-600">Fakultas {{ Auth::user()->mahasiswa->fakultas }}</p>  <!-- Fakultas -->
+                    <p class="text-lg text-gray-600">Departemen {{ Auth::user()->mahasiswa->departemen }}</p>                    <!-- Prodi -->
+                    <p class="text-lg text-blue-500">{{ Auth::user()->mahasiswa->email }}</p>   <!-- Email -->
                 </div>
                 <!-- Biodata -->
                 <div class="ml-auto">
@@ -82,8 +82,8 @@
                 <!-- Informasi Dosen -->
                 <div class="flex justify-between mb-4">
                     <div class="flex flex-col text-lg">
-                        <p>Dosen Wali: Dr. John Doe M.Kom</p>
-                        <p>NIP: 1234566777777</p>
+                        <p>Dosen Wali: {{Auth::user()->mahasiswa->dosen->nama}}</p>
+                        <p>NIP: {{Auth::user()->mahasiswa->dosen->nip}}</p>
                     </div>
                     <div class="">
                         <button class="mt-2 p-2 flex items-center border-2 border-[#80747475] rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)] hover:bg-[#f0f0f0] align-top">
@@ -96,15 +96,15 @@
                 <div class="flex justify-between font-bold pt-14">
                     <div class="text-center">
                         <p>Tahun Akademik</p>
-                        <p>2022/2023 (Ganjil)</p>
+                        <p>{{Auth::user()->mahasiswa->tahun_akademik}} ({{Auth::user()->mahasiswa->semester % 2 != 0 ? 'Ganjil' : 'Genap'}})</p>
                     </div>
                     <div class="text-center">
                         <p>Semester Studi</p>
-                        <p>1</p>
+                        <p>{{Auth::user()->mahasiswa->semester}}</p>
                     </div>
                     <div class="text-center">
                         <p>Status Akademik</p>
-                        <p>AKTIF</p>
+                        <p>{{Str::upper(Auth::user()->mahasiswa->status)}}</p>
                     </div>
                 </div>
             </div>
@@ -119,11 +119,11 @@
                     <div class="flex justify-center gap-10">
                         <div class="text-center">
                             <p class="font-semibold">IPK</p>
-                            <p>value</p>
+                            <p>{{Auth::user()->mahasiswa->ipk}}</p>
                         </div>
                         <div class="text-center">
                             <p class="font-semibold">SKS</p>
-                            <p>value</p>
+                            <p>{{Auth::user()->mahasiswa->sks}}</p>
                         </div>
                     </div>
                 </div>

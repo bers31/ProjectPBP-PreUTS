@@ -6,7 +6,7 @@
         <!--Header-->
         <div class="flex items-center justify-between py-3">
             <div class="font-bold text-xl pl-12">
-                Dashboard Mahasiswa
+                Dashboard Dosen
             </div>
             <div class="pr-10">
                 <button class="group hover:bg-[#DE2227] hover:rounded-xl p-2">
@@ -27,11 +27,11 @@
                 </div>
                 <!-- Info Profile -->
                 <div class="flex flex-col justify-center gap-2">
-                    <h2 class="text-5xl font-bold"> {{ Auth::user()->mahasiswa->nama }}</h2>                          <!-- Nama -->
+                    <h2 class="text-5xl font-bold"> {{ Auth::user()->dosen->nama }}</h2>                          <!-- Nama -->
                     <p class="text-lg text-gray-600">24060122130190</p>                 <!-- NIM -->
                     <p class="text-lg text-gray-600">Fakultas Sains dan Matematika</p>  <!-- Fakultas -->
                     <p class="text-lg text-gray-600">Informatika</p>                    <!-- Prodi -->
-                    <p class="text-lg text-blue-500">{{ Auth::user()->email }}</p>   <!-- Email -->
+                    <p class="text-lg text-blue-500">{{ Auth::user()->dosen->nama }}</p>   <!-- Email -->
                 </div>
                 <!-- Biodata -->
                 <div class="ml-auto">

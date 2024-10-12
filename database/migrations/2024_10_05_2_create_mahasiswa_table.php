@@ -15,10 +15,12 @@ return new class extends Migration
             $table->string('nim')->primary();
             $table->string('nama');
             $table->string('email')->unique();
+            $table->integer('semester');
+            $table->integer('sks');
+            $table->decimal('ipk',2,2);
             $table->string('departemen');
             $table->string('fakultas');
             $table->string('nip_doswal');
-            $table->decimal('ipk',2,2);
             $table->timestamps();
 
             $table->foreign('nip_doswal')->references('nip')->on('dosen')->onDelete('cascade');
@@ -26,6 +28,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             // Modify the 'role' column to include 'admin' as one of the possible roles
             $table->enum('role', ['mahasiswa', 'dosen', 'admin'])->default('mahasiswa')->change();
+
         });
     }
         

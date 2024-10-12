@@ -6,6 +6,9 @@ use App\Models\Mahasiswa;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMahasiswaRequest;
 use App\Http\Requests\UpdateMahasiswaRequest;
+use App\Models\Dosen;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class MahasiswaController extends Controller
 {
@@ -14,7 +17,8 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-        //
+        $mahasiswa = Mahasiswa::all();
+        return view('admin.mahasiswa.index', compact('mahasiswa'));
     }
 
     /**
@@ -22,7 +26,8 @@ class MahasiswaController extends Controller
      */
     public function create()
     {
-        //
+        $dosen = Dosen::all();
+        return view('admin.mahasiswa.create', compact('dosen'));
     }
 
     /**
@@ -30,7 +35,16 @@ class MahasiswaController extends Controller
      */
     public function store(StoreMahasiswaRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        Mahasiswa::create($validated);
+        User::create([
+            'email' => $request->email,
+            'password' => Hash::make('12345'),
+            'role' => 'mahasiswa',
+        ]);
+
+        return redirect()->route('mahasiswa.index')->with('success', 'Mahasiswa berhasil dibuat!');
     }
 
     /**
