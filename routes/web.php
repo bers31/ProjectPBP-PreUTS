@@ -41,11 +41,49 @@ Route::middleware(['auth'])->group(function () {
     })->name('mahasiswa.dashboard')
     ->middleware('role:mahasiswa');  // Check for 'mahasiswa' role
 
+    // Student status_akademik route
+    Route::get('mahasiswa/status_akademik', function(){
+        return view('mahasiswa.status_akademik');
+    })->name('mahasiswa.status_akademik')
+    ->middleware('role:mahasiswa');
+
+    Route::get('mahasiswa/registrasi_mhs', function(){
+        return view('mahasiswa.registrasi_mhs');
+    })->name('mahasiswa.registrasi_mhs')
+    ->middleware('role:mahasiswa');
+
+    Route::get('mahasiswa/irs_mhs', function(){
+        return view('mahasiswa.irs_mhs');
+    })->name('mahasiswa.irs_mhs')
+    ->middleware('role:mahasiswa');
+
+    Route::get('mahasiswa/khs_mhs', function(){
+        return view('mahasiswa.khs_mhs');
+    })->name('mahasiswa.khs_mhs')
+    ->middleware('role:mahasiswa');
+
+    Route::get('mahasiswa/transkrip_mhs', function(){
+        return view('mahasiswa.transkrip_mhs');
+    })->name('mahasiswa.transkrip_mhs')
+    ->middleware('role:mahasiswa');
+    
     // Lecturer dashboard route (requires 'dosen' role)
     Route::get('/dosen/dashboard', function(){
         return view('dosen.dashboard');
     })->name('dosen.dashboard')
     ->middleware('role:dosen');  // Check for 'dosen' role
+
+    Route::get('/dosen/perwalian', function(){
+        return view('dosen.perwalian');
+    })->name('dosen.perwalian')
+    ->middleware('role:dosen');
+
+    Route::get('/dosen/input_nilai', function(){
+        return view('dosen.input_nilai');
+    })->name('dosen.input_nilai')
+    ->middleware('role:dosen');
+
+    
 
     Route::get('/admin', function(){
         return view('admin.dashboard');
