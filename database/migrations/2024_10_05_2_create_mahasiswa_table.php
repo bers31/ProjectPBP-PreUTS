@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('nim')->primary();
             $table->string('nama');
             $table->string('email')->unique();
+            $table->enum('role',['dosen', 'mahasiswa','admin'])->nullable;
             $table->integer('semester');
             $table->integer('sks');
             $table->decimal('ipk',2,2);

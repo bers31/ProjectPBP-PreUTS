@@ -15,8 +15,22 @@
                         <path d="M9 21C9.79613 21.6219 10.8475 22 12 22C13.1525 22 14.2039 21.6219 15 21" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </button>
+                <!-- Logout Button -->
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                    @csrf
+                </form>
+                <button onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+                        class="group hover:bg-[#DE2227] hover:rounded-xl p-2 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" 
+                         class="stroke-current text-black group-hover:text-white">
+                        <path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h8.25" 
+                              stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="text-black group-hover:text-white font-medium">Logout</span>
+                </button>
             </div>
         </div>
+
 
         <!-- Profile // Tanggal Penting Section -->
         <div class="grid grid-cols-4 px-12 gap-5">    
