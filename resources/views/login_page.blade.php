@@ -43,7 +43,6 @@
                     Login
                 </button>
             </form>
-            <!-- Display validation errors if any -->
         </div>
     </div>
 </div>
