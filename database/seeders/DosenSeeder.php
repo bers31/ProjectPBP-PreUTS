@@ -12,13 +12,6 @@ class DosenSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Dosen::create([
-            'nama' => 'Nama Dosen',
-            'nip' => '121212',
-            'role' => 'dosen',
-            'email' => 'dosen@example.com'
-
-            // field lainnya
-        ]);
+        //
     }
 }

@@ -13,14 +13,11 @@ class Mahasiswa extends Model
     protected $fillable = [
         'nim',
         'nama',
-        'password',
-        'role',
         'email',
         'fakultas',
         'departemen',
         'nip_doswal',
     ];
-    
     public function user() 
     {
         return $this->belongsTo(User::class, 'email', 'email');

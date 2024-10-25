@@ -12,15 +12,6 @@ class MahasiswaSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Mahasiswa::create([
-            'nama' => 'Nama Mahasiswa',
-            'nim' => '12345',
-            'role' => 'mahasiswa',
-            'email' => 'mahasiswa@example.com',
-            'departemen' => 'informatika',
-            'fakultas' => 'sains dan matematika',
-            'nip_doswal' => '121212'
-            // field lainnya
-        ]);
+        //
     }
 }
