@@ -15,8 +15,10 @@ return new class extends Migration
             $table->string('nip')->primary();
             $table->string('nama');
             $table->string('email')->unique();
+            $table->enum('role',['dosen', 'mahasiswa','admin'])->nullable;
             $table->timestamps();
         });
+        
     }
 
     /**

@@ -19,12 +19,23 @@ class Admin extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-         // Create a default admin user
-         User::create([
+        // Create a default admin user
+        User::create([
             'email' => 'admin@example.com',
             'password' => '12345', // Admin password
             'role' => 'admin', // Assign the admin role
         ]);
+        User::create([
+            'email' => 'dosen@example.com',
+            'password' => '12345', // Admin password
+            'role' => 'dosen', // Assign the admin role
+        ]);
+        User::create([
+            'email' => 'mahasiswa@example.com',
+            'password' => '12345', // Admin password
+            'role' => 'mahasiswa', // Assign the admin role
+        ]);
+        
     }
-    
 }
+
