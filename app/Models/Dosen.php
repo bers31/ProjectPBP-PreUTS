@@ -14,8 +14,6 @@ class Dosen extends Model
         'nip',
         'email',
         'nama',
-        'password',
-        'role',
     ];
 
     public function user() 
