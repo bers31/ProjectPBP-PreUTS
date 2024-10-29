@@ -1,7 +1,7 @@
 @include('header')
 <div class="flex flex-col h-full">
     <!--Navbar-->
-    <x-navbar_dosen></x-navbar_dosen>
+    <x-navbar/>
 
     <div class="main-content flex flex-col flex-grow">
         <!--Header-->
