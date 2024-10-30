@@ -1,8 +1,8 @@
 @include('header')
-<div class="flex flex-col">
+<div class="flex flex-col h-full">
     <!--Navbar-->
     <nav class="bg-white shadow-lg">
-        <div class="max-w-8xl mx-auto px-4">
+        <div class="max-w-8xl ml-0 px-12">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <!-- Logo -->
