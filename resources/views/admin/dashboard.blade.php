@@ -7,7 +7,7 @@
                 <div class="flex items-center">
                     <!-- Logo -->
                     <div class="flex-shrink-0 flex items-center">
-                        <img class="h-12 w-auto" href="https://www.academicindonesia.com/wp-content/uploads/2016/09/Logo-undip-Universitas-Diponegoro.png" alt="Logo">
+                        <img class="h-12 w-auto" src="https://www.academicindonesia.com/wp-content/uploads/2016/09/Logo-undip-Universitas-Diponegoro.png" alt="Logo">
                     </div>
                     <!-- Navigation Links -->
                     <div class="hidden md:flex md:items-center md:ml-6 space-x-8">
