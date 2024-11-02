@@ -6,6 +6,7 @@ use App\Http\Controllers\DosenController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliDropdownController;
+use App\Http\Controllers\RegistrasiController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
