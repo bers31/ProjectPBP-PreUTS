@@ -15,20 +15,17 @@ return new class extends Migration
             $table->string('nim')->primary();
             $table->string('nama');
             $table->string('email')->unique();
-            $table->integer('semester');
-            $table->integer('sks');
-            $table->decimal('ipk',2,2);
-            $table->string('departemen');
-            $table->string('fakultas');
-            $table->string('nip_doswal');
+            $table->integer('semester')->default(1);
+            $table->integer('sks')->default(0);
+            $table->decimal('ipk',2,2)->default(0);
+            $table->string('prodi');
+            $table->foreign('prodi')->references('kode_prodi')->on('prodi');
+            $table->string('doswal');
+            $table->enum('status', ['aktif','cuti','skorsing','lulus','non-aktif', 'mangkir'])->default('non-aktif');
+            $table->char('tahun_masuk', 4)->default(now()->year);
             $table->timestamps();
 
-            $table->foreign('nip_doswal')->references('nip')->on('dosen')->onDelete('cascade');
-        });
-        Schema::table('users', function (Blueprint $table) {
-            // Modify the 'role' column to include 'admin' as one of the possible roles
-            $table->enum('role', ['mahasiswa', 'dosen', 'admin'])->default('mahasiswa')->change();
-
+            $table->foreign('doswal')->references('nidn')->on('dosen')->onDelete('cascade');
         });
     }
         
@@ -39,6 +36,5 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('mahasiswa');
-        // Schema::enableForeignKeyConstraints();
     }
 };
