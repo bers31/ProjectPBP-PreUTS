@@ -1,17 +1,22 @@
 @section('title', 'Login')
 @include('header')
-<div class="flex flex-col justify-center items-center h-screen ">
+<div class="flex flex-col justify-center items-center h-screen relative">
     {{-- Header --}}
-    <div class="w-full text-center text-6xl font-bold h-28 bg-[#DE2227] text-white flex justify-center items-center">
+    <div class="w-full text-center text-6xl font-bold h-28 bg-[#DE2227] text-white flex justify-center items-center z-20">
         <h2>SI-MAS</h2>
     </div>
 
-    {{-- Box --}}
-    <div class="flex flex-1 flex-col items-center justify-center bg-cyan-100 w-full" >
+    {{-- Background and Blur Overlay --}}
+    <div class="absolute inset-0 bg-[url('{{ asset('img/undips.png') }}')] bg-cover bg-center w-full h-full z-0">
+        <div class="absolute inset-0 bg-black/30 backdrop-blur-sm"></div> <!-- Blur effect overlay -->
+    </div>
+
+    {{-- Login Box --}}
+    <div class="relative z-10 flex flex-1 flex-col items-center justify-center w-full">
         <div class="flex flex-col bg-white rounded-2xl p-20 shadow-md w-full max-w-2xl">
             <h3 class="text-5xl font-bold text-gray-800 mb-8">Selamat Datang!</h3>
             
-            <form action="{{ route('login') }}" method="POST" >
+            <form action="{{ route('login') }}" method="POST">
                 @csrf  <!-- Cross-Site Request Forgery token required in Laravel forms -->
                 
                 <!-- Username -->
@@ -46,5 +51,6 @@
         </div>
     </div>
 </div>
+
 
 @include('footer')
