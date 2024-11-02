@@ -1,13 +1,13 @@
 @include('header')
-<div class="flex flex-col">
+<div class="flex flex-col h-full">
     <!--Navbar-->
     <nav class="bg-white shadow-lg">
-        <div class="max-w-8xl mx-auto px-4">
+        <div class="max-w-8xl ml-0 px-12">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <!-- Logo -->
                     <div class="flex-shrink-0 flex items-center">
-                        <img class="h-12 w-auto" href="https://www.academicindonesia.com/wp-content/uploads/2016/09/Logo-undip-Universitas-Diponegoro.png" alt="Logo">
+                        <img class="h-12 w-auto" src="https://www.academicindonesia.com/wp-content/uploads/2016/09/Logo-undip-Universitas-Diponegoro.png" alt="Logo">
                     </div>
                     <!-- Navigation Links -->
                     <div class="hidden md:flex md:items-center md:ml-6 space-x-8">
