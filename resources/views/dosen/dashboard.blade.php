@@ -1,7 +1,7 @@
 @include('header')
 <div class="flex flex-col h-full">
     <!--Navbar-->
-    <x-navbar_dosen></x-navbar_dosen>
+    <x-navbar/>
 
     <div class="main-content flex flex-col flex-grow">
         <!--Header-->
@@ -102,7 +102,7 @@
                     </div>
                     <div class="flex-grow">
                         <p>Jumlah Mahasiswa Perwalian :</p>
-                        <p>45</p>
+                        <p>{{Auth::user()->dosen->mahasiswa()->count()}}</p>
                         <br><p>IRS menunggu :</p>
                         <p>0</p>
                     </div>

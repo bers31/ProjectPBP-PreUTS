@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\RegistrasiController;
+use App\Http\Controllers\WaliDropdownController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -35,12 +35,20 @@ Route::post('/logout', [LoginController::class, 'logout']);
 
 // // Group routes that require authentication
 Route::middleware(['auth'])->group(function () {
+    Route::pattern('dashboard', 'dashboard|');
 
     // Student dashboard route (requires 'mahasiswa' role)
-    Route::get('/mahasiswa/dashboard', function(){
+    Route::get('/mahasiswa/{dashboard?}', function(){
         return view('mahasiswa.dashboard');
     })->name('mahasiswa.dashboard')
-    ->middleware('role:mahasiswa');  // Check for 'mahasiswa' role
+    ->middleware('role:mahasiswa'); 
+
+    Route::get('dosen/{dashboard?}', function() {
+        return view('dosen.dashboard');
+    })->name('dosen.dashboard')
+      ->middleware('role:dosen'); // Check for 'dosen' role
+
+    
 
     // Student status_akademik route
     Route::get('mahasiswa/status_akademik', function(){
@@ -67,15 +75,18 @@ Route::middleware(['auth'])->group(function () {
         return view('mahasiswa.transkrip_mhs');
     })->name('mahasiswa.transkrip_mhs')
     ->middleware('role:mahasiswa');
-    
+
+    Route::get('/admin', function(){
+        return view('admin.dashboard');
+    })->name('admin.dashboard')
+    ->middleware('role:admin');  // Check for 'admin' role
+});
+   
+Route::middleware(['auth','role:dosen'])->group(function(){
     // Lecturer dashboard route (requires 'dosen' role)
-    Route::get('/dosen/dashboard', function(){
-        return view('dosen.dashboard');
-    })->name('dosen.dashboard')
-    ->middleware('role:dosen');  // Check for 'dosen' role
 
     Route::get('/dosen/perwalian', function(){
-        return view('dosen.perwalian');
+        return view('dosen.perwalian/index');
     })->name('dosen.perwalian')
     ->middleware('role:dosen');
 
@@ -85,14 +96,12 @@ Route::middleware(['auth'])->group(function () {
     ->middleware('role:dosen');
 
     
-
-    Route::get('/admin', function(){
-        return view('admin.dashboard');
-    })->name('admin.dashboard')
-    ->middleware('role:admin');  // Check for 'admin' role
 });
-    
-    // // Admin-specific routes with authentication and 'admin' middleware
+
+Route::post('/api/fetch-tahun', [WaliDropdownController::class, 'fetchTahun'])->name('fetch.tahun');
+Route::post('/api/fetch-mahasiswa', [WaliDropdownController::class, 'fetchMahasiswa']);
+
+// // Admin-specific routes with authentication and 'admin' middleware
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/admin/users', UserController::class)->name('index','users.index')
                                                         ->name('edit','users.edit')
