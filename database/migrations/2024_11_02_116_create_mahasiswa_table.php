@@ -18,11 +18,12 @@ return new class extends Migration
             $table->integer('semester')->default(1);
             $table->integer('sks')->default(0);
             $table->decimal('ipk',2,2)->default(0);
-            $table->string('prodi');
-            $table->foreign('prodi')->references('kode_prodi')->on('prodi');
+            $table->string('kode_prodi');
+            $table->foreign('kode_prodi')->references('kode_prodi')->on('prodi');
             $table->string('doswal');
             $table->enum('status', ['aktif','cuti','skorsing','lulus','non-aktif', 'mangkir'])->default('non-aktif');
             $table->char('tahun_masuk', 4)->default(now()->year);
+            $table->string('gol_ukt', 2)->default('1');
             $table->timestamps();
 
             $table->foreign('doswal')->references('nidn')->on('dosen')->onDelete('cascade');

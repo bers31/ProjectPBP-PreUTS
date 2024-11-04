@@ -14,12 +14,9 @@ class Mahasiswa extends Model
     protected $fillable = [
         'nim',
         'nama',
-        'password',
-        'role',
         'email',
-        'fakultas',
-        'departemen',
-        'nip_doswal',
+        'kode_prodi',
+        'doswal',
     ];
     
     public function user() 
@@ -28,11 +25,15 @@ class Mahasiswa extends Model
     }
 
     public function dosen(){
-        return $this->belongsTo(Dosen::class, 'nip_doswal', 'nip');
+        return $this->belongsTo(Dosen::class, 'doswal', 'nidn');
     }
 
     public function historyRegistrasi()
     {
         return $this->hasMany(HistoryRegistrasi::class, 'nim', 'nim');
+    }
+
+    public function prodi(){
+        return $this->belongsTo(Prodi::class,'kode_prodi','kode_prodi');
     }
 }

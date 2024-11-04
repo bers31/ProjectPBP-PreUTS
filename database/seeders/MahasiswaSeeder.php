@@ -14,11 +14,10 @@ class MahasiswaSeeder extends Seeder
     {
         \App\Models\Mahasiswa::create([
             'nama' => 'Nama Mahasiswa',
-            'nim' => '12345',
-            'email' => 'mahasiswa@example.com',
-            'departemen' => 'informatika',
-            'fakultas' => 'sains dan matematika',
-            'nip_doswal' => '121212'
+            'nim' => '24060122130001',
+            'email' => 'gibran@students.undip.ac.id',
+            'kode_prodi' => 'IFS1',
+            'doswal' => '123456789011'
             // field lainnya
         ]);
     }

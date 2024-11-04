@@ -12,7 +12,7 @@
       <thead>
           <tr>
               <th>No.</th>
-              <th>NIP</th>
+              <th>NIDN</th>
               <th>Nama</th>
               <th>Email</th>
               <th>Jumlah Mahasiswa Perwalian</th>
@@ -22,10 +22,10 @@
           @foreach($dosen as $no=>$row)
               <tr>
                   <td>{{ $no+1 }}</td>
-                  <td>{{ $row->nip }}</td>
+                  <td>{{ $row->nidn }}</td>
                   <td>{{ $row->nama }}</td>
                   <td>{{ $row->email }}</td>
-                  <td>{{ $row->mahasiswa()->count()}}</td>
+                  <td>{{ $row->mahasiswa()->count() ?? 0 }}</td>
                   <td>
                       <a href="{{ route('dosen.edit', $row) }}" class="btn btn-warning">Edit</a>
 

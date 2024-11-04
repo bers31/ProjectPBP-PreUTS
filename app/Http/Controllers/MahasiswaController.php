@@ -7,8 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMahasiswaRequest;
 use App\Http\Requests\UpdateMahasiswaRequest;
 use App\Models\Dosen;
+use App\Models\Fakultas;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
 
 class MahasiswaController extends Controller
 {
@@ -26,8 +30,8 @@ class MahasiswaController extends Controller
      */
     public function create()
     {
-        $dosen = Dosen::all();
-        return view('admin.mahasiswa.create', compact('dosen'));
+        $fakultas = Fakultas::get(['kode_fakultas','nama_fakultas']);
+        return view('admin.mahasiswa.create', compact('fakultas'));
     }
 
     /**
@@ -43,7 +47,7 @@ class MahasiswaController extends Controller
             'password' => Hash::make('12345'),
             'role' => 'mahasiswa',
         ]);
-
+        
         return redirect()->route('mahasiswa.index')->with('success', 'Mahasiswa berhasil dibuat!');
     }
 
@@ -60,16 +64,38 @@ class MahasiswaController extends Controller
      */
     public function edit(Mahasiswa $mahasiswa)
     {
-        //
+        $fakultas = Fakultas::get(['kode_fakultas','nama_fakultas']);
+        return view('admin.mahasiswa.edit', compact(['mahasiswa', 'fakultas']));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateMahasiswaRequest $request, Mahasiswa $mahasiswa)
-    {
-        //
+{
+    try {
+        // Nonaktifkan foreign key checks
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        
+        $validated = $request->validated();
+        
+        // Update data mahasiswa
+        $mahasiswa->update($validated);
+
+        // Aktifkan kembali foreign key checks
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        
+        return redirect()->route('mahasiswa.index')
+                        ->with('success', 'Mahasiswa berhasil diupdate!');
+        } 
+        catch (\Exception $e) {
+        // Pastikan foreign key checks diaktifkan kembali jika terjadi error
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        
+        return back()->withInput()
+                    ->withErrors(['error' => 'Terjadi kesalahan saat mengupdate data.']);
     }
+}
 
     /**
      * Remove the specified resource from storage.

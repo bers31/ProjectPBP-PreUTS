@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('nidn')->primary();
             $table->string('nama');
             $table->string('email')->unique();
+            $table->string('kode_departemen');
             $table->timestamps();
         });
     }

@@ -8,16 +8,16 @@
             <form action="{{ route('dosen.store') }}" method="POST">
                 @csrf
 
-                <!-- NIP Input -->
+                <!-- nidn Input -->
                 <div class="mb-4">
-                    <label for="nip" class="block mb-2 text-sm font-medium text-gray-900">NIP</label>
+                    <label for="nidn" class="block mb-2 text-sm font-medium text-gray-900">NIDN</label>
                     <input 
                         type="text" 
-                        name="nip" 
-                        id="nip" 
+                        name="nidn" 
+                        id="nidn" 
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        value="{{ old('nip') }}">
-                    @error('nip')
+                        value="{{ old('nidn') }}">
+                    @error('nidn')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
                 </div>

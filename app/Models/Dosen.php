@@ -9,11 +9,14 @@ class Dosen extends Model
 {
     use HasFactory;
     protected $table = 'dosen';
-    protected $primaryKey = 'nip';
+    protected $primaryKey = 'nidn';
+    public $incrementing = false; // Non-incrementing jika primary key bukan integer
+    protected $keyType = 'string'; // Jika kode_fakultas adalah string, atur tipe key menjadi string
     protected $fillable = [
-        'nip',
+        'nidn',
         'email',
         'nama',
+        'kode_departemen',
     ];
 
     public function user() 
@@ -22,6 +25,6 @@ class Dosen extends Model
     }
 
     public function mahasiswa(){
-        return $this->hasMany(Mahasiswa::class, 'nip_doswal', 'nip');
+        return $this->hasMany(Mahasiswa::class, 'doswal', 'nidn');
     }
 }

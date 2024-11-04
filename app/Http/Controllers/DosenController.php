@@ -6,7 +6,9 @@ use App\Models\Dosen;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDosenRequest;
 use App\Http\Requests\UpdateDosenRequest;
+use App\Models\Fakultas;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class DosenController extends Controller
@@ -27,7 +29,8 @@ class DosenController extends Controller
     public function create()
     {
         //
-        return view('admin.dosen.create');
+        $fakultas = Fakultas::get(['nama_fakultas','kode_fakultas']);
+        return view('admin.dosen.create', compact('fakultas'));
     }
 
     /**

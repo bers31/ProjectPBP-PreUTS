@@ -46,4 +46,10 @@ class WaliDropdownController extends Controller
 
         return response()->json(['mahasiswa' => $mahasiswaList]);
     }
+
+    public function fetchDoswal(Request $request){
+        $departemen = $request->id_departemen;
+        $DosenList = Dosen::where('kode_departemen',$departemen)->get(['nidn','nama'])->flatten();
+        return response()->json(['dosen' => $DosenList]);
+    }
 }

@@ -18,6 +18,10 @@ return new class extends Migration
             $table->foreign('kode_fakultas')->references('kode_fakultas')->on('fakultas')->onDelete('cascade');;
             $table->timestamps();
         });
+
+        Schema::table('dosen', function (Blueprint $table) {
+            $table->foreign('kode_departemen')->references('kode_departemen')->on('departemen');
+        });
     }
 
     /**

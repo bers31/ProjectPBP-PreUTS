@@ -30,8 +30,8 @@
                   <td>{{ $row->nim }}</td>
                   <td>{{ $row->nama }}</td>
                   <td>{{ $row->email }}</td>
-                  <td>{{ $row->fakultas }}</td>
-                  <td>{{ $row->departemen }}</td>
+                  <td>{{ $row->prodi->departemen->fakultas->nama_fakultas }}</td>
+                  <td>{{ $row->prodi->departemen->nama }}</td>
                   <td>{{ $row->ipk }}</td>
                   <td>{{ $row->semester }}</td>
                   <td>{{ $row->sks }}</td>

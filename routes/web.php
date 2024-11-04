@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\FakultasController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliDropdownController;
 use App\Http\Controllers\RegistrasiController;
@@ -101,6 +104,10 @@ Route::middleware(['auth','role:dosen'])->group(function(){
 
 Route::post('/api/fetch-tahun', [WaliDropdownController::class, 'fetchTahun'])->name('fetch.tahun');
 Route::post('/api/fetch-mahasiswa', [WaliDropdownController::class, 'fetchMahasiswa']);
+Route::post('/api/fetch-departemen', [DepartemenController::class, 'fetchDepartemen']);
+Route::post('/api/fetch-prodi', [ProdiController::class, 'fetchProdi']);
+Route::post('/api/fetch-doswal', [WaliDropdownController::class, 'fetchDoswal']);
+
 
 // // Admin-specific routes with authentication and 'admin' middleware
 Route::middleware(['auth', 'role:admin'])->group(function () {

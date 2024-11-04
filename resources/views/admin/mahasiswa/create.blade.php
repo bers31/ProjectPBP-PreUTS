@@ -8,7 +8,7 @@
             <form action="{{ route('mahasiswa.store') }}" method="POST">
                 @csrf
 
-                <!-- NIP Input -->
+                <!-- NIM Input -->
                 <div class="mb-4">
                     <label for="nim" class="block mb-2 text-sm font-medium text-gray-900">NIM</label>
                     <input 
@@ -55,25 +55,23 @@
                     <label for="fakultas" class="block mb-2 text-sm font-medium text-gray-900">Fakultas</label>
                     <select name="fakultas" 
                             id="fakultas" 
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onchange="updateDepartments()
-                    ">
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option selected disabled>PILIH FAKULTAS</option>
-                        <option value="Sains dan Matematika" @selected(old('fakultas') == "Sains dan Matematika" )>Fakultas Sains dan Matematika</option>
-                        <option value="Teknik" @selected(old('fakultas') == "Teknik")>Fakultas Teknik</option>
-                        <option value="Kedokteran" @selected(old('fakultas') == "Kedokteran")>Fakultas Kedokteran</option>
+                        @foreach ($fakultas as $data)
+                            <option value="{{ $data->kode_fakultas }}" {{ old('fakultas') == $data->kode_fakultas ? 'selected' : ' ' }}>Fakultas {{ $data->nama_fakultas }}</option>
+                        @endforeach
                     </select>
                     @error('fakultas')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
                 </div>
 
-                <!-- Fakultas Input -->
+                <!-- Departemen Input -->
                 <div class="mb-4">
-                    <label for="departemen" class="block mb-2 text-sm font-medium text-gray-900">Fakultas</label>
+                    <label for="departemen" class="block mb-2 text-sm font-medium text-gray-900">Departemen</label>
                     <select name="departemen" 
                             id="departemen" 
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    ">
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option selected disabled>PILIH DEPARTEMEN</option>
                     </select>
                     @error('departemen')
@@ -81,30 +79,35 @@
                     @enderror
                 </div>
 
-                <!-- Doswal Input -->
+                <!-- Prodi Input -->
                 <div class="mb-4">
-                    <label for="nip_doswal" class="block mb-2 text-sm font-medium text-gray-900">Pilih Dosen Wali</label>
-                    <select name="nip_doswal" 
-                            id="nip_doswal" 
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    ">
-                        <option selected disabled>NIP - NAMA</option>
-                        @foreach ($dosen as $dosen)
-                            <option value="{{ $dosen>nip }}">{{ $dosen->nip }} - {{ $dosen->nama }}</option>
-                        @endforeach
-
-                            
-                        @endforeach
+                    <label for="prodi" class="block mb-2 text-sm font-medium text-gray-900">Prodi</label>
+                    <select name="prodi" 
+                            id="prodi" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option selected disabled>PILIH PRODI</option>
                     </select>
-                    @error('nip_doswal')
+                    @error('prodi')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
                 </div>
 
+                <!-- Dosen Wali Input -->
+                <div class="mb-4">
+                    <label for="nidn" class="block mb-2 text-sm font-medium text-gray-900">Pilih Dosen Wali</label>
+                    <select name="nidn" 
+                            id="nidn" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option selected disabled>NIDN - NAMA</option>
+                    </select>
+                    @error('nidn')
+                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                    @enderror
+                </div>
 
                 <!-- Submit Button -->
                 <div>
-                    <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
                         Create Mahasiswa
                     </button>
                 </div>
@@ -112,34 +115,204 @@
         </div>
     </div>
 
-    <script>
-        // Departments data (hardcoded, linked to faculties)
-        const departmentsByFaculty = {
-            "Sains dan Matematika": ['Informatika', 'Biologi', 'Kimia'],
-            "Teknik": ['Teknik Mesin', 'Teknik Sipil', 'Teknik Elektro'],
-            "Kedokteran": ['Ilmu Kedokteran Dasar', 'Gizi', 'Keperawatan']
-        };
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+    // Initial setup: disable departemen, prodi, and nidn if fakultas is not selected
+    $('#departemen').prop('disabled', true);
+    $('#prodi').prop('disabled', true);
+    $('#nidn').prop('disabled', true);
+
+    // Clear localStorage only after successful form submission
+    $('form').on('submit', function() {
+        // Store the form data temporarily
+        const formData = new FormData(this);
         
-        // Function to update the departments dropdown based on selected faculty
-        function updateDepartments() {
-            const facultyDropdown = document.getElementById('fakultas');
-            const departmentDropdown = document.getElementById('departemen');
-            const selectedFaculty = facultyDropdown.value;
-        
-            // Clear current department options
-            departmentDropdown.innerHTML = '<option selected disabled>PILIH DEPARTEMEN</option>';
-        
-            // Populate the department dropdown based on selected faculty
-            if (selectedFaculty && departmentsByFaculty[selectedFaculty]) {
-                departmentsByFaculty[selectedFaculty].forEach(departemen => {
-                    const option = document.createElement('option');
-                    option.value = departemen;
-                    option.textContent = departemen;
-                    departmentDropdown.appendChild(option);
+        // Intercept the form submission
+        $.ajax({
+            url: $(this).attr('action'),
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // Clear localStorage only after successful submission
+                localStorage.removeItem('oldFakultas');
+                localStorage.removeItem('oldDepartemen');
+                localStorage.removeItem('oldProdi');
+                localStorage.removeItem('oldNIDN');
+                
+                // Redirect or handle success response
+                window.location.href = response.redirect || '/success-page';
+            },
+            error: function(xhr) {
+                // Don't clear localStorage on error
+                // The form will be re-rendered with validation errors
+                // and the stored values will be preserved
+            }
+        });
+
+        // Prevent default form submission
+        return false;
+    });
+
+    // Load saved selections from localStorage if they exist
+    const savedFakultas = localStorage.getItem('oldFakultas');
+    const savedDepartemen = localStorage.getItem('oldDepartemen');
+    const savedProdi = localStorage.getItem('oldProdi');
+    const savedNIDN = localStorage.getItem('oldNIDN');
+
+    // If there's a saved fakultas, select it and load the corresponding departemen
+    if (savedFakultas) {
+        $('#fakultas').val(savedFakultas);
+        loadDepartemen(savedFakultas, function() {
+            // Only load the saved departemen if it matches the current fakultas selection
+            if (savedDepartemen && $('#departemen').find(`option[value="${savedDepartemen}"]`).length) {
+                $('#departemen').val(savedDepartemen).prop('disabled', false);
+                loadProdi(savedDepartemen, function() {
+                    // Only load the saved prodi if it matches the current departemen selection
+                    if (savedProdi && $('#prodi').find(`option[value="${savedProdi}"]`).length) {
+                        $('#prodi').val(savedProdi).prop('disabled', false);
+                    }
+                });
+                loadNIDN(savedDepartemen, function() {
+                    // Only load the saved nidn if it matches the current departemen selection
+                    if (savedNIDN && $('#nidn').find(`option[value="${savedNIDN}"]`).length) {
+                        $('#nidn').val(savedNIDN).prop('disabled', false);
+                    }
                 });
             }
-        }
-        </script>
+        });
+    }
 
+    // Event listener for fakultas dropdown change
+    $('#fakultas').on('change', function () {
+        var idFakultas = this.value;
+        localStorage.setItem('oldFakultas', idFakultas);
+
+        // Clear saved departemen, prodi, and nidn if fakultas is changed
+        localStorage.removeItem('oldDepartemen');
+        localStorage.removeItem('oldProdi');
+        localStorage.removeItem('oldNIDN');
+        $('#departemen').html('<option selected disabled>Loading...</option>').prop('disabled', !idFakultas);
+        $('#prodi').html('<option selected disabled>PILIH PRODI</option>').prop('disabled', true);
+        $('#nidn').html('<option selected disabled>PILIH NIDN</option>').prop('disabled', true);
+
+        if (idFakultas) {
+            loadDepartemen(idFakultas);
+        }
+    });
+
+    // Function to load departemen options based on fakultas ID
+    function loadDepartemen(idDepartemen, callback) {
+        $.ajax({
+            url: "{{ url('api/fetch-departemen') }}",
+            type: "POST",
+            data: {
+                id_fakultas: idDepartemen,
+                _token: '{{ csrf_token() }}'
+            },
+            dataType: 'json',
+            success: function (result) {
+                $('#departemen').html('<option selected disabled>PILIH DEPARTEMEN</option>');
+                $.each(result.departemen, function (key, value) {
+                    $("#departemen").append('<option value="' + value.kode_departemen + '">' + value.nama + '</option>');
+                });
+
+                $('#departemen').prop('disabled', false);
+                if (callback) callback();
+            },
+            error: function() {
+                $("#departemen").html('<option selected disabled>Error loading options</option>');
+            }
+        });
+    }
+
+    // Event listener for departemen change
+    $('#departemen').on('change', function () {
+        var idDepartemen = this.value;
+        localStorage.setItem('oldDepartemen', idDepartemen);
+        $('#prodi').prop('disabled', !idDepartemen);
+        $('#nidn').prop('disabled', !idDepartemen);
+
+        if (idDepartemen) {
+            loadProdi(idDepartemen);
+            loadNIDN(idDepartemen);
+        } else {
+            $('#prodi').prop('disabled', true).html('<option selected disabled>PILIH PRODI</option>');
+            $('#nidn').prop('disabled', true).html('<option selected disabled>PILIH NIDN</option>');
+        }
+    });
+
+    // Function to load prodi options
+    function loadProdi(idDepartemen, callback) {
+        $("#prodi").html('<option selected disabled>Loading...</option>');
+        $.ajax({
+            url: "{{ url('api/fetch-prodi') }}",
+            type: "POST",
+            data: {
+                id_departemen: idDepartemen,
+                _token: '{{ csrf_token() }}'
+            },
+            dataType: 'json',
+            success: function (result) {
+                $('#prodi').html('<option selected disabled>PILIH PRODI</option>');
+                $.each(result.prodi, function (key, value) {
+                    $("#prodi").append('<option value="' + value.kode_prodi + '">' + value.strata + ' ' + value.nama + '</option>');
+                });
+
+                $('#prodi').prop('disabled', false);
+                if (callback) callback();
+            },
+            error: function() {
+                $("#prodi").html('<option selected disabled>Error loading options</option>');
+            }
+        });
+    }
+
+    // Function to load NIDN options
+    function loadNIDN(idDepartemen, callback) {
+        $("#nidn").html('<option selected disabled>Loading...</option>');
+        $.ajax({
+            url: "{{ url('api/fetch-doswal') }}",
+            type: "POST",
+            data: {
+                id_departemen: idDepartemen,
+                _token: '{{ csrf_token() }}'
+            },
+            dataType: 'json',
+            success: function (result) {
+                $('#nidn').html('<option selected disabled>NIDN - NAMA</option>');
+                $.each(result.dosen, function (key, value) {
+                    $("#nidn").append('<option value="' + value.nidn + '">' + value.nidn + ' - '+ value.nama + '</option>');
+                });
+
+                $('#nidn').prop('disabled', false);
+                if (callback) callback();
+            },
+            error: function() {
+                $("#nidn").html('<option selected disabled>Error loading options</option>');
+            }
+        });
+    }
+
+    // Save selected prodi to localStorage on change
+    $('#prodi').on('change', function () {
+        var selectedProdi = this.value;
+        localStorage.setItem('oldProdi', selectedProdi);
+    });
+
+    // Save selected nidn to localStorage on change
+    $('#nidn').on('change', function () {
+        var selectedNIDN = this.value;
+        localStorage.setItem('oldNIDN', selectedNIDN);
+    });
+});
+</script>
+
+
+
+
+    
 @include('../footer')
 {{-- @endsection --}}

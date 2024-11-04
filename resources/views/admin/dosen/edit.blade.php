@@ -5,19 +5,19 @@
         <div class="max-w-md mx-auto bg-white border border-gray-200 rounded-lg shadow-md p-6">
             <h1 class="text-2xl font-semibold mb-6 text-gray-800">Edit Dosen</h1>
 
-            <form action="{{ route('dosen.update', $dosen->nip ) }}" method="POST">
+            <form action="{{ route('dosen.update', $dosen->nidn ) }}" method="POST">
                 @csrf
                 @method('PUT')
-                <!-- NIP Input -->
+                <!-- nidn Input -->
                 <div class="mb-4">
-                    <label for="nip" class="block mb-2 text-sm font-medium text-gray-900">NIP</label>
+                    <label for="nidn" class="block mb-2 text-sm font-medium text-gray-900">nidn</label>
                     <input 
                         type="text" 
-                        name="nip" 
-                        id="nip" 
+                        name="nidn" 
+                        id="nidn" 
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        value="{{  $dosen->nip  }}">
-                    @error('nip')
+                        value="{{  $dosen->nidn  }}">
+                    @error('nidn')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
                 </div>

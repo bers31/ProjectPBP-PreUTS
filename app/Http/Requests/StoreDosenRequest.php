@@ -22,7 +22,7 @@ class StoreDosenRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nip' => 'required|string|unique:dosen|size:12',
+            'nidn' => 'required|string|unique:dosen|size:12',
             'nama' => 'required|string|max:255',
             'email' => 'required|string|email|regex:/^[a-zA-Z0-9._%+-]+@lecturers\.undip\.ac\.id$/',
         ];

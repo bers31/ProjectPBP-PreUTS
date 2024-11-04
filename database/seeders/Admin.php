@@ -26,12 +26,12 @@ class Admin extends Seeder
             'role' => 'admin', // Assign the admin role
         ]);
         User::create([
-            'email' => 'budi@example.com',
+            'email' => 'bambang@lecturers.undip.ac.id',
             'password' => '12345', // Admin password
             'role' => 'dosen', // Assign the admin role
         ]);
         User::create([
-            'email' => 'bambang@example.com',
+            'email' => 'gibran@students.undip.ac.id',
             'password' => '12345', // Admin password
             'role' => 'mahasiswa', // Assign the admin role
         ]);
