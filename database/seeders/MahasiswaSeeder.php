@@ -13,7 +13,7 @@ class MahasiswaSeeder extends Seeder
     public function run(): void
     {
         \App\Models\Mahasiswa::create([
-            'nama' => 'Nama Mahasiswa',
+            'nama' => 'gibran',
             'nim' => '24060122130001',
             'email' => 'gibran@students.undip.ac.id',
             'kode_prodi' => 'IFS1',
