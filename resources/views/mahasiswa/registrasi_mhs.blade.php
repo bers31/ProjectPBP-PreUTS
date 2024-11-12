@@ -35,30 +35,32 @@
 
         <!-- Detail Pembayaran -->
         <div class="flex justify-center">
-            <div class="flex flex-col m-5 border-2 p-5 w-2/3 border-gray-300 rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
-                <table class="table-auto w-full border-collapse border border-gray-400">
-                    <thead class="bg-gray-200">
-                        <tr>
-                            <th class="border border-gray-400 px-4 py-2">Semester</th>
-                            <th class="border border-gray-400 px-4 py-2">Tagihan</th>
-                            <th class="border border-gray-400 px-4 py-2">Tanggal Bayar</th>
-                        </tr>
-                    </thead>
-
-                    @php
-                        $historyRegistrasi = \App\Models\HistoryRegistrasi::where('nim', Auth::user()->mahasiswa->nim)->get();
-                    @endphp
-
-                    <tbody id="payment-details">
-                        @foreach($historyRegistrasi as $history)
-                            <tr class="text-center">
-                                <td class="border border-gray-400 px-4 py-2">{{ $history->semester }}</td>
-                                <td class="border border-gray-400 px-4 py-2">Rp{{ number_format($history->tagihan, 0, ',', '.') }}</td>
-                                <td class="border border-gray-400 px-4 py-2">{{ $history->tanggal_bayar }}</td>
+            <div class="flex flex-col m-5 border-2 px-5 pb-5 w-2/3 border-gray-300 rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                <div id="success-payment">
+                    
+                </div>
+                <div id="all-payment">
+                    <table class="table-auto w-full border-collapse border border-gray-400">
+                        <p class="font-bold text-lg py-3">Riwayat Registrasi</p>
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="border border-gray-400 px-4 py-2">Semester</th>
+                                <th class="border border-gray-400 px-4 py-2">Tagihan</th>
+                                <th class="border border-gray-400 px-4 py-2">Tanggal Bayar</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+    
+                        <tbody>
+                            @foreach($historyRegistrasi as $history)
+                                <tr class="text-center">
+                                    <td class="border border-gray-400 px-4 py-2">{{ $history->semester }}</td>
+                                    <td class="border border-gray-400 px-4 py-2">Rp{{ number_format($history->tagihan, 0, ',', '.') }}</td>
+                                    <td class="border border-gray-400 px-4 py-2">{{ $history->tanggal_bayar }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -92,14 +94,30 @@
             },
             success: function(response) {
                 $('#status').text('Sudah bayar');
+                
                 let paymentRow = `
-                    <tr class="text-center">
-                        <td class="border border-gray-400 px-4 py-2">${response.semester}</td>
-                        <td class="border border-gray-400 px-4 py-2">Rp${response.tagihan.toLocaleString()}</td>
-                        <td class="border border-gray-400 px-4 py-2">${response.tanggal_bayar}</td>
-                    </tr>
+                    <p class="font-bold text-lg py-3">Registrasi Berhasil!</p>
+                    <table class="table-auto w-full border-collapse border border-gray-400">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="border border-gray-400 px-4 py-2">Semester</th>
+                                <th class="border border-gray-400 px-4 py-2">Tagihan</th>
+                                <th class="border border-gray-400 px-4 py-2">Tanggal Bayar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center">
+                                <td class="border border-gray-400 px-4 py-2">${response.semester}</td>
+                                <td class="border border-gray-400 px-4 py-2">Rp${response.tagihan.toLocaleString()}</td>
+                                <td class="border border-gray-400 px-4 py-2">${response.tanggal_bayar}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 `;
-                $('#payment-details').html(paymentRow);
+
+                $('#success-payment').html(paymentRow);
+                $('#all-payment').hide(); // Menyembunyikan tabel riwayat
+                $('#fetch-data-btn').hide(); // Menyembunyikan tombol registrasi
             },
             error: function(xhr) {
                 console.error("An error occurred:", xhr.responseText);

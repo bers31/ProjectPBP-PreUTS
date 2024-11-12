@@ -1,10 +1,11 @@
 {{-- @extends('layouts.app') --}}
 @include('../header')
+<x-navbar/>
 {{-- @section('content') --}}
-    <div class="container mx-auto py-8">
-        <div class="max-w-md mx-auto bg-white border border-gray-200 rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-semibold mb-6 text-gray-800">Create New Dosen</h1>
-
+<div class="flex flex-col flex-grow">
+    <div class="flex items-center justify-center min-h-screen bg-gray-100">
+        <div class="max-w-lg mx-auto bg-white border border-gray-200 rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-semibold mb-6 text-gray-800">Create New Dosen</h1>
             <form action="{{ route('dosen.store') }}" method="POST">
                 @csrf
 
@@ -59,6 +60,7 @@
             </form>
         </div>
     </div>
+</div>
 
 @include('../footer')
 {{-- @endsection --}}

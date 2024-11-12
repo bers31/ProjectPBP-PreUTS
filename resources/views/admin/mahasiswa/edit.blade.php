@@ -1,6 +1,7 @@
 @include('../header')
+<x-navbar/>
 {{-- @section('content') --}}
-<div class="container mx-auto py-8">
+<div class="flex flex-col flex-grow">
     <!-- Global Error Message -->
     @if ($errors->any())
     <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
@@ -15,97 +16,100 @@
 
     <!-- Success Message -->
     @if (session('success'))
-    <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-        {{ session('success') }}
+    <div class="flex items-center justify-between py-3 p-8">
+        <div class="text-lg md:text-xl pl-4 py-1">
+            {{ session('success') }}
+        </div>
     </div>
     @endif
 
-    <div class="max-w-md mx-auto bg-white border border-gray-200 rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-semibold mb-6 text-gray-800">Update Mahasiswa</h1>
-
-        <form action="{{ route('mahasiswa.update', $mahasiswa->nim) }}" method="POST">
-            @csrf
-            @method('PUT')  <!-- Tambahkan ini untuk method PUT -->
-
-            <!-- NIM Input -->
-            <div class="mb-4">
-                <label for="nim" class="block mb-2 text-sm font-medium text-gray-900">NIM</label>
-                <input 
-                    type="text" 
-                    name="nim" 
-                    id="nim" 
-                    class="bg-gray-50 border @error('nim') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    value="{{ old('nim', $mahasiswa->nim) }}">
-                @error('nim')
-                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <!-- Nama Input -->
-            <div class="mb-4">
-                <label for="nama" class="block mb-2 text-sm font-medium text-gray-900">Nama</label>
-                <input 
-                    type="text" 
-                    name="nama" 
-                    id="nama" 
-                    class="bg-gray-50 border @error('nama') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    value="{{ old('nama', $mahasiswa->nama) }}">
-                @error('nama')
-                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <!-- Email Input -->
-            <div class="mb-4">
-                <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
-                <input 
-                    type="email" 
-                    name="email" 
-                    id="email" 
-                    class="bg-gray-50 border @error('email') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    value="{{ old('email', $mahasiswa->email) }}">
-                @error('email')
-                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <!-- Prodi Input -->
-            <div class="mb-4">
-                <label for="kode_prodi" class="block mb-2 text-sm font-medium text-gray-900">Prodi</label>
-                <select 
-                    name="kode_prodi" 
-                    id="kode_prodi" 
-                    class="bg-gray-50 border @error('kode_prodi') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                    <option selected disabled>PILIH PRODI</option>
-                </select>
-                @error('kode_prodi')
-                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <!-- NIDN Input -->
-            <div class="mb-4">
-                <label for="doswal" class="block mb-2 text-sm font-medium text-gray-900">Dosen Wali</label>
-                <select 
-                    name="doswal" 
-                    id="doswal" 
-                    class="bg-gray-50 border @error('doswal') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                    <option selected disabled>PILIH DOSEN WALI</option>
-                </select>
-                @error('doswal')
-                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <!-- Submit Button -->
-            <div>
-                <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
-                    Update Mahasiswa
-                </button>
-            </div>
-        </form>
+    <div class="flex items-center justify-center min-h-screen bg-gray-100">
+        <div class="max-w-lg mx-auto bg-white border border-gray-200 rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-semibold mb-6 text-gray-800">Update Mahasiswa</h1>
+    
+            <form action="{{ route('mahasiswa.update', $mahasiswa->nim) }}" method="POST">
+                @csrf
+                @method('PUT') <!-- Tambahkan ini untuk method PUT -->
+    
+                <!-- NIM Input -->
+                <div class="mb-4">
+                    <label for="nim" class="block mb-2 text-sm font-medium text-gray-900">NIM</label>
+                    <input 
+                        type="text" 
+                        name="nim" 
+                        id="nim" 
+                        class="bg-gray-50 border @error('nim') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        value="{{ old('nim', $mahasiswa->nim) }}">
+                    @error('nim')
+                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                    @enderror
+                </div>
+    
+                <!-- Nama Input -->
+                <div class="mb-4">
+                    <label for="nama" class="block mb-2 text-sm font-medium text-gray-900">Nama</label>
+                    <input 
+                        type="text" 
+                        name="nama" 
+                        id="nama" 
+                        class="bg-gray-50 border @error('nama') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        value="{{ old('nama', $mahasiswa->nama) }}">
+                    @error('nama')
+                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                    @enderror
+                </div>
+    
+                <!-- Email Input -->
+                <div class="mb-4">
+                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        id="email" 
+                        class="bg-gray-50 border @error('email') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        value="{{ old('email', $mahasiswa->email) }}">
+                    @error('email')
+                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                    @enderror
+                </div>
+    
+                <!-- Prodi Input -->
+                <div class="mb-4">
+                    <label for="kode_prodi" class="block mb-2 text-sm font-medium text-gray-900">Prodi</label>
+                    <select 
+                        name="kode_prodi" 
+                        id="kode_prodi" 
+                        class="bg-gray-50 border @error('kode_prodi') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option selected disabled>PILIH PRODI</option>
+                    </select>
+                    @error('kode_prodi')
+                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                    @enderror
+                </div>
+    
+                <!-- Dosen Wali Input -->
+                <div class="mb-4">
+                    <label for="doswal" class="block mb-2 text-sm font-medium text-gray-900">Dosen Wali</label>
+                    <select 
+                        name="doswal" 
+                        id="doswal" 
+                        class="bg-gray-50 border @error('doswal') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option selected disabled>PILIH DOSEN WALI</option>
+                    </select>
+                    @error('doswal')
+                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                    @enderror
+                </div>
+    
+                <!-- Submit Button -->
+                <div>
+                    <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                        Update Mahasiswa
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">

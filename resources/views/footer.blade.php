@@ -1,6 +1,6 @@
     <!--footer-->
-
-    <footer class="fixed bottom-0 left-0 z-20 w-full p-4 bg-[#DE2227] border-t border-gray-200 shadow flex justify-center items-center md:p-6">
+    
+    <footer class="left-0 z-20 w-full p-4 bg-[#DE2227] border-t border-gray-200 shadow flex justify-center items-center md:p-6">
         <span class="text-sm text-white">© 2024 Universitas Diponegoro | SI-MAS</span>
     </footer>
     
