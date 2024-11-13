@@ -1,9 +1,12 @@
 {{-- @extends('layouts.app') --}}
 @include('../header')
+<x-navbar/>
 {{-- @section('content') --}}
-    <div class="container mx-auto py-8">
-        <div class="max-w-md mx-auto bg-white border border-gray-200 rounded-lg shadow-md p-6">
-            <h1 class="text-2xl font-semibold mb-6 text-gray-800">Create New Mahasiswa</h1>
+<div class="flex flex-col flex-grow">
+    <div class="flex items-center justify-center min-h-screen bg-gray-100">
+        <div class="max-w-lg mx-auto bg-white border border-gray-200 rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-semibold mb-6 text-gray-800">Create New Mahasiswa</h1>
+    
 
             <form action="{{ route('mahasiswa.store') }}" method="POST">
                 @csrf
@@ -82,7 +85,7 @@
                 <!-- Prodi Input -->
                 <div class="mb-4">
                     <label for="prodi" class="block mb-2 text-sm font-medium text-gray-900">Prodi</label>
-                    <select name="prodi" 
+                    <select name="kode_prodi" 
                             id="prodi" 
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option selected disabled>PILIH PRODI</option>
@@ -95,7 +98,7 @@
                 <!-- Dosen Wali Input -->
                 <div class="mb-4">
                     <label for="nidn" class="block mb-2 text-sm font-medium text-gray-900">Pilih Dosen Wali</label>
-                    <select name="nidn" 
+                    <select name="doswal" 
                             id="nidn" 
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option selected disabled>NIDN - NAMA</option>
@@ -114,6 +117,7 @@
             </form>
         </div>
     </div>
+</div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
@@ -143,7 +147,7 @@
                 localStorage.removeItem('oldNIDN');
                 
                 // Redirect or handle success response
-                window.location.href = response.redirect || '/success-page';
+                window.location.href = response.redirect || '/admin/dashboard';
             },
             error: function(xhr) {
                 // Don't clear localStorage on error

@@ -11,6 +11,7 @@ use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliDropdownController;
 use App\Http\Controllers\RegistrasiController;
+use App\Http\Controllers\RuangController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -90,7 +91,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('admin.dashboard')
     ->middleware('role:admin');  // Check for 'admin' role
 });
-   
+
 Route::middleware(['auth','role:dosen'])->group(function(){
     // Lecturer dashboard route (requires 'dosen' role)
 
@@ -131,8 +132,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
                                                         ->name('create','dosen.create')
                                                         ->name('update','dosen.update'); // CRUD routes for users
 
+    Route::resource('/admin/ruang', RuangController::class)->name('index','ruang.index')
+                                                        ->name('edit','ruang.edit')
+                                                        ->name('create','ruang.create')
+                                                        ->name('update','ruang.update'); // CRUD routes for ruang
+
     Route::post('/admin/create-users', [AdminController::class, 'createUsersFromLecturersAndStudents'])->name('admin.createUsers');
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+
 });
 
 // Menampilkan history registrasi pada page registrasi_mhs
 Route::post('/get-registrasi-data', [RegistrasiController::class, 'getRegistrasiData'])->name('getRegistrasiData');
+Route::get('/mahassiwa/registrasi_mhs', [RegistrasiController::class, 'index'])->name('mahasiswa.registrasi_mhs');

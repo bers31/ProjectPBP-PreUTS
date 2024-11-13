@@ -16,7 +16,7 @@ class DosenSeeder extends Seeder
             'nidn' => '123456789011',
             'nama' => 'Bambang Sudayana',
             'email' => 'bambang@lecturers.undip.ac.id',
-            'kode_departemen' => '1234'
+            'kode_departemen' => 'IF'
 
             // field lainnya
         ]);

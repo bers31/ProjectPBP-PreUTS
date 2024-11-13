@@ -23,4 +23,9 @@ class Departemen extends Model
     public function prodi(){
         return $this->hasMany(Prodi::class, 'kode_departemen', 'kode_departemen');
     }
+
+    public function ruang()
+    {
+        return $this->hasMany(Ruang::class, 'kode_departemen', 'kode_departemen');
+    }
 }

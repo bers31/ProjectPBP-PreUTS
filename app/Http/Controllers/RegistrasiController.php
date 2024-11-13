@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class RegistrasiController extends Controller
 {
-    public function showRegistrasi()
+    public function index()
     {
         $mahasiswa = Auth::user()->mahasiswa;
         $historyRegistrasi = HistoryRegistrasi::where('nim', $mahasiswa->nim)->get();

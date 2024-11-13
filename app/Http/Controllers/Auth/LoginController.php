@@ -21,7 +21,6 @@ class LoginController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-
      public function showLoginForm()
      {
          // If the user is already authenticated, redirect them to the appropriate dashboard
@@ -93,7 +92,6 @@ class LoginController extends Controller
          return back()->with('loginError', 'Email atau Password salah!');
      }
      
-
     /**
      * The user has been authenticated.
      *
