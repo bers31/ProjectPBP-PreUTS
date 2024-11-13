@@ -14,7 +14,7 @@ class Departemen extends Model
     protected $keyType = 'string'; // Jika kode_fakultas adalah string, atur tipe key menjadi string
 
     // Tambahkan fillable untuk mass assignment
-    protected $fillable = ['kode_departemen', 'nama'];
+    protected $fillable = ['kode_departemen', 'nama','kode_fakultas'];
 
     public function fakultas(){
         return $this->belongsTo(Fakultas::class, 'kode_fakultas', 'kode_fakultas');
@@ -27,5 +27,10 @@ class Departemen extends Model
     public function ruang()
     {
         return $this->hasMany(Ruang::class, 'kode_departemen', 'kode_departemen');
+    }
+
+    public function dosen()
+    {
+        return $this->hasMany(Dosen::class, 'kode_departemen', 'kode_departemen');
     }
 }

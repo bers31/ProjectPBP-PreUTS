@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Dosen;
-use App\Models\Dekan;
 use App\Models\Mahasiswa;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
@@ -31,8 +31,6 @@ class LoginController extends Controller
                      return redirect()->route('mahasiswa.dashboard');
                  case 'dosen':
                      return redirect()->route('dosen.dashboard');
-                 case 'dekan':
-                     return redirect()->route('dekan.dashboard');
                  case 'admin':
                      return redirect()->route('admin.dashboard');
              }
@@ -42,79 +40,73 @@ class LoginController extends Controller
          // If not authenticated, show the login page
      }
 
-     public function login(Request $request)
-     {
-         // Validate the identifier and password
-         $request->validate([
-             'identifier' => 'required|string', // Change 'email' to 'identifier'
-             'password' => 'required|string',
-         ]);
-     
-         // Get the identifier and password from the request
-         $identifier = $request->input('identifier');
-         $password = $request->input('password');
-     
-         // Initialize the user variable
-         $user = null;
-     
-         // Check if the identifier is an email
-         if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
-             $user = User::where('email', $identifier)->first();
-         } else {
-             // If it's not an email, check in Students and Lecturers tables
-             $student = Mahasiswa::where('nim', $identifier)->first();
-             $lecturer = Dosen::where('nip', $identifier)->first();
-             $dekan = Dekan::where('nidn', $identifier)->first();
-     
-             if ($student) {
-                 // If the student exists, get their email to check for authentication
-                 $user = User::where('email', $student->email)->first();
-             } elseif ($lecturer) {
-                 // If the lecturer exists, get their email to check for authentication
-                 $user = User::where('email', $lecturer->email)->first();
-             } elseif ($dekan) {
-                // If the lecturer exists, get their email to check for authentication
-                $user = User::where('email', $dekan->email)->first();
-            } else {
-                 // Identifier not found in both tables
-                 return back()->withErrors(['comb-identifier' => 'The provided identifier does not match our records.'])->withInput();
-             }
-         }
-     
-         // Check if user exists and validate password
-         if ($user && Auth::attempt(['email' => $user->email, 'password' => $password])) {
-             $request->session()->regenerate();
-             // Redirect based on user role
-             return $this->authenticated($request, Auth::user());
-         }
-     
-         // If authentication fails, return with an error message
-         return back()->with('loginError', 'Email atau Password salah!');
-     }
-     
-    /**
-     * The user has been authenticated.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    protected function authenticated(Request $request, $user)
+    public function login(Request $request)
     {
-        // Check user role and redirect accordingly
-        switch ($user->role) {
-            case 'mahasiswa':  // Student
+        // Validate input
+        $request->validate([
+            'identifier' => 'required|string', // Username, email, NIDN, or NIM
+            'password' => 'required|string',
+        ]);
+    
+        // Get identifier and password from request
+        $identifier = $request->input('identifier');
+        $password = $request->input('password');
+        $username = Str::before($identifier, '@'); // Extracts username from email if given
+    
+        // Attempt to find user by username or email directly
+        $user = User::where('username', $username)
+                    ->orWhere('email', $identifier)
+                    ->first();
+    
+        // If user is not found, try to locate user via dosen or mahasiswa tables
+        if (!$user) {
+            // Check in dosen table with NIDN
+            $dosen = Dosen::where('nidn', $identifier)->first();
+            if ($dosen) {
+                $user = User::where('email', $dosen->email)->first();
+            }
+    
+            // Check in mahasiswa table with NIM if not found in dosen
+            if (!$user) {
+                $mahasiswa = Mahasiswa::where('nim', $identifier)->first();
+                if ($mahasiswa) {
+                    $user = User::where('email', $mahasiswa->email)->first();
+                }
+            }
+        }
+    
+        // Authenticate if user is found and credentials are valid
+        if ($user && Auth::attempt(['email' => $user->email, 'password' => $password])) {
+            $request->session()->regenerate();
+            return $this->authenticated($request, Auth::user());
+        }
+    
+        // If authentication fails, return with error
+        return back()->with('loginError', 'Identifier or password is incorrect!');
+    }
+     
+     /**
+      * The user has been authenticated.
+      *
+      * @param  \Illuminate\Http\Request  $request
+      * @param  mixed  $user
+      * @return \Illuminate\Http\RedirectResponse
+      */
+    protected function authenticated(Request $request, $user)
+     {
+         // Check user role and redirect accordingly
+    switch ($user->role) {
+             case 'mahasiswa':  // Student
                 return redirect()->route('mahasiswa.dashboard');
-            case 'dosen':  // Lecturer
+             case 'dosen':  // Lecturer
                 return redirect()->route('dosen.dashboard');
-            case 'dekan':  // Dekan
-                return redirect()->route('dekan.dashboard');
-            case 'admin':  // Admin
+             case 'admin':  // Admin
                 return redirect()->route('admin.dashboard');
             default:
-                return redirect()->route('login');  // Fallback if no role matches
+                 return redirect()->route('login');  // Fallback if no role matches
         }
     }
+     
 
     /**
      * Log the user out of the application.

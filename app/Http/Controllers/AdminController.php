@@ -9,6 +9,7 @@ use App\Models\Ruang;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -46,13 +47,14 @@ class AdminController extends Controller
     private function createUserAccount($email, $role)
     {
         // Check if a user with this email already exists
-        if (User::where('email', $email)->exists()) {
+        if (User::where('email', $email)->exists() && User::where('username', Str::before($email, '@'))) {
             return; // Skip creating this user if they already exist
         }
 
         // Create a new user with default password and role
         User::create([
             'email' => $email,
+            'username' => Str::before($email, '@'),
             'password' => Hash::make('12345'), // Default password
             'role' => $role,
         ]);

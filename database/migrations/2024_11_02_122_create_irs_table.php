@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('irs', function (Blueprint $table) {
-            $table->string('id_irs')->primary();
+            $table->id('id_irs');
             $table->string('nim_mahasiswa');
             $table->foreign('nim_mahasiswa')->references('nim')->on('mahasiswa')->onDelete('cascade');
             $table->integer('semester');
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('tahun_akademik');
             $table->foreign('tahun_akademik')->references('kode_tahun')->on('tahun_ajaran')->onDelete('cascade');
             $table->date('tanggal_pengisian')->nullable();
-            $table->enum('status',['belum_irs','belum_disetujui','sudah_disetujui']);
+            $table->enum('status',['belum_irs','belum_disetujui','sudah_disetujui'])->default('belum_irs');
             $table->timestamps();
         });
     }

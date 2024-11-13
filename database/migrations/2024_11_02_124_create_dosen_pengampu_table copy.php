@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('dosen_pengampu', function (Blueprint $table) {
             $table->string('nidn_dosen');
-            $table->string('id_jadwal');
+            $table->unsignedBigInteger('id_jadwal');
             $table->foreign('nidn_dosen')->references('nidn')->on('dosen')->onDelete('cascade');;
             $table->foreign('id_jadwal')->references('id_jadwal')->on('jadwal')->onDelete('cascade');;
-            $table->primary(['nidn_dosen','id_jadwal']);
+            $table->unique(['nidn_dosen','id_jadwal']);
             $table->timestamps();
         });
     }

@@ -10,7 +10,14 @@
     @if(Auth::user()->role === "dosen")
       <x-navbar.list href="{{ route('dosen.perwalian') }}">Perwalian</x-navbar.list>
       <x-navbar.list href="{{ route('dosen.input_nilai') }}">Input Nilai</x-navbar.list>
-    @endif
+      @isset(Auth::user()->dosen->dekan)
+        @if (Route::is('dekan.dashboard'))
+          <x-navbar.list href="{{ route('dosen.dashboard') }}">Mode Dosen</x-navbar.list>
+        @else<x-navbar.list href="{{ route('dekan.dashboard') }}">Mode Dekan</x-navbar.list>
+        @endif
+      
+      @endif
+    @endisset
 
     @if(Auth::user()->role === "mahasiswa")
       <x-navbar.list href="{{ route('mahasiswa.status_akademik') }}">Status Akademik</x-navbar.list>

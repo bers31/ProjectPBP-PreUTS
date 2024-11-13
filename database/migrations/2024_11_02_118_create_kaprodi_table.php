@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('kaprodi', function (Blueprint $table) {
-            $table->id();
-            $table->string('nidn');
+            $table->string('nidn')->primary();
             $table->foreign('nidn')->references('nidn')->on('dosen')->onDelete('cascade');;
             $table->string('kode_prodi');
             $table->foreign('kode_prodi')->references('kode_prodi')->on('prodi')->onDelete('cascade');;

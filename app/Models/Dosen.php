@@ -27,4 +27,12 @@ class Dosen extends Model
     public function mahasiswa(){
         return $this->hasMany(Mahasiswa::class, 'doswal', 'nidn');
     }
+
+    public function dekan(){
+        return $this->hasOne(Dekan::class, 'nidn', 'nidn');
+    }
+
+    public function departemen(){
+        return $this->hasOne(Departemen::class, 'kode_departemen','kode_departemen');
+    }
 }

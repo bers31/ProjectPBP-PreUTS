@@ -22,11 +22,11 @@
                 </div>
                 <!-- Info Profile -->
                 <div class="flex flex-col justify-center gap-2 text-center lg:text-left">
-                    <h2 class="text-5xl font-bold">{{ Auth::user()->dekan->nama }}</h2> <!-- Nama Dekan -->
-                    <p class="text-lg text-gray-600">{{ Auth::user()->dekan->nidn }}</p>  <!-- NIP Dekan -->
-                    <p class="text-lg text-gray-600">Fakultas Sains dan Matematika</p>       <!-- Fakultas -->
-                    <p class="text-lg text-gray-600"> Prodi Informatika</p>                 <!-- Prodi/Bagian -->
-                    <p class="text-lg text-blue-500">{{ Auth::user()->dekan->email }}</p> <!-- Email Dekan -->
+                    <h2 class="text-5xl font-bold">{{ Auth::user()->dosen->nama }}</h2> <!-- Nama Dekan -->
+                    <p class="text-lg text-gray-600">{{ Auth::user()->dosen->nidn }}</p>  <!-- NIP Dekan -->
+                    <p class="text-lg text-gray-600">{{ Auth::user()->dosen->departemen->fakultas->nama_fakultas }}</p>       <!-- Fakultas -->
+                    <p class="text-lg text-gray-600"> {{ Auth::user()->dosen->departemen->nama }}</p>                 <!-- Prodi/Bagian -->
+                    <p class="text-lg text-blue-500">{{ Auth::user()->dosen->email }}</p> <!-- Email Dekan -->
                 </div>
                 <!-- Tombol Biodata -->
                 <div class="ml-auto mt-4 lg:mt-0 flex justify-center lg:block">
@@ -65,15 +65,15 @@
                 <tbody>
                     @foreach($jadwals as $jadwal)
                         <tr>
-                            <td class="border px-4 py-2">{{ $jadwal->mata_kuliah }}</td>
+                            <td class="border px-4 py-2">{{ $jadwal->mataKuliah->nama_mk }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->hari }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->status }}</td>
                             <td class="border px-4 py-2">
                                 <form action="{{ route('dekan.setJadwal') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="jadwal_id" value="{{ $jadwal->id }}">
-                                    <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded">Tetapkan</button>
+                                    <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
+                                    <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded">Setujui</button>
                                 </form>
                             </td>
                         </tr>
@@ -88,7 +88,7 @@
             <table class="table-auto w-full">
                 <thead>
                     <tr>
-                        <th class="px-4 py-2">Nama Ruang</th>
+                        <th class="px-4 py-2">Nama/Kode Ruang</th>
                         <th class="px-4 py-2">Kapasitas</th>
                         <th class="px-4 py-2">Status</th>
                         <th class="px-4 py-2">Aksi</th>
@@ -97,13 +97,13 @@
                 <tbody>
                     @foreach($ruangs as $ruang)
                         <tr>
-                            <td class="border px-4 py-2">{{ $ruang->nama }}</td>
+                            <td class="border px-4 py-2">{{ $ruang->kode_ruang }}</td>
                             <td class="border px-4 py-2">{{ $ruang->kapasitas }}</td>
                             <td class="border px-4 py-2">{{ $ruang->status_ketersediaan }}</td>
                             <td class="border px-4 py-2">
                                 <form action="{{ route('dekan.setRuang') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="ruang_id" value="{{ $ruang->id }}">
+                                    <input type="hidden" name="kode" value="{{ $ruang->kode_ruang }}">
                                     <select name="status_ketersediaan" class="border rounded p-1">
                                         <option value="Tersedia" {{ $ruang->status_ketersediaan == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
                                         <option value="Penuh" {{ $ruang->status_ketersediaan == 'Penuh' ? 'selected' : '' }}>Penuh</option>

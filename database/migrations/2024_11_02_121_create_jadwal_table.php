@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jadwal', function (Blueprint $table) {
-            $table->string('id_jadwal')->primary();
+            $table->id('id_jadwal'); 
             $table->string('kode_mk');
             $table->foreign('kode_mk')->references('kode_mk')->on('mata_kuliah')->onDelete('cascade');;
             $table->time('jam_mulai');
@@ -22,6 +22,8 @@ return new class extends Migration
             $table->foreign('ruang')->references('kode_ruang')->on('ruang')->onDelete('cascade');
             $table->enum('hari',['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu']);
             $table->unique(['hari','jam_mulai','ruang']);
+            $table->enum('status', ['pending', 'disetujui']) // Status jadwal
+                  ->default('pending');
             $table->integer('kuota');
             $table->timestamps();
         });

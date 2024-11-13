@@ -1,7 +1,7 @@
 <?php
 
 namespace Database\Seeders;
-
+use \App\Models\Mahasiswa;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,7 +12,7 @@ class MahasiswaSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Mahasiswa::create([
+        Mahasiswa::create([
             'nama' => 'Mohamad Faisal Rizki',
             'nim' => '24060122130068',
             'email' => 'faisalrizki@students.undip.ac.id',

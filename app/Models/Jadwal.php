@@ -14,16 +14,11 @@ class Jadwal extends Model
 
     // Define the primary key
     protected $primaryKey = 'id_jadwal';
-    
-    // Specify that the primary key is not incrementing (if it's a UUID or non-integer)
-    public $incrementing = false;
-    
-    // Set the key type to string if using UUIDs or non-integer primary key
-    protected $keyType = 'string';
 
     // Mass-assignable attributes
     protected $fillable = [
         'id_jadwal',
+        'status',
         'kode_mk',
         'jam_mulai',
         'jam_selesai',

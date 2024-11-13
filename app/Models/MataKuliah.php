@@ -23,6 +23,7 @@ class MataKuliah extends Model
         'semester',
         'sks',
         'kurikulum',
+        'kode_prodi',
         'sifat',
     ];
 

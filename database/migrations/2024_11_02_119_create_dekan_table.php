@@ -12,10 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dekan', function (Blueprint $table) {
-            $table->id();
-            $table->string('nidn');
-            $table->string('fakultas_id');
-            $table->foreign('fakultas_id')->references('kode_fakultas')->on('fakultas')->onDelete('cascade');;
+            $table->string('nidn')->primary();
+            $table->string('kode_fakultas');
+            $table->foreign('kode_fakultas')->references('kode_fakultas')->on('fakultas')->onDelete('cascade');;
             $table->date('awal_jabatan');
             $table->date('akhir_jabatan');
             $table->timestamps();

@@ -15,7 +15,9 @@ class Ruang extends Model
     protected $keyType = 'string'; // Set primary key type to string
     protected $fillable = [
         'kode_ruang',
-        'kode_departemen', 
+        'kode_fakultas', 
+        'kapasitas', 
+        'status_ketersediaan'
     ];
 
     /**
@@ -26,7 +28,7 @@ class Ruang extends Model
         return $this->belongsTo(Departemen::class, 'kode_departemen', 'kode_departemen');
     }
 
-    public function jadwals()
+    public function jadwal()
     {
         return $this->hasMany(Jadwal::class, 'ruang', 'kode_ruang');
     }

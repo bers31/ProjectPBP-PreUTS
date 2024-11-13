@@ -20,6 +20,10 @@ return new class extends Migration
             
             $table->timestamps();
         });
+
+        Schema::table('mata_kuliah', function (Blueprint $table) {
+            $table->foreign('kode_prodi')->references('kode_prodi')->on('prodi')->onDelete('cascade');
+        });
     }
 
     /**

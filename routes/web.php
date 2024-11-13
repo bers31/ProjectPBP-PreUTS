@@ -39,6 +39,12 @@ Route::get('/logout', function () {
 // Logout Route
 Route::post('/logout', [LoginController::class, 'logout']);
 
+// Route::get('/dekan/dashboard', [DekanController::class, 'index'])->name('dekan.dashboard');
+// Route::post('/dekan/set-jadwal', [DekanController::class, 'setJadwal'])->name('dekan.setJadwal');
+// Route::post('/dekan/set-ruang', [DekanController::class, 'setRuang'])->name('dekan.setRuang');
+
+
+
 // // Group routes that require authentication
 Route::middleware(['auth'])->group(function () {
     Route::pattern('dashboard', 'dashboard|');
@@ -56,8 +62,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['auth', 'role:dekan'])->group(function () {
         Route::get('/dekan/dashboard', [DekanController::class, 'index'])->name('dekan.dashboard');
-        Route::post('/dekan/set-jadwal', [DekanController::class, 'setJadwal'])->name('dekan.setJadwal');
-        Route::post('/dekan/set-ruang', [DekanController::class, 'setRuang'])->name('dekan.setRuang');
+        Route::post('/dekan/dashboard/set-jadwal', [DekanController::class, 'setJadwal'])->name('dekan.setJadwal');
+        Route::post('/dekan/dashboard/set-ruang', [DekanController::class, 'setRuang'])->name('dekan.setRuang');
     }); // Check for 'dekan' role
 
     // Student status_akademik route
@@ -86,9 +92,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('mahasiswa.transkrip_mhs')
     ->middleware('role:mahasiswa');
 
-    Route::get('/admin', function(){
-        return view('admin.dashboard');
-    })->name('admin.dashboard')
+    Route::get('/admin/{dashboard?}', [AdminController::class, 'index'])->name('admin.dashboardalt')
     ->middleware('role:admin');  // Check for 'admin' role
 });
 
@@ -144,7 +148,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 // Menampilkan history registrasi pada page registrasi_mhs
 Route::post('/get-registrasi-data', [RegistrasiController::class, 'getRegistrasiData'])->name('getRegistrasiData');
-Route::get('/mahassiwa/registrasi_mhs', [RegistrasiController::class, 'index'])->name('mahasiswa.registrasi_mhs');
+// Route::get('/mahasiswa/registrasi_mhs', [RegistrasiController::class, 'index'])->name('mahasiswa.registrasi_mhs');
 
 
 Route::get('/mahasiswa/irs_mhs', [MahasiswaController::class, 'showIrs'])->name('mahasiswa.irs_mhs');

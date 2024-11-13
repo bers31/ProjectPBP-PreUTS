@@ -17,7 +17,8 @@ return new class extends Migration
             $table->integer('semester');
             $table->integer('sks');
             $table->string('kurikulum');
-            $table->enum('sifat',['wajib_univ', 'wajib_prodi', 'peminatan']);
+            $table->string('kode_prodi');
+            $table->enum('sifat',['wajib', 'peminatan']);
             $table->timestamps();
         });
     }

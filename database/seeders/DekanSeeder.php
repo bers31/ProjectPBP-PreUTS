@@ -16,12 +16,11 @@ class DekanSeeder extends Seeder
     public function run(): void
     {
         Dekan::create([
-            'nidn' => '113456789011',
-            'nama' => 'Agus Salim',
-            'email' => 'agus@lecturers.undip.ac.id',
-            'kode_departemen' => '1234'
-
-            // field lainnya
+            'nidn' => '123456789011',
+            'kode_fakultas' => 'FSM',
+            'awal_jabatan' => '2024-08-10',
+            'akhir_jabatan' => '2026-08-10',
+            'created_at' => now(),
         ]);
     }
 }
