@@ -38,8 +38,8 @@
                     <div class="flex flex-col justify-center gap-2 text-center lg:text-left">
                         <h2 class="text-4xl lg:text-5xl font-bold"> {{ Auth::user()->mahasiswa->nama }}</h2>      <!-- Nama -->
                         <p class="lg:text-lg text-gray-600"> {{ Auth::user()->mahasiswa->nim }}</p>             <!-- NIM -->
-                        <p class="lg:text-lg text-gray-600"> {{ Auth::user()->mahasiswa->fakultas }}</p>        <!-- Fakultas -->
-                        <p class="lg:text-lg text-gray-600"> {{ Auth::user()->mahasiswa->departemen }}</p>      <!-- Prodi -->
+                        <p class="lg:text-lg text-gray-600"> Fakultas {{ Auth::user()->mahasiswa->prodi->departemen->fakultas->nama_fakultas }}</p>        <!-- Fakultas -->
+                        <p class="lg:text-lg text-gray-600"> {{ Auth::user()->mahasiswa->prodi->nama }}</p>      <!-- Prodi -->
                         <p class="lg:text-lg text-blue-500">{{ Auth::user()->mahasiswa->email }}</p>            <!-- Email -->
                     </div>
                     <!-- Biodata -->
@@ -97,7 +97,7 @@
                     <div class="flex justify-between flex-grow mt-4">
                         <div class="flex flex-col text-sm lg:text-lg">
                             <p>Dosen Wali: {{Auth::user()->mahasiswa->dosen->nama}}</p>
-                            <p>NIP: {{Auth::user()->mahasiswa->dosen->nip}}</p>
+                            <p>NIP: {{Auth::user()->mahasiswa->doswal}}</p>
                         </div>
                         <div class="">
                             <button class="mt-2 p-2 flex items-center border-2 border-[#80747475] rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)] hover:bg-[#f0f0f0] align-top">
@@ -110,8 +110,14 @@
                     <div class="flex justify-between font-bold my-5">
                         <div class="text-center text-sm lg:text-lg">
                             <p>Tahun Akademik</p>
-                            <p class="font-normal">{{Auth::user()->mahasiswa->tahun_akademik}} ({{Auth::user()->mahasiswa->semester % 2 != 0 ? 'Ganjil' : 'Genap'}})</p>
+                            <p class="font-normal">
+                                {{ Auth::user()->mahasiswa->historyRegistrasi()->latest('created_at')->first()->tahun_akademik ?? 'Data not available' }}
+                                ({{ Auth::user()->mahasiswa->semester % 2 != 0 ? 'Ganjil' : 'Genap' }})
+                            </p>
+                            {{-- Optional display for semester --}}
+                            {{-- <p class="font-normal">({{ Auth::user()->mahasiswa->semester % 2 != 0 ? 'Ganjil' : 'Genap' }})</p> --}}
                         </div>
+                        
                         <div class="text-center text-sm lg:text-lg">
                             <p>Semester Studi</p>
                             <p class="font-normal">{{Auth::user()->mahasiswa->semester}}</p>

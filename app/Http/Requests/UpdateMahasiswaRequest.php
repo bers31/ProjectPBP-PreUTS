@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class UpdateMahasiswaRequest extends FormRequest
 {
@@ -23,7 +24,12 @@ class UpdateMahasiswaRequest extends FormRequest
     {
         return [
             //
-            'nim' => 'required|string|unique:mahasiswa|size:14',
+            'nim' => [
+                'required',
+                'string',
+                'size:14',
+                Rule::unique('mahasiswa', 'nim')->ignore($this->route('mahasiswa')->nim, 'nim'),
+            ],
             'nama' => 'required|string|max:255',
             'email' => 'required|string|email|regex:/^[a-zA-Z0-9._%+-]+@students\.undip\.ac\.id$/',
             'kode_prodi' => 'required|string|max:255|exists:prodi,kode_prodi',

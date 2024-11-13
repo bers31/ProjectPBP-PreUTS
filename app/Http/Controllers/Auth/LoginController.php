@@ -21,71 +21,71 @@ class LoginController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
 
-     public function showLoginForm()
-     {
-         // If the user is already authenticated, redirect them to the appropriate dashboard
-         if (Auth::check()) {
-             $user = Auth::user();
-             switch ($user->role) {
-                 case 'mahasiswa':
-                     return redirect()->route('mahasiswa.dashboard');
-                 case 'dosen':
-                     return redirect()->route('dosen.dashboard');
-                 case 'admin':
-                     return redirect()->route('admin.dashboard');
-             }
-         }else{
-             return view('login_page');
-         }
-         // If not authenticated, show the login page
-     }
+    public function showLoginForm()
+    {
+        // If the user is already authenticated, redirect them to the appropriate dashboard
+        if (Auth::check()) {
+            $user = Auth::user();
+            switch ($user->role) {
+                case 'mahasiswa':
+                    return redirect()->route('mahasiswa.dashboard');
+                case 'dosen':
+                    return redirect()->route('dosen.dashboard');
+                case 'admin':
+                    return redirect()->route('admin.dashboard');
+            }
+        }else{
+            return view('login_page');
+        }
+        // If not authenticated, show the login page
+    }
 
-     public function login(Request $request)
-     {
-         // Validate the identifier and password
-         $request->validate([
-             'identifier' => 'required|string', // Change 'email' to 'identifier'
-             'password' => 'required|string',
-         ]);
-     
-         // Get the identifier and password from the request
-         $identifier = $request->input('identifier');
-         $password = $request->input('password');
-     
-         // Initialize the user variable
-         $user = null;
-     
-         // Check if the identifier is an email
-         if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
-             $user = User::where('email', $identifier)->first();
-         } else {
-             // If it's not an email, check in Students and Lecturers tables
-             $student = Mahasiswa::where('nim', $identifier)->first();
-             $lecturer = Dosen::where('nip', $identifier)->first();
-     
-             if ($student) {
-                 // If the student exists, get their email to check for authentication
-                 $user = User::where('email', $student->email)->first();
-             } elseif ($lecturer) {
-                 // If the lecturer exists, get their email to check for authentication
-                 $user = User::where('email', $lecturer->email)->first();
-             } else {
-                 // Identifier not found in both tables
-                 return back()->withErrors(['comb-identifier' => 'The provided identifier does not match our records.'])->withInput();
-             }
-         }
-     
-         // Check if user exists and validate password
-         if ($user && Auth::attempt(['email' => $user->email, 'password' => $password])) {
-             $request->session()->regenerate();
-             // Redirect based on user role
-             return $this->authenticated($request, Auth::user());
-         }
-     
-         // If authentication fails, return with an error message
-         return back()->with('loginError', 'Email atau Password salah!');
-     }
-     
+    public function login(Request $request)
+    {
+        // Validate the identifier and password
+        $request->validate([
+            'identifier' => 'required|string', // Change 'email' to 'identifier'
+            'password' => 'required|string',
+        ]);
+    
+        // Get the identifier and password from the request
+        $identifier = $request->input('identifier');
+        $password = $request->input('password');
+    
+        // Initialize the user variable
+        $user = null;
+    
+        // Check if the identifier is an email
+        if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+            $user = User::where('email', $identifier)->first();
+        } else {
+            // If it's not an email, check in Students and Lecturers tables
+            $student = Mahasiswa::where('nim', $identifier)->first();
+            $lecturer = Dosen::where('nip', $identifier)->first();
+    
+            if ($student) {
+                // If the student exists, get their email to check for authentication
+                $user = User::where('email', $student->email)->first();
+            } elseif ($lecturer) {
+                // If the lecturer exists, get their email to check for authentication
+                $user = User::where('email', $lecturer->email)->first();
+            } else {
+                // Identifier not found in both tables
+                return back()->withErrors(['comb-identifier' => 'The provided identifier does not match our records.'])->withInput();
+            }
+        }
+    
+        // Check if user exists and validate password
+        if ($user && Auth::attempt(['email' => $user->email, 'password' => $password])) {
+            $request->session()->regenerate();
+            // Redirect based on user role
+            return $this->authenticated($request, Auth::user());
+        }
+    
+        // If authentication fails, return with an error message
+        return back()->with('loginError', 'Email atau Password salah!');
+    }
+    
 
     /**
      * The user has been authenticated.

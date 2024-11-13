@@ -1,6 +1,8 @@
 {{-- @extends('layouts.app') --}}
 @include('../header')
+<x-navbar/>
 {{-- @section('content') --}}
+
     <div class="container">
         <h1>Create New User</h1>
 

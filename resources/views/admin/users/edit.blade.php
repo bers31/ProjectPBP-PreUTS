@@ -16,8 +16,8 @@
             <div class="form-group">
                 <label for="role">Role</label>
                 <select name="role" class="form-control" required>
-                    <option value="student" {{ $user->role == 'student' ? 'selected' : '' }}>Student</option>
-                    <option value="lecturer" {{ $user->role == 'lecturer' ? 'selected' : '' }}>Lecturer</option>
+                    <option value="student" {{ $user->role == 'mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
+                    <option value="lecturer" {{ $user->role == 'dosen' ? 'selected' : '' }}>Dosen</option>
                     <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
                 </select>
             </div>
