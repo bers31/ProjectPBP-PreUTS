@@ -25,4 +25,9 @@ class Ruang extends Model
     {
         return $this->belongsTo(Departemen::class, 'kode_departemen', 'kode_departemen');
     }
+
+    public function jadwals()
+    {
+        return $this->hasMany(Jadwal::class, 'ruang', 'kode_ruang');
+    }
 }

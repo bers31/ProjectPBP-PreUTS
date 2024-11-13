@@ -14,6 +14,10 @@ class JadwalController extends Controller
     public function index()
     {
         //
+        // Retrieve jadwal records and order by day and start time
+        $jadwals = Jadwal::with('mataKuliah')->orderBy('hari')->orderBy('jam_mulai')->get();
+
+        return view('your_view_name', compact('jadwals'));
     }
 
     /**

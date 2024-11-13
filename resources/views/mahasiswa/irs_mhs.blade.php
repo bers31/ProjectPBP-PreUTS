@@ -48,245 +48,716 @@
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5 border-t border-r border-gray-200 flex items-center justify-center transition-all">
                                 <span class="text-xs font-semibold text-gray-400">06:00 am</span>
                             </div>
-                                <!-- Senin Jam 07.00 -->
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5 border-t border-r border-gray-200 transition-all">
-                                    
+                                <!-- Senin -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '06:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
                                 <!-- Selasa -->
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5 border-t border-r border-gray-200 transition-all">
-
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'selasa')->where('jam_mulai', '06:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
                                 <!-- Rabu -->
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5 border-t border-r border-gray-200 flex flex-col space-y-2 transition-all">
-                                    <!-- First Activity -->
-                                    <div class="rounded p-1.5 border-l-2 border-purple-600 bg-purple-50">
-                                        <p class="text-xs font-normal text-gray-900 mb-px">Pickup the grandmother</p>
-                                        <p class="text-xs font-semibold text-purple-600">06:00 - 07:30</p>
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '06:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
                                     </div>
-                                    <!-- Second Activity -->
-                                    <div class="rounded p-1.5 border-l-2 border-purple-600 bg-purple-50">
-                                        <p class="text-xs font-normal text-gray-900 mb-px">Pickup the grandmother</p>
-                                        <p class="text-xs font-semibold text-purple-600">06:00 - 07:30</p>
-                                    </div>
-                                    <!-- First Activity -->
-                                    <div class="rounded p-1.5 border-l-2 border-purple-600 bg-purple-50">
-                                        <p class="text-xs font-normal text-gray-900 mb-px">Pickup the grandmother</p>
-                                        <p class="text-xs font-semibold text-purple-600">06:00 - 07:30</p>
-                                    </div>
-                                    <!-- Second Activity -->
-                                    <div class="rounded p-1.5 border-l-2 border-purple-600 bg-purple-50">
-                                        <p class="text-xs font-normal text-gray-900 mb-px">Pickup the grandmother</p>
-                                        <p class="text-xs font-semibold text-purple-600">06:00 - 07:30</p>
-                                    </div>
+                                    @endforeach
                                 </div>
                                 <!-- Kamis -->
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all">
-                                    <div class="rounded p-1.5 border-l-2 border-green-600 bg-green-50">
-                                        <p class="text-xs font-normal text-gray-900 mb-px">Workout and Yoga Session</p>
-                                        <p class="text-xs font-semibold text-green-600">06:00 - 07:55</p>
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '06:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
                                     </div>
+                                    @endforeach
                                 </div>
-                                <!-- Jum'at -->
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all">
-                                    
+                                <!-- Jumat -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '06:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
+
                             <!-- Row Jam 07.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5 border-t border-r border-gray-200 flex items-center justify-center transition-all">
                                 <span class="text-xs font-semibold text-gray-400">07:00 am</span>
                             </div>
-                                <!-- Senin Jam 07.00 -->
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5 border-t border-r border-gray-200 transition-all">
-                                    
-                                </div>
-                                <!-- Selasa -->
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5 border-t border-r border-gray-200 transition-all">
-
-                                </div>
-                                <!-- Rabu -->
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5 border-t border-r border-gray-200 flex flex-col space-y-2 transition-all">
-
-                                </div>
-                                <!-- Kamis -->
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all">
-
-                                </div>
-                                <!-- Jum'at -->
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all">
-                                    
-                                </div>
+                                    <!-- Senin -->
+                                    <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                        @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '07:00:00') as $jadwal)
+                                        <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                            <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                            <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                            <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    <!-- Selasa -->
+                                    <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                        @foreach ($jadwals->where('hari', 'selasa')->where('jam_mulai', '07:00:00') as $jadwal)
+                                        <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                            <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                            <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                            <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    <!-- Rabu -->
+                                    <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                        @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '07:00:00') as $jadwal)
+                                        <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                            <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                            <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                            <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    <!-- Kamis -->
+                                    <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                        @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '07:00:00') as $jadwal)
+                                        <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                            <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                            <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                            <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    <!-- Jumat -->
+                                    <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
+                                        @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '07:00:00') as $jadwal)
+                                        <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                            <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                            <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                            <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                        </div>
+                                        @endforeach
+                                    </div>
                             
                             
                             <!-- Row Jam 08.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
                                 <span class="text-xs font-semibold text-gray-400">08:00 am</span>
                             </div>
-                            <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                            <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                            <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                            <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                            <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
-                            <div class="rounded p-1.5 border-l-2 border-blue-600 bg-blue-50">
-                                <p class="text-xs font-normal text-gray-900 mb-px">Project Task Review</p>
-                                <p class="text-xs font-semibold text-blue-600">08:00 - 08:25</p>
-                            </div>
-                            </div>
+                                <!-- Senin -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '08:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Selasa -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'selasa')->where('jam_mulai', '08:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Rabu -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '08:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Kamis -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '08:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Jumat -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '08:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
                             
                             <!-- Row Jam 09.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
                                 <span class="text-xs font-semibold text-gray-400">09:00 am</span>
                             </div>
-                            <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                            <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                            <div class="rounded p-1.5 border-l-2 border-yellow-600 bg-yellow-50">
-                                <p class="text-xs font-normal text-gray-900 mb-px">Breakfast with Dhruv Patel</p>
-                                <p class="text-xs font-semibold text-yellow-600">08:00 - 09:00</p>
-                            </div>
-                            </div>
-                            <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                            <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                            <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                    <!-- Senin -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '09:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Selasa -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'selasa')->where('jam_mulai', '09:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Rabu -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '09:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Kamis -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '09:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Jumat -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '09:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
                         
                             
                             <!-- Row Jam 10.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
                                 <span class="text-xs font-semibold text-gray-400">10:00 am</span>
                             </div>
-                            <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                            <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                            <div class="rounded p-1.5 border-l-2 border-green-600 bg-green-50">
-                                <p class="text-xs font-normal text-gray-900 mb-px">Dancing Zumba class</p>
-                                <p class="text-xs font-semibold text-green-600">09:30 - 10:00</p>
-                            </div>
-                            </div>
-                            <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                            <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                            <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                <div class="rounded p-1.5 border-l-2 border-purple-600 bg-purple-50">
-                                    <p class="text-xs font-normal text-gray-900 mb-px">Doctor's Appointment for Mother</p>
-                                    <p class="text-xs font-semibold text-purple-600">09:00 - 10:45</p>
+                                <!-- Senin -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '10:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
-                            </div>
+                                <!-- Selasa -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'selasa')->where('jam_mulai', '10:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Rabu -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '10:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Kamis -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '10:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Jumat -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '10:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
                             
                             <!-- Row Jam 11.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
                                 <span class="text-xs font-semibold text-gray-400">11:00 am</span>
                             </div>
+                                <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                <div class="rounded p-1.5 border-l-2 border-blue-600 bg-blue-50">
-                                    <p class="text-xs font-normal text-gray-900 mb-px">Daily Standup Meeting</p>
-                                    <p class="text-xs font-semibold text-blue-600">10:00 - 11:00</p>
-                                </div>
-                                </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    <div class="rounded p-1.5 border-l-2 border-yellow-600 bg-yellow-50">
-                                        <p class="text-xs font-normal text-gray-900 mb-px">School Friend’s Birthday Party</p>
-                                        <p class="text-xs font-semibold text-yellow-600">10:00 - 11:45</p>
+                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '11:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
                                     </div>
+                                    @endforeach
                                 </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                <!-- Selasa -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'selasa')->where('jam_mulai', '11:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Rabu -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '11:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Kamis -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '11:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Jumat -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '11:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
                                 
                             
                             <!-- Row Jam 12.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
                                 <span class="text-xs font-semibold text-gray-400">12:00 pm</span>
                             </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    <div class="rounded p-1.5 border-l-2 border-blue-600 bg-blue-50">
-                                        <p class="text-xs font-normal text-gray-900 mb-px">Meeting with Project Manager </p>
-                                        <p class="text-xs font-semibold text-blue-600">11:00 - 12:30</p>
+                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '12:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
                                     </div>
+                                    @endforeach
                                 </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                <!-- Selasa -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'selasa')->where('jam_mulai', '12:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Rabu -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '12:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Kamis -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '12:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Jumat -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '12:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
 
                             <!-- Row Jam 13.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
                                 <span class="text-xs font-semibold text-gray-400">13:00 pm</span>
                             </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                <div class="rounded p-1.5 border-l-2 border-blue-600 bg-blue-50">
-                                    <p class="text-xs font-normal text-gray-900 mb-px">Meeting with Project Manager </p>
-                                    <p class="text-xs font-semibold text-blue-600">11:00 - 12:30</p>
+                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '13:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
+                                <!-- Selasa -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'selasa')->where('jam_mulai', '13:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                <!-- Rabu -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '13:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Kamis -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '13:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Jumat -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '13:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+
                             <!-- Row Jam 14.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
                                 <span class="text-xs font-semibold text-gray-400">14:00 pm</span>
                             </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                <div class="rounded p-1.5 border-l-2 border-blue-600 bg-blue-50">
-                                    <p class="text-xs font-normal text-gray-900 mb-px">Meeting with Project Manager </p>
-                                    <p class="text-xs font-semibold text-blue-600">11:00 - 12:30</p>
+                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '14:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
+                                <!-- Selasa -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'selasa')->where('jam_mulai', '14:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                <!-- Rabu -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '14:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Kamis -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '14:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Jumat -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '14:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
                             <!-- Row Jam 15.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
                                 <span class="text-xs font-semibold text-gray-400">15:00 pm</span>
                             </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                <div class="rounded p-1.5 border-l-2 border-blue-600 bg-blue-50">
-                                    <p class="text-xs font-normal text-gray-900 mb-px">Meeting with Project Manager </p>
-                                    <p class="text-xs font-semibold text-blue-600">11:00 - 12:30</p>
+                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '15:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
+                                <!-- Selasa -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'selasa')->where('jam_mulai', '15:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                <!-- Rabu -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '15:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Kamis -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '15:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Jumat -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '15:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+
                             <!-- Row Jam 16.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
                                 <span class="text-xs font-semibold text-gray-400">16:00 pm</span>
                             </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                <div class="rounded p-1.5 border-l-2 border-blue-600 bg-blue-50">
-                                    <p class="text-xs font-normal text-gray-900 mb-px">Meeting with Project Manager </p>
-                                    <p class="text-xs font-semibold text-blue-600">11:00 - 12:30</p>
+                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '16:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
+                                <!-- Selasa -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'selasa')->where('jam_mulai', '16:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                <!-- Rabu -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '16:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Kamis -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '16:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Jumat -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '16:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
                             <!-- Row Jam 17.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
                                 <span class="text-xs font-semibold text-gray-400">17:00 pm</span>
                             </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                <div class="rounded p-1.5 border-l-2 border-blue-600 bg-blue-50">
-                                    <p class="text-xs font-normal text-gray-900 mb-px">Meeting with Project Manager </p>
-                                    <p class="text-xs font-semibold text-blue-600">11:00 - 12:30</p>
+                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '17:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
+                                <!-- Selasa -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'selasa')->where('jam_mulai', '17:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                <!-- Rabu -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '17:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Kamis -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '17:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Jumat -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '17:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
                             <!-- Row Jam 18.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5 border-t border-r border-gray-200 flex items-center justify-center transition-all ">
                                 <span class="text-xs font-semibold text-gray-400">18:00 pm</span>
                             </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                <div class="rounded p-1.5 border-l-2 border-blue-600 bg-blue-50">
-                                    <p class="text-xs font-normal text-gray-900 mb-px">Meeting with Project Manager </p>
-                                    <p class="text-xs font-semibold text-blue-600">11:00 - 12:30</p>
+                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '18:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
+                                <!-- Selasa -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'selasa')->where('jam_mulai', '18:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
                                 </div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
-                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all "></div>
+                                <!-- Rabu -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '18:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Kamis -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '18:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <!-- Jumat -->
+                                <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
+                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '18:00:00') as $jadwal)
+                                    <div class="rounded m-2 p-2 border-l-2 border-purple-600 bg-purple-50">
+                                        <p class="text-xs font-normal text-gray-900 mb-px">{{ $jadwal->mataKuliah->nama_mk }} ({{ $jadwal->kode_kelas }})</p>
+                                        <p class="text-xs font-semibold text-purple-600">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }}</p>
+                                        <p class="text-xs font-normal text-gray-600">Ruang: {{ $jadwal->ruang }}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
                         </div>  
                 </section>                                
             </div>
