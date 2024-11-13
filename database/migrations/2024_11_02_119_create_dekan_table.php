@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('dekan', function (Blueprint $table) {
             $table->id();
             $table->string('nidn');
-            $table->foreign('nidn')->references('nidn')->on('dosen')->onDelete('cascade');;
             $table->string('fakultas_id');
             $table->foreign('fakultas_id')->references('kode_fakultas')->on('fakultas')->onDelete('cascade');;
             $table->date('awal_jabatan');

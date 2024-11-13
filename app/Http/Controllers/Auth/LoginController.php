@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Dosen;
+use App\Models\Dekan;
 use App\Models\Mahasiswa;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -31,6 +32,8 @@ class LoginController extends Controller
                      return redirect()->route('mahasiswa.dashboard');
                  case 'dosen':
                      return redirect()->route('dosen.dashboard');
+                 case 'dekan':
+                     return redirect()->route('dekan.dashboard');
                  case 'admin':
                      return redirect()->route('admin.dashboard');
              }
@@ -62,6 +65,7 @@ class LoginController extends Controller
              // If it's not an email, check in Students and Lecturers tables
              $student = Mahasiswa::where('nim', $identifier)->first();
              $lecturer = Dosen::where('nip', $identifier)->first();
+             $dekan = Dekan::where('nidn', $identifier)->first();
      
              if ($student) {
                  // If the student exists, get their email to check for authentication
@@ -69,7 +73,10 @@ class LoginController extends Controller
              } elseif ($lecturer) {
                  // If the lecturer exists, get their email to check for authentication
                  $user = User::where('email', $lecturer->email)->first();
-             } else {
+             } elseif ($dekan) {
+                // If the lecturer exists, get their email to check for authentication
+                $user = User::where('email', $dekan->email)->first();
+            } else {
                  // Identifier not found in both tables
                  return back()->withErrors(['comb-identifier' => 'The provided identifier does not match our records.'])->withInput();
              }
@@ -102,6 +109,8 @@ class LoginController extends Controller
                 return redirect()->route('mahasiswa.dashboard');
             case 'dosen':  // Lecturer
                 return redirect()->route('dosen.dashboard');
+            case 'dekan':  // Dekan
+                return redirect()->route('dekan.dashboard');
             case 'admin':  // Admin
                 return redirect()->route('admin.dashboard');
             default:

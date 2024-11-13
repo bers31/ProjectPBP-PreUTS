@@ -15,7 +15,8 @@ class DosenSeeder extends Seeder
         \App\Models\Dosen::create([
             'nidn' => '123456789011',
             'nama' => 'Bambang Sudayana',
-            'email' => 'bambang@lecturers.undip.ac.id'
+            'email' => 'bambang@lecturers.undip.ac.id',
+            'kode_departemen' => '1234'
 
             // field lainnya
         ]);
