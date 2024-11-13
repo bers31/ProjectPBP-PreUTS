@@ -3,13 +3,19 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+=======
+use App\Models\Jadwal;
+use App\Models\RuangKelas;
+>>>>>>> cf4e49d8319738519797d1e07573084ce0a20d87
 
 class JadwalSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+<<<<<<< HEAD
      */
     public function run(): void
     {
@@ -263,6 +269,32 @@ class JadwalSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+=======
+     *
+     * @return void
+     */
+    public function run()
+    {
+        // Pastikan ada ruang kelas yang terdaftar sebelum menambahkan jadwal
+        $ruang = RuangKelas::first();
+
+        Jadwal::create([
+            'mata_kuliah' => 'Matematika Diskrit',
+            'hari' => 'Senin',
+            'jam_mulai' => '08:00:00',
+            'jam_selesai' => '10:00:00',
+            'ruang_kelas_id' => $ruang->id,
+            'status' => 'pending'
+        ]);
+
+        Jadwal::create([
+            'mata_kuliah' => 'Pemrograman Web',
+            'hari' => 'Selasa',
+            'jam_mulai' => '10:00:00',
+            'jam_selesai' => '12:00:00',
+            'ruang_kelas_id' => $ruang->id,
+            'status' => 'disetujui'
+>>>>>>> cf4e49d8319738519797d1e07573084ce0a20d87
         ]);
     }
 }
