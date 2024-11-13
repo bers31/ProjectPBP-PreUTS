@@ -8,6 +8,7 @@ use App\Http\Requests\StoreMahasiswaRequest;
 use App\Http\Requests\UpdateMahasiswaRequest;
 use App\Models\Dosen;
 use App\Models\Fakultas;
+use App\Models\Jadwal;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -103,5 +104,15 @@ class MahasiswaController extends Controller
     public function destroy(Mahasiswa $mahasiswa)
     {
         //
+    }
+
+    public function showIrs()
+    {
+        // Retrieve jadwal records and order by day and start time
+        $jadwals = Jadwal::with('mataKuliah')->orderBy('hari')->orderBy('jam_mulai')->get();
+
+        // Return the view with jadwals data
+        return view('mahasiswa.irs_mhs', compact('jadwals'));
+    
     }
 }
