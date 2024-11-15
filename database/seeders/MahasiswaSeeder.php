@@ -20,5 +20,13 @@ class MahasiswaSeeder extends Seeder
             'doswal' => '123456789011'
             // field lainnya
         ]);
+        Mahasiswa::create([
+            'nama' => 'Gibran Nagrib',
+            'nim' => '24060122130001',
+            'email' => 'gibran@students.undip.ac.id',
+            'kode_prodi' => 'IFS1',
+            'doswal' => '123456789011'
+            // field lainnya
+        ]);
     }
 }

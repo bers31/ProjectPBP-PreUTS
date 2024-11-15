@@ -37,9 +37,9 @@
                 <!-- Info Profile -->
                 <div class="flex flex-col justify-center gap-2 text-center lg:text-left">
                     <h2 class="text-5xl font-bold"> {{ Auth::user()->dosen->nama }}</h2>              <!-- Nama -->
-                    <p class="text-lg text-gray-600">{{ Auth::user()->dosen->nip }}</p>             <!-- NIM -->
-                    <p class="text-lg text-gray-600">Fakultas Sains dan Matematika</p>              <!-- Fakultas -->
-                    <p class="text-lg text-gray-600">Informatika</p>                                <!-- Prodi -->
+                    <p class="text-lg text-gray-600">{{ Auth::user()->dosen->nidn }}</p>             <!-- NIM -->
+                    <p class="text-lg text-gray-600">Fakultas {{Auth::user()->dosen->departemen->fakultas->nama_fakultas}}</p>              <!-- Fakultas -->
+                    <p class="text-lg text-gray-600">Departemen {{Auth::user()->dosen->departemen->nama}}</p>                                <!-- Prodi -->
                     <p class="text-lg text-blue-500">{{ Auth::user()->dosen->email }}</p>           <!-- Email -->
                 </div>
                 <!-- Biodata -->

@@ -17,7 +17,7 @@
                 <label for="departemen" class="block mb-2 text-sm font-medium text-gray-900">Departemen</label>
                 <select id="departemen" name="departemen" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5">
                     <option selected disabled>---- Pilih Departemen ----</option>
-                    <option value="Informatika">S1 - Informatika</option>
+                    <option value="IF">S1 - Informatika</option>
                     <option value="S2-Sistem Informasi">S2 - Sistem Informasi</option>
                     <option value="S3-Sistem Informasi">S3 - Sistem Informasi</option>
                 </select>
@@ -30,7 +30,7 @@
                 <label for="status" class="block mt-4 mb-2 text-sm font-medium text-gray-900">Status IRS</label>
                 <select id="status" name="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5">
                     <option selected disabled>---- Pilih Status IRS ----</option>
-                    <option value="disetujui">Disetujui</option>
+                    <option value="sudah_disetujui">Disetujui</option>
                     <option value="belum_irs">Belum IRS</option>
                     <option value="belum_disetujui">Belum Disetujui</option>
                 </select>
@@ -41,24 +41,26 @@
         </div>
         
         <!-- Tabel Mahasiswa -->
-        <div class="flex mt-5 p-2 px-10">
-            <table id="mahasiswaTable" class="min-w-full border border-gray-300 hidden">
+        <div class="overflow-x-auto p-4">
+            <table id="mahasiswaTable" class="min-w-full bg-white divide-y divide-gray-200 table-fixed hidden w-full">
                 <thead class="bg-gray-200">
                     <tr>
-                        <th class="px-4 py-2 border"><input type="checkbox" id="selectAll"></th>
-                        <th class="px-4 py-2 border">NIM</th>
-                        <th class="px-4 py-2 border">Nama</th>
-                        <th class="px-4 py-2 border">Departemen</th>
-                        <th class="px-4 py-2 border">Tahun Masuk</th>
-                        <th class="px-4 py-2 border">Status IRS</th>
+                        <th class="w-10 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <input type="checkbox" id="selectAll">
+                        </th>
+                        <th class="w-32 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NIM</th>
+                        <th class="w-48 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                        <th class="w-40 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departemen</th>
+                        <th class="w-32 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tahun Masuk</th>
+                        <th class="w-48 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status IRS</th>
                     </tr>
                     <tr>
                         <th></th>
-                        <th><input type="text" class="form-control column-search" placeholder="Cari NIM"></th>
-                        <th><input type="text" class="form-control column-search" placeholder="Cari Nama"></th>
-                        <th><input type="text" class="form-control column-search" placeholder="Cari Departemen"></th>
-                        <th><input type="text" class="form-control column-search" placeholder="Cari Tahun Masuk"></th>
-                        <th><input type="text" class="form-control column-search" placeholder="Cari Status"></th>
+                        <th><input type="text" class="form-control column-search w-full" placeholder="Cari NIM"></th>
+                        <th><input type="text" class="form-control column-search w-full" placeholder="Cari Nama"></th>
+                        <th><input type="text" class="form-control column-search w-full" placeholder="Cari Departemen"></th>
+                        <th><input type="text" class="form-control column-search w-full" placeholder="Cari Tahun Masuk"></th>
+                        <th><input type="text" class="form-control column-search w-full" placeholder="Cari Status"></th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -79,9 +81,10 @@
             $(document).ready(function () {
                 // Inisialisasi DataTable dengan pencarian di tiap kolom
                 var table = $('#mahasiswaTable').DataTable({
-                    "paging": false,
+                    "paging": true,
                     "info": false,
                     "searching": true,
+                    "searchPanes": false,
                     "ordering": true,
                     initComplete: function () {
                         // Apply search function for each column
@@ -122,7 +125,7 @@
                     var departemen = $('#departemen').val();
                     var tahun = $('#tahun').val();
                     var status = $('#status').val();
-                    
+
                     if (departemen && tahun && status) {
                         $.ajax({
                             url: "{{ url('api/fetch-mahasiswa') }}",
@@ -137,17 +140,31 @@
                             success: function (result) {
                                 // Clear table and populate with new data
                                 table.clear().draw();
+
                                 if (result.mahasiswa.length > 0) {
                                     $('#mahasiswaTable').removeClass('hidden');
                                     $('#approveIRS').removeClass('hidden');
+
                                     $.each(result.mahasiswa, function (index, mahasiswa) {
+                                        let irsStatus = "Tidak ada data IRS";
+
+                                        // Cek apakah mahasiswa memiliki IRS
+                                        if (mahasiswa.irs && mahasiswa.irs.length > 0) {
+                                            // Filter IRS untuk tahun ajaran aktif saja
+                                            let irsAktif = mahasiswa.irs.find(irs => irs.tahun_akademik === result.tahun_ajaran_aktif.kode_tahun);
+                                            // console.log();
+                                            if (irsAktif) {
+                                                irsStatus = irsAktif.status;
+                                            }
+                                        }
+
                                         table.row.add([
                                             '<input type="checkbox" class="studentCheckbox" value="' + mahasiswa.nim + '">',
                                             mahasiswa.nim,
                                             mahasiswa.nama,
-                                            mahasiswa.departemen,
+                                            mahasiswa.prodi.nama,
                                             mahasiswa.tahun_masuk,
-                                            mahasiswa.status_irs
+                                            irsStatus
                                         ]).draw(false);
                                     });
                                 } else {
@@ -165,37 +182,38 @@
                     }
                 });
 
+
                 // Select all checkboxes
                 $('#selectAll').on('click', function () {
                     $('.studentCheckbox').prop('checked', this.checked);
                 });
 
                 // Approve IRS for selected students
-                $('#approveIRS').on('click', function () {
-                    var selectedStudents = [];
-                    $('.studentCheckbox:checked').each(function () {
-                        selectedStudents.push($(this).val());
-                    });
+                // $('#approveIRS').on('click', function () {
+                //     var selectedStudents = [];
+                //     $('.studentCheckbox:checked').each(function () {
+                //         selectedStudents.push($(this).val());
+                //     });
 
-                    if (selectedStudents.length > 0) {
-                        $.ajax({
-                            url: "{{ url('api/approve-irs') }}",
-                            type: "POST",
-                            data: {
-                                nim: selectedStudents,
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function () {
-                                alert("IRS mahasiswa yang dipilih telah disetujui.");
-                            },
-                            error: function () {
-                                alert("Gagal menyetujui IRS.");
-                            }
-                        });
-                    } else {
-                        alert("Tidak ada mahasiswa yang dipilih.");
-                    }
-                });
+                //     if (selectedStudents.length > 0) {
+                //         $.ajax({
+                //             url: "{{ url('api/approve-irs') }}",
+                //             type: "POST",
+                //             data: {
+                //                 nim: selectedStudents,
+                //                 _token: '{{ csrf_token() }}'
+                //             },
+                //             success: function () {
+                //                 alert("IRS mahasiswa yang dipilih telah disetujui.");
+                //             },
+                //             error: function () {
+                //                 alert("Gagal menyetujui IRS.");
+                //             }
+                //         });
+                //     } else {
+                //         alert("Tidak ada mahasiswa yang dipilih.");
+                //     }
+                // });
             });
         </script>
     </div>
