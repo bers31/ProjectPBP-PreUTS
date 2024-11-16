@@ -35,4 +35,8 @@ class Dosen extends Model
     public function departemen(){
         return $this->hasOne(Departemen::class, 'kode_departemen','kode_departemen');
     }
+
+    public function kaprodi(){
+        return $this->hasOne(Kaprodi::class, 'nidn', 'nidn');
+    }
 }

@@ -24,6 +24,9 @@ class RoleMiddleware
         if(Auth::user()->role === 'dosen' && Auth::user()->dosen->dekan){
             return $next($request);
         }
+        else if(Auth::user()->role === 'dosen' && Auth::user()->dosen->kaprodi){
+            return $next($request);
+        }
 
         // If user doesn't have the correct role, redirect them to a default page with an error
         return response()->view('errors.unauthorized', ['previousUrl' => url()->previous()], 403);

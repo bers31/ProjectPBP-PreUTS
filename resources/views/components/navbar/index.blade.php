@@ -15,9 +15,15 @@
           <x-navbar.list href="{{ route('dosen.dashboard') }}">Mode Dosen</x-navbar.list>
         @else<x-navbar.list href="{{ route('dekan.dashboard') }}">Mode Dekan</x-navbar.list>
         @endif
+      @endisset
       
-      @endif
-    @endisset
+      @isset(Auth::user()->dosen->kaprodi)
+        @if (Route::is('kaprodi.menu'))
+          <x-navbar.list href="{{ route('dosen.dashboard') }}">Mode Dosen</x-navbar.list>
+        @else<x-navbar.list href="{{ route('kaprodi.menu') }}">Menu Kaprodi</x-navbar.list>
+        @endif  
+        @endisset
+    @endif
 
     @if(Auth::user()->role === "mahasiswa")
       <x-navbar.list href="{{ route('mahasiswa.status_akademik') }}">Status Akademik</x-navbar.list>
