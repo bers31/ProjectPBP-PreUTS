@@ -47,8 +47,11 @@ class UserSeeder extends Seeder
             'password' => '12345', // Admin password
             'role' => 'mahasiswa', // Assign the admin role
         ]);
-        
-        
+        User::create([
+            'email' => 'akademik@example.com',
+            'password' => '12345', // Admin password
+            'role' => 'akademik', // Assign the admin role
+        ]);
     }
 }
 

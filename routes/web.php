@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\DekanController;
 use App\Http\Controllers\FakultasController;
+use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\UserController;
@@ -67,7 +68,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/dekan/dashboard/set-ruang', [DekanController::class, 'setRuang'])->name('dekan.setRuang');
     }); // Check for 'dekan' role
 
-
+    Route::middleware(['auth', 'role:akademik'])->group(function () {
+        Route::get('/akademik/dashboard', [AkademikController::class, 'index'])->name('akademik.dashboard');
+        Route::post('/akademik/set-ruang', [AkademikController::class, 'setRuang'])->name('akademik.setRuang');
+    });
 
     // Student status_akademik route
     Route::get('mahasiswa/status_akademik', function(){
