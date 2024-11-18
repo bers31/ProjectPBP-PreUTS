@@ -27,7 +27,7 @@
                     <!-- Fakultas Input -->
                     <div class="mb-4">
                         <label for="fakultas" class="block mb-2 text-sm font-medium text-gray-900">Fakultas</label>
-                        <select name="fakultas" 
+                        <select name="kode_fakultas" 
                                 id="fakultas" 
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                             <option selected disabled>PILIH FAKULTAS</option>
@@ -40,22 +40,18 @@
                         @enderror
                     </div>
 
-                    <!-- Departemen Input -->
+                    <!-- Kapasitas Input -->
                     <div class="mb-4">
-                        <label for="departemen" class="block mb-2 text-sm font-medium text-gray-900">Departemen</label>
-                        <select name="kode_departemen" 
-                                id="departemen" 
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            <option selected disabled>PILIH DEPARTEMEN</option>
-                        </select>
-                        @error('departemen')
-                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                        @enderror
+                        <label for="kapasitas" class="block text-sm font-medium text-gray-700">Kapasitas</label>
+                        <input type="number" name="kapasitas" id="kapasitas" 
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                            required>
                     </div>
+
 
                     <!-- Submit Button -->
                     <div>
-                        <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <button type="submit" class="alert-create w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Create Ruang
                         </button>
                     </div>
@@ -67,94 +63,46 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
     $(document).ready(function () {
-        // Initial setup: disable departemen, prodi, and nidn if fakultas is not selected
-        $('#departemen').prop('disabled', true);
-
-        // Clear localStorage only after successful form submission
-        $('form').on('submit', function() {
-            // Store the form data temporarily
-            const formData = new FormData(this);
-            
-            // Intercept the form submission
-            $.ajax({
-                url: $(this).attr('action'),
-                method: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    // Clear localStorage only after successful submission
-                    localStorage.removeItem('oldFakultas');
-                    localStorage.removeItem('oldDepartemen');
-
-                    // Redirect or handle success response
-                    window.location.href = response.redirect || '/admin/dashboard';
-                },
-                error: function(xhr) {
-                    // Don't clear localStorage on error
-                    // The form will be re-rendered with validation errors
-                    // and the stored values will be preserved
-                }
-            });
-
-            // Prevent default form submission
-            return false;
-        });
-
         // Load saved selections from localStorage if they exist
         const savedFakultas = localStorage.getItem('oldFakultas');
-        const savedDepartemen = localStorage.getItem('oldDepartemen');
+
 
         if (savedFakultas) {
             $('#fakultas').val(savedFakultas);
-            loadDepartemen(savedFakultas, function() {
-                // Only load the saved departemen if it matches the current fakultas selection
-                if (savedDepartemen && $('#departemen').find(`option[value="${savedDepartemen}"]`).length) {
-                    $('#departemen').val(savedDepartemen).prop('disabled', false);
-                }
-            });
         }
 
         // Event listener for fakultas dropdown change
         $('#fakultas').on('change', function () {
             var idFakultas = this.value;
             localStorage.setItem('oldFakultas', idFakultas);
-
-            // Clear saved departemen, prodi, and nidn if fakultas is changed
-            localStorage.removeItem('oldDepartemen');
-
-            $('#departemen').html('<option selected disabled>Loading...</option>').prop('disabled', !idFakultas);
-
-            if (idFakultas) {
-                loadDepartemen(idFakultas);
-            }
         });
-
-        // Function to load departemen options based on fakultas ID
-        function loadDepartemen(idDepartemen, callback) {
-            $.ajax({
-                url: "{{ url('api/fetch-departemen') }}",
-                type: "POST",
-                data: {
-                    id_fakultas: idDepartemen,
-                    _token: '{{ csrf_token() }}'
-                },
-                dataType: 'json',
-                success: function (result) {
-                    $('#departemen').html('<option selected disabled>PILIH DEPARTEMEN</option>');
-                    $.each(result.departemen, function (key, value) {
-                        $("#departemen").append('<option value="' + value.kode_departemen + '">' + value.nama + '</option>');
-                    });
-
-                    $('#departemen').prop('disabled', false);
-                    if (callback) callback();
-                },
-                error: function() {
-                    $("#departemen").html('<option selected disabled>Error loading options</option>');
-                }
-            });
-        }
     });
     </script>
+
 @include('../footer')
 {{-- @endsection --}}
+
+<!-- SWEET ALERT -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(function(){
+        $(document).on('click', '.alert-create', function(e){
+            e.preventDefault();
+            // Confirm the delete action
+            Swal.fire({
+                title: 'Tambah ruang?',
+                text: "Yakin ingin menambah ruang?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form if confirmed
+                    $(this).closest("form").submit();
+                }
+            });
+        });
+    });
+</script>

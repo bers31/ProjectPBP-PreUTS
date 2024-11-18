@@ -38,7 +38,7 @@
                                 <div class="p-3.5 flex items-center justify-center text-sm font-medium  text-gray-900"></div>
                                 <div class="p-3.5 flex items-center justify-center text-sm font-medium  text-gray-900">Senin</div>
                                 <div class="p-3.5 flex items-center justify-center text-sm font-medium  text-gray-900">Selasa</div>
-                                <div class="p-3.5 flex items-center justify-center text-sm font-medium  text-indigo-600">Rabu</div>
+                                <div class="p-3.5 flex items-center justify-center text-sm font-medium  text-gray-900">Rabu</div>
                                 <div class="p-3.5 flex items-center justify-center text-sm font-medium  text-gray-900">kamis</div>
                                 <div class="p-3.5 flex items-center justify-center text-sm font-medium  text-gray-900">Jum'at</div>
                             </div>

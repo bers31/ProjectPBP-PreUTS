@@ -148,7 +148,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 // Menampilkan history registrasi pada page registrasi_mhs
 Route::post('/get-registrasi-data', [RegistrasiController::class, 'getRegistrasiData'])->name('getRegistrasiData');
-// Route::get('/mahasiswa/registrasi_mhs', [RegistrasiController::class, 'index'])->name('mahasiswa.registrasi_mhs');
+Route::get('/mahasiswa/registrasi_mhs', [RegistrasiController::class, 'index'])->name('mahasiswa.registrasi_mhs');
 
 
 Route::get('/mahasiswa/irs_mhs', [MahasiswaController::class, 'showIrs'])->name('mahasiswa.irs_mhs');

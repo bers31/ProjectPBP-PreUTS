@@ -110,7 +110,7 @@
 
                 <!-- Submit Button -->
                 <div>
-                    <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                    <button type="submit" class="alert-create w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
                         Create Mahasiswa
                     </button>
                 </div>
@@ -126,39 +126,6 @@
     $('#departemen').prop('disabled', true);
     $('#prodi').prop('disabled', true);
     $('#nidn').prop('disabled', true);
-
-    // Clear localStorage only after successful form submission
-    $('form').on('submit', function() {
-        // Store the form data temporarily
-        const formData = new FormData(this);
-        
-        // Intercept the form submission
-        $.ajax({
-            url: $(this).attr('action'),
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                // Clear localStorage only after successful submission
-                localStorage.removeItem('oldFakultas');
-                localStorage.removeItem('oldDepartemen');
-                localStorage.removeItem('oldProdi');
-                localStorage.removeItem('oldNIDN');
-                
-                // Redirect or handle success response
-                window.location.href = response.redirect || '/admin/dashboard';
-            },
-            error: function(xhr) {
-                // Don't clear localStorage on error
-                // The form will be re-rendered with validation errors
-                // and the stored values will be preserved
-            }
-        });
-
-        // Prevent default form submission
-        return false;
-    });
 
     // Load saved selections from localStorage if they exist
     const savedFakultas = localStorage.getItem('oldFakultas');
@@ -314,9 +281,31 @@
 });
 </script>
 
-
-
-
-    
 @include('../footer')
 {{-- @endsection --}}
+
+
+<!-- SWEET ALERT -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(function(){
+        $(document).on('click', '.alert-create', function(e){
+            e.preventDefault();
+            // Confirm the delete action
+            Swal.fire({
+                title: 'Tambah mahasiswa?',
+                text: "Yakin ingin menambah mahasiswa?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form if confirmed
+                    $(this).closest("form").submit();
+                }
+            });
+        });
+    });
+</script>

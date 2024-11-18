@@ -1,208 +1,118 @@
 @include('../header')
 <x-navbar/>
-{{-- @section('content') --}}
-<div class="flex flex-col flex-grow">
-    <!-- Global Error Message -->
-    @if ($errors->any())
-    <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-        <strong>Whoops!</strong> Ada beberapa masalah dengan input Anda:<br><br>
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
 
-    <!-- Success Message -->
-    @if (session('success'))
-    <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-        {{ session('success') }}
-    </div>
-    @endif
-
-    <div class="flex items-center justify-center min-h-screen bg-gray-100">
-        <div class="max-w-lg mx-auto bg-white border border-gray-200 rounded-lg shadow-md p-8">
-            <h1 class="text-3xl font-semibold mb-6 text-gray-800">Update Ruang</h1>
-    
-            <form action="{{ route('ruang.update', $ruang->kode_ruang) }}" method="POST">
-                @csrf
-                @method('PUT') <!-- Tambahkan ini untuk method PUT -->
-    
-                <!-- kode ruang Input -->
-                <div class="mb-4">
-                    <label for="kode_ruang" class="block mb-2 text-sm font-medium text-gray-900">NIM</label>
-                    <input 
-                        type="text" 
-                        name="kode_ruang" 
-                        id="kode_ruang" 
-                        class="bg-gray-50 border @error('nim') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        value="{{ old('kode_ruang', $ruang->kode_ruang) }}">
-                    @error('nim')
-                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                    @enderror
-                </div>
-    
-                <!-- Fakultas Input -->
-                <div class="mb-4">
-                    <label for="fakultas" class="block mb-2 text-sm font-medium text-gray-900">Fakultas</label>
-                    <select name="fakultas" 
-                            id="fakultas" 
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                        <option selected disabled>PILIH FAKULTAS</option>
-                        @foreach ($fakultas as $data)
-                            <option value="{{ $data->kode_fakultas }}" {{ old('fakultas') == $data->kode_fakultas ? 'selected' : ' ' }}>Fakultas {{ $data->nama_fakultas }}</option>
-                        @endforeach
-                    </select>
-                    @error('fakultas')
-                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <!-- Departemen Input -->
-                <div class="mb-4">
-                    <label for="departemen" class="block mb-2 text-sm font-medium text-gray-900">Departemen</label>
-                    <select name="departemen" 
-                            id="departemen" 
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                        <option selected disabled>PILIH DEPARTEMEN</option>
-                    </select>
-                    @error('departemen')
-                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                    @enderror
-                </div>
-    
-            
-    
-                <!-- Submit Button -->
-                <div>
-                    <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
-                        Update Ruang
-                    </button>
-                </div>
-            </form>
+    {{-- @section('content') --}}
+    <div class="flex flex-col flex-grow">
+        <!-- Global Error Message -->
+        @if ($errors->any())
+        <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <strong>Whoops!</strong> Ada beberapa masalah dengan input Anda:<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
-    </div>
+        @endif
+
+        <div class="flex items-center justify-center min-h-screen bg-gray-100">
+            <div class="max-w-lg mx-auto bg-white border border-gray-200 rounded-lg shadow-md p-8">
+                <h1 class="text-3xl font-semibold mb-6 text-gray-800">Update Ruang</h1>
+        
+                <form action="{{ route('ruang.update', $ruang->kode_ruang) }}" method="POST">
+                    @csrf
+                    @method('PUT') <!-- Tambahkan ini untuk method PUT -->
+        
+                    <!-- kode ruang Input -->
+                    <div class="mb-4">
+                        <label for="kode_ruang" class="block mb-2 text-sm font-medium text-gray-900">NIM</label>
+                        <input 
+                            type="text" 
+                            name="kode_ruang" 
+                            id="kode_ruang" 
+                            class="bg-gray-50 border @error('nim') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            value="{{ old('kode_ruang', $ruang->kode_ruang) }}">
+                        @error('nim')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
+                    </div>
+        
+                    <!-- Fakultas Input -->
+                    <div class="mb-4">
+                        <label for="fakultas" class="block mb-2 text-sm font-medium text-gray-900">Fakultas</label>
+                        <select name="kode_fakultas" 
+                                id="fakultas" 
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <option selected disabled>PILIH FAKULTAS</option>
+                            @foreach ($fakultas as $data)
+                                <option value="{{ $data->kode_fakultas }}" {{ old('fakultas') == $data->kode_fakultas ? 'selected' : ' ' }}>Fakultas {{ $data->nama_fakultas }}</option>
+                            @endforeach
+                        </select>
+                        @error('fakultas')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <!-- Kapasitas Input -->
+                    <div class="mb-4">
+                        <label for="kapasitas" class="block text-sm font-medium text-gray-700">Kapasitas</label>
+                        <input type="number" name="kapasitas" id="kapasitas" 
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                            required>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div>
+                        <button type="submit" class="alert-edit w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                            Update Ruang
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
     $(document).ready(function () {
-        // Initial setup: disable departemen, prodi, and nidn if fakultas is not selected
-        $('#departemen').prop('disabled', true);
-
-        // Clear localStorage only after successful form submission
-        $('form').on('submit', function() {
-            // Store the form data temporarily
-            const formData = new FormData(this);
-            
-            // Intercept the form submission
-            $.ajax({
-                url: $(this).attr('action'),
-                method: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    // Clear localStorage only after successful submission
-                    localStorage.removeItem('oldFakultas');
-                    localStorage.removeItem('oldDepartemen');
-
-                    // Redirect or handle success response
-                    window.location.href = response.redirect || '/admin/dashboard';
-                },
-                error: function(xhr) {
-                    // Don't clear localStorage on error
-                    // The form will be re-rendered with validation errors
-                    // and the stored values will be preserved
-                }
-            });
-
-            // Prevent default form submission
-            return false;
-        });
-
         // Load saved selections from localStorage if they exist
         const savedFakultas = localStorage.getItem('oldFakultas');
-        const savedDepartemen = localStorage.getItem('oldDepartemen');
 
         if (savedFakultas) {
             $('#fakultas').val(savedFakultas);
-            loadDepartemen(savedFakultas, function() {
-                // Only load the saved departemen if it matches the current fakultas selection
-                if (savedDepartemen && $('#departemen').find(`option[value="${savedDepartemen}"]`).length) {
-                    $('#departemen').val(savedDepartemen).prop('disabled', false);
-                }
-            });
         }
 
         // Event listener for fakultas dropdown change
         $('#fakultas').on('change', function () {
             var idFakultas = this.value;
             localStorage.setItem('oldFakultas', idFakultas);
-
-            // Clear saved departemen, prodi, and nidn if fakultas is changed
-            localStorage.removeItem('oldDepartemen');
-
-            $('#departemen').html('<option selected disabled>Loading...</option>').prop('disabled', !idFakultas);
-
-            if (idFakultas) {
-                loadDepartemen(idFakultas);
-            }
         });
-
-        // Function to load departemen options based on fakultas ID
-        function loadDepartemen(idDepartemen, callback) {
-            $.ajax({
-                url: "{{ url('api/fetch-departemen') }}",
-                type: "POST",
-                data: {
-                    id_fakultas: idDepartemen,
-                    _token: '{{ csrf_token() }}'
-                },
-                dataType: 'json',
-                success: function (result) {
-                    $('#departemen').html('<option selected disabled>PILIH DEPARTEMEN</option>');
-                    $.each(result.departemen, function (key, value) {
-                        $("#departemen").append('<option value="' + value.kode_departemen + '">' + value.nama + '</option>');
-                    });
-
-                    $('#departemen').prop('disabled', false);
-                    if (callback) callback();
-                },
-                error: function() {
-                    $("#departemen").html('<option selected disabled>Error loading options</option>');
-                }
-            });
-        }
-
-        function loadDepartemen(idDepartemen, callback) {
-            $.ajax({
-                url: "{{ url('api/fetch-departemen') }}",
-                type: "POST",
-                data: {
-                    id_fakultas: idDepartemen,
-                    _token: '{{ csrf_token() }}'
-                },
-                dataType: 'json',
-                success: function (result) {
-                    $('#departemen').html('<option selected disabled>PILIH DEPARTEMEN</option>');
-                    $.each(result.departemen, function (key, value) {
-                        $("#departemen").append('<option value="' + value.kode_departemen + '">' + value.nama + '</option>');
-                    });
-
-                    $('#departemen').prop('disabled', false);
-                    if (callback) callback();
-                },
-                error: function() {
-                    $("#departemen").html('<option selected disabled>Error loading options</option>');
-                }
-            });
-        }
     });
-</script>
-
-
-
+    </script>
 
     
 @include('../footer')
+
+<!-- SWEET ALERT -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(function(){
+        $(document).on('click', '.alert-edit', function(e){
+            e.preventDefault();
+            // Confirm the delete action
+            Swal.fire({
+                title: 'Ubah data ruang?',
+                text: "Yakin ingin mengubah data ruang?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form if confirmed
+                    $(this).closest("form").submit();
+                }
+            });
+        });
+    });
+</script>

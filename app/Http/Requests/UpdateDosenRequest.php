@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+
 class UpdateDosenRequest extends FormRequest
 {
     /**
@@ -22,7 +24,12 @@ class UpdateDosenRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nidn' => 'required|string|unique:dosen|size:12',
+            'nidn' => [
+                'required',
+                'string',
+                'size:12',
+                Rule::unique('dosen', 'nidn')->ignore($this->route('dosen')->nidn, 'nidn'),
+            ],
             'nama' => 'required|string|max:255',
             'email' => 'required|string|email|regex:/^[a-zA-Z0-9._%+-]+@lecturers\.undip\.ac\.id$/',
         ];

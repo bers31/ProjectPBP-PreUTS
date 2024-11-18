@@ -153,6 +153,5 @@
             </div>
         </div>
     </div>
-</div>
 
 @include('footer')

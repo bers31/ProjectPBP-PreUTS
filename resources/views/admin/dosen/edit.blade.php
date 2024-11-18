@@ -1,7 +1,7 @@
 {{-- @extends('layouts.app') --}}
 @include('../header')
 <x-navbar/>
-{{-- @section('content') --}}
+
     <div class="flex flex-col flex-grow">
 
         <div class="flex items-center justify-center min-h-screen bg-gray-100">
@@ -55,7 +55,7 @@
 
                     <!-- Submit Button -->
                     <div>
-                        <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <button type="submit" class="alert-edit w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Update User
                         </button>
                     </div>
@@ -66,3 +66,28 @@
 
 @include('../footer')
 {{-- @endsection --}}
+
+<!-- SWEET ALERT -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(function(){
+        $(document).on('click', '.alert-edit', function(e){
+            e.preventDefault();
+            // Confirm the delete action
+            Swal.fire({
+                title: 'Ubah data dosen?',
+                text: "Yakin ingin mengubah data dosen?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form if confirmed
+                    $(this).closest("form").submit();
+                }
+            });
+        });
+    });
+</script>

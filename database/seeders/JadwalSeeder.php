@@ -19,15 +19,14 @@ class JadwalSeeder extends Seeder
     public function run()
     {
         // Pastikan ada ruang kelas yang terdaftar sebelum menambahkan jadwal
-        $ruang = RuangKelas::first();
 
         Jadwal::create([
-            'mata_kuliah' => 'PAIK6702',
+            'kode_mk' => 'PAIK6102',
             'hari' => 'Senin',
             'kode_kelas' => 'D',
             'jam_mulai' => '13:00:00',
             'jam_selesai' => '15:30:00',
-            'ruang' => 'A302',
+            'ruang' => 'A101',
             'kuota' => 50,
         ]);
         // Jadwal::create([

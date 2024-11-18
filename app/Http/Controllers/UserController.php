@@ -37,7 +37,7 @@ class UserController extends Controller
             'role' => $request->role,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+        return redirect()->route('users.index')->with('success', 'User berhasil dibuat!');
     }
 
     // Show the form for editing the specified user
@@ -51,7 +51,7 @@ class UserController extends Controller
     {
         $request->validate([
             'email' => 'required|email|unique:users,email,' . $user->id, // Ensure unique email except current user's email
-            'role' => 'required|in:student,lecturer,admin',
+            'role' => 'required|in:mahasiswa,dosen,admin',
         ]);
 
         $user->update([
@@ -59,14 +59,14 @@ class UserController extends Controller
             'role' => $request->role,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+        return redirect()->route('users.index')->with('success', 'User berhasil diupdate!');
     }
 
     // Remove the specified user from storage
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+        return redirect()->route('users.index')->with('success', 'User berhasil dihapus!');
     }
 
 }
