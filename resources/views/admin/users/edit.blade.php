@@ -25,4 +25,29 @@
             <button type="submit" class="btn btn-primary">Update User</button>
         </form>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.querySelectorAll('.btn.btn-primary').forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            const form = this.closest('form');
+
+            Swal.fire({
+                title: 'Ubah data user?',
+                text: "Yakin ingin mengubah data user?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+
 {{-- @endsection --}}

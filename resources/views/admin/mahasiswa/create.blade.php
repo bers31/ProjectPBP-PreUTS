@@ -110,7 +110,7 @@
 
                 <!-- Submit Button -->
                 <div>
-                    <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                    <button type="submit" class="create-btn w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
                         Create Mahasiswa
                     </button>
                 </div>
@@ -120,6 +120,7 @@
 </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
     $(document).ready(function () {
     // Initial setup: disable departemen, prodi, and nidn if fakultas is not selected
@@ -130,7 +131,7 @@
     // Clear localStorage only after successful form submission
     $('form').on('submit', function() {
         // Store the form data temporarily
-        const formData = new FormData(this);
+        const form = this.closest('form');
         
         // Intercept the form submission
         $.ajax({
@@ -314,8 +315,45 @@
 });
 </script>
 
+<script>
+    document.querySelectorAll('.create-btn').forEach(button => {
+    button.addEventListener('click', function (e) {
+        e.preventDefault();
+        const form = this.closest('form'); // Fix form selection
 
+        Swal.fire({
+            title: 'Tambah mahasiswa?',
+            text: "Yakin ingin menambahkan mahasiswa baru?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Submit the form
+                const formData = new FormData(form);
+                $.ajax({
+                    url: form.action,
+                    method: form.method,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        Swal.fire('Success!', 'Data mahasiswa telah ditambahkan.', 'success').then(() => {
+                            window.location.href = response.redirect || '/admin/dashboard';
+                        });
+                    },
+                    error: function (xhr) {
+                        Swal.fire('Error!', 'Terjadi kesalahan. Mohon coba lagi.', 'error');
+                    }
+                });
+            }
+        });
+    });
+});
 
+</script>
 
     
 @include('../footer')
