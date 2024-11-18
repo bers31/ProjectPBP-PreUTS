@@ -6,12 +6,14 @@ use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\DekanController;
 use App\Http\Controllers\FakultasController;
+use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliDropdownController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\RuangController;
+use App\Http\Controllers\MataKuliahController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -66,6 +68,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/dekan/dashboard/set-ruang', [DekanController::class, 'setRuang'])->name('dekan.setRuang');
     }); // Check for 'dekan' role
 
+    Route::middleware(['auth', 'role:akademik'])->group(function () {
+        Route::get('/akademik/dashboard', [AkademikController::class, 'index'])->name('akademik.dashboard');
+        Route::post('/akademik/set-ruang', [AkademikController::class, 'setRuang'])->name('akademik.setRuang');
+    });
+
     // Student status_akademik route
     Route::get('mahasiswa/status_akademik', function(){
         return view('mahasiswa.status_akademik');
@@ -118,6 +125,18 @@ Route::post('/api/fetch-departemen', [DepartemenController::class, 'fetchDeparte
 Route::post('/api/fetch-prodi', [ProdiController::class, 'fetchProdi']);
 Route::post('/api/fetch-doswal', [WaliDropdownController::class, 'fetchDoswal']);
 
+
+Route::middleware(['auth', 'role:kaprodi'])->group(function(){
+    Route::get('/kaprodi/menu', function() {
+        return view('kaprodi.menu');
+    })->name('kaprodi.menu')
+      ->middleware('role:kaprodi');
+      
+    Route::resource('/kaprodi/matkul', MataKuliahController::class)->name('index','matkul.index')
+                                                           ->name('edit','matkul.edit')
+                                                           ->name('create','matkul.create')
+                                                           ->name('update','matkul.update');
+});
 
 // // Admin-specific routes with authentication and 'admin' middleware
 Route::middleware(['auth', 'role:admin'])->group(function () {

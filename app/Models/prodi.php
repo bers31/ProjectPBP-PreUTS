@@ -23,4 +23,9 @@ class Prodi extends Model
     public function departemen(){
         return $this->belongsTo(Departemen::class, 'kode_departemen', 'kode_departemen');
     }
+
+    public function kaprodi(){
+        return $thhis->hasMany(Kaprodi::class, 'kode_prodi', 'kode_prodi');
+    }
+
 }

@@ -13,7 +13,8 @@ class MataKuliahController extends Controller
      */
     public function index()
     {
-        //
+        $mk = MataKuliah::all();
+        return view('kaprodi.matkul.index', compact('mk'));
     }
 
     /**
@@ -27,9 +28,13 @@ class MataKuliahController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreMatKulRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        MataKuliah::create($validated);
+        
+        return redirect()->route('matkul.index')->with('success', 'Mahasiswa berhasil dibuat!');
     }
 
     /**

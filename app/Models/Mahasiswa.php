@@ -11,6 +11,8 @@ class Mahasiswa extends Model
 
     protected $table = 'mahasiswa';
     protected $primaryKey = 'nim';
+    public $incrementing = false; // Jika 'nim' bukan auto-increment
+    protected $keyType = 'string'; // Jika 'nim' bukan integer
     protected $fillable = [
         'nim',
         'nama',
@@ -35,5 +37,15 @@ class Mahasiswa extends Model
 
     public function prodi(){
         return $this->belongsTo(Prodi::class,'kode_prodi','kode_prodi');
+    }
+
+    public function irs()
+    {
+        return $this->hasMany(IRS::class, 'nim_mahasiswa', 'nim');
+    }
+
+    public function detailIrs()
+    {
+        return $this->hasManyThrough(DetailIRS::class, IRS::class);
     }
 }
