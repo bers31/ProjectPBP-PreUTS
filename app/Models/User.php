@@ -73,4 +73,9 @@ class User extends Authenticatable
         return $this->hasOne(Dekan::class, 'email', 'email'); // Sesuaikan kolom jika perlu
     }
 
+    public function akademik(): HasOne
+    {
+        return $this->hasOne(Akademik::class, 'email', 'email');
+    }
+
 }
