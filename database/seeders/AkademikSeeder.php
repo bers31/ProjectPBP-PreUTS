@@ -12,7 +12,7 @@ class AkademikSeeder extends Seeder
     {
         // Membuat data akademik terkait user di atas
         Akademik::create([
-            'nidn' => '1114291310',
+            'nip' => '1114291310',
             'kode_fakultas' => 'FSM',
             'email' => 'akademik@example.com',
             'created_at' => now(),

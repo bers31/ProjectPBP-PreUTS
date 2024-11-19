@@ -25,11 +25,13 @@
                 <label for="tahun" class="block mt-4 mb-2 text-sm font-medium text-gray-900">Tahun Angkatan</label>
                 <select id="tahun" name="tahun" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5">
                     <option selected disabled>---- Pilih Tahun Angkatan ----</option>
+                    
                 </select>
 
                 <label for="status" class="block mt-4 mb-2 text-sm font-medium text-gray-900">Status IRS</label>
                 <select id="status" name="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5">
                     <option selected disabled>---- Pilih Status IRS ----</option>
+                    <option value="">Semua</option>
                     <option value="sudah_disetujui">Disetujui</option>
                     <option value="belum_irs">Belum IRS</option>
                     <option value="belum_disetujui">Belum Disetujui</option>
@@ -41,26 +43,26 @@
         </div>
         
         <!-- Tabel Mahasiswa -->
-        <div class="overflow-x-auto p-4">
-            <table id="mahasiswaTable" class="min-w-full bg-white divide-y divide-gray-200 table-fixed hidden w-full">
+        <div id="tableWrapper" class="overflow-x-auto p-8 hidden">
+            <table id="mahasiswaTable" class="min-w-full bg-white divide-y divide-gray-200 table-fixed hidden w-full cell-border">
                 <thead class="bg-gray-200">
                     <tr>
-                        <th class="w-10 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th id="check" class="w-10 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" >
                             <input type="checkbox" id="selectAll">
                         </th>
-                        <th class="w-32 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NIM</th>
-                        <th class="w-48 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
-                        <th class="w-40 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departemen</th>
-                        <th class="w-32 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tahun Masuk</th>
-                        <th class="w-48 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status IRS</th>
+                        <th class="w-32 ml-10 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="padding-left: 0">NIM</th>
+                        <th class="w-48 ml-10 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="padding-left: 0">Nama</th>
+                        <th class="w-40 ml-10 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="padding-left: 0">Departemen</th>
+                        <th class="w-32 ml-10 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="padding-left: 0">Tahun Masuk</th>
+                        <th class="w-48 ml-10 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="padding-left: 0">Status IRS</th>
                     </tr>
                     <tr>
                         <th></th>
-                        <th><input type="text" class="form-control column-search w-full" placeholder="Cari NIM"></th>
-                        <th><input type="text" class="form-control column-search w-full" placeholder="Cari Nama"></th>
-                        <th><input type="text" class="form-control column-search w-full" placeholder="Cari Departemen"></th>
-                        <th><input type="text" class="form-control column-search w-full" placeholder="Cari Tahun Masuk"></th>
-                        <th><input type="text" class="form-control column-search w-full" placeholder="Cari Status"></th>
+                        <th style="padding-left: 0"><input type="text" class="form-control column-search w-full" placeholder="Cari NIM" ></th>
+                        <th style="padding-left: 0"><input type="text" class="form-control column-search w-full" placeholder="Cari Nama" ></th>
+                        <th style="padding-left: 0"><input type="text" class="form-control column-search w-full" placeholder="Cari Departemen" ></th>
+                        <th style="padding-left: 0"><input type="text" class="form-control column-search w-full" placeholder="Cari Tahun Masuk" ></th>
+                        <th style="padding-left: 0"><input type="text" class="form-control column-search w-full" placeholder="Cari Status" ></th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -71,7 +73,7 @@
         <div class="flex justify-end mt-5 px-10">
             <button type="button" id="approveIRS" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 hidden">Setujui IRS</button>
         </div>
-
+        
         <!-- jQuery, DataTables, dan AJAX Script -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -81,17 +83,20 @@
             $(document).ready(function () {
                 // Inisialisasi DataTable dengan pencarian di tiap kolom
                 var table = $('#mahasiswaTable').DataTable({
+                    "dom": 't',
                     "paging": true,
                     "info": false,
                     "searching": true,
                     "searchPanes": false,
                     "ordering": true,
+                    "sensitivity": "accent",
                     initComplete: function () {
                         // Apply search function for each column
                         this.api().columns().every(function () {
                             var that = this;
                             $('input', this.header()).on('keyup change clear', function () {
-                                if (that.search() !== this.value) {
+                                if (that.search() !== this.value ) {
+                                    console.log(that);
                                     that.search(this.value).draw();
                                 }
                             });
@@ -112,7 +117,8 @@
                         },
                         dataType: 'json',
                         success: function (result) {
-                            $('#tahun').html('<option selected disabled>---- Pilih Tahun Angkatan ----</option>');
+                            $('#tahun').html('<option selected disabled>---- Pilih Tahun Angkatan ----</option> <option value="">Semua</option>');
+                            // $('#tahun').html('');
                             $.each(result.tahun, function (key, value) {
                                 $("#tahun").append('<option value="' + value + '">' + value + '</option>');
                             });
@@ -126,7 +132,7 @@
                     var tahun = $('#tahun').val();
                     var status = $('#status').val();
 
-                    if (departemen && tahun && status) {
+                    if (departemen && tahun != null && status != null) {
                         $.ajax({
                             url: "{{ url('api/fetch-mahasiswa') }}",
                             type: "POST",
@@ -138,21 +144,17 @@
                             },
                             dataType: 'json',
                             success: function (result) {
-                                // Clear table and populate with new data
                                 table.clear().draw();
 
                                 if (result.mahasiswa.length > 0) {
+                                    $('#tableWrapper').removeClass('hidden');
                                     $('#mahasiswaTable').removeClass('hidden');
                                     $('#approveIRS').removeClass('hidden');
 
                                     $.each(result.mahasiswa, function (index, mahasiswa) {
                                         let irsStatus = "Tidak ada data IRS";
-
-                                        // Cek apakah mahasiswa memiliki IRS
                                         if (mahasiswa.irs && mahasiswa.irs.length > 0) {
-                                            // Filter IRS untuk tahun ajaran aktif saja
                                             let irsAktif = mahasiswa.irs.find(irs => irs.tahun_akademik === result.tahun_ajaran_aktif.kode_tahun);
-                                            // console.log();
                                             if (irsAktif) {
                                                 irsStatus = irsAktif.status;
                                             }

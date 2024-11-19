@@ -17,6 +17,7 @@ class MahasiswaSeeder extends Seeder
             'nim' => '24060122130068',
             'email' => 'faisalrizki@students.undip.ac.id',
             'kode_prodi' => 'IFS1',
+            'tahun_masuk' => '2022',
             'doswal' => '123456789011'
             // field lainnya
         ]);
