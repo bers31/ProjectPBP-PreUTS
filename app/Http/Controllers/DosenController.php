@@ -74,7 +74,7 @@ class DosenController extends Controller
 
         $dosen->update($validated);
 
-        return redirect()->route('dosen.index')->with('success', 'Dosen berhasil dibuat!');
+        return redirect()->route('dosen.index')->with('success', 'Dosen berhasil diubah!');
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Http\Controllers\DosenController;
 use App\Http\Controllers\DekanController;
 use App\Http\Controllers\FakultasController;
 use App\Http\Controllers\AkademikController;
+use App\Http\Controllers\IRSController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\UserController;
@@ -167,7 +168,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 // Menampilkan history registrasi pada page registrasi_mhs
 Route::post('/get-registrasi-data', [RegistrasiController::class, 'getRegistrasiData'])->name('getRegistrasiData');
-// Route::get('/mahasiswa/registrasi_mhs', [RegistrasiController::class, 'index'])->name('mahasiswa.registrasi_mhs');
+Route::get('/mahasiswa/registrasi_mhs', [RegistrasiController::class, 'index'])->name('mahasiswa.registrasi_mhs');
 
 
-Route::get('/mahasiswa/irs_mhs', [MahasiswaController::class, 'showIrs'])->name('mahasiswa.irs_mhs');
+Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
+    Route::post('/get-registrasi-data', [RegistrasiController::class, 'getRegistrasiData'])->name('getRegistrasiData');
+    Route::get('/mahasiswa/registrasi_mhs', [RegistrasiController::class, 'index'])->name('mahasiswa.registrasi_mhs');
+
+    Route::get('/mahasiswa/irs_mhs', [IRSController::class, 'index'])->name('mahasiswa.irs_mhs');
+    Route::post('/mahasiswa/irs_mhs', [IRSController::class, 'add'])->name('irs.add');
+    Route::delete('/mahasiswa/irs_mhs', [IRSController::class, 'delete'])->name('irs.delete');
+
+
+});

@@ -110,7 +110,7 @@
 
                 <!-- Submit Button -->
                 <div>
-                    <button type="submit" class="create-btn w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                    <button type="submit" class="alert-create w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
                         Create Mahasiswa
                     </button>
                 </div>
@@ -121,240 +121,192 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-    // Initial setup: disable departemen, prodi, and nidn if fakultas is not selected
-    $('#departemen').prop('disabled', true);
-    $('#prodi').prop('disabled', true);
-    $('#nidn').prop('disabled', true);
+    <script type="text/javascript">
+        $(document).ready(function () {
+        // Initial setup: disable departemen, prodi, and nidn if fakultas is not selected
+        $('#departemen').prop('disabled', true);
+        $('#prodi').prop('disabled', true);
+        $('#nidn').prop('disabled', true);
 
-    // Clear localStorage only after successful form submission
-    $('form').on('submit', function() {
-        // Store the form data temporarily
-        const form = this.closest('form');
-        
-        // Intercept the form submission
-        $.ajax({
-            url: $(this).attr('action'),
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                // Clear localStorage only after successful submission
-                localStorage.removeItem('oldFakultas');
-                localStorage.removeItem('oldDepartemen');
-                localStorage.removeItem('oldProdi');
-                localStorage.removeItem('oldNIDN');
-                
-                // Redirect or handle success response
-                window.location.href = response.redirect || '/admin/dashboard';
-            },
-            error: function(xhr) {
-                // Don't clear localStorage on error
-                // The form will be re-rendered with validation errors
-                // and the stored values will be preserved
-            }
-        });
+        // Load saved selections from localStorage if they exist
+        const savedFakultas = localStorage.getItem('oldFakultas');
+        const savedDepartemen = localStorage.getItem('oldDepartemen');
+        const savedProdi = localStorage.getItem('oldProdi');
+        const savedNIDN = localStorage.getItem('oldNIDN');
 
-        // Prevent default form submission
-        return false;
-    });
-
-    // Load saved selections from localStorage if they exist
-    const savedFakultas = localStorage.getItem('oldFakultas');
-    const savedDepartemen = localStorage.getItem('oldDepartemen');
-    const savedProdi = localStorage.getItem('oldProdi');
-    const savedNIDN = localStorage.getItem('oldNIDN');
-
-    // If there's a saved fakultas, select it and load the corresponding departemen
-    if (savedFakultas) {
-        $('#fakultas').val(savedFakultas);
-        loadDepartemen(savedFakultas, function() {
-            // Only load the saved departemen if it matches the current fakultas selection
-            if (savedDepartemen && $('#departemen').find(`option[value="${savedDepartemen}"]`).length) {
-                $('#departemen').val(savedDepartemen).prop('disabled', false);
-                loadProdi(savedDepartemen, function() {
-                    // Only load the saved prodi if it matches the current departemen selection
-                    if (savedProdi && $('#prodi').find(`option[value="${savedProdi}"]`).length) {
-                        $('#prodi').val(savedProdi).prop('disabled', false);
-                    }
-                });
-                loadNIDN(savedDepartemen, function() {
-                    // Only load the saved nidn if it matches the current departemen selection
-                    if (savedNIDN && $('#nidn').find(`option[value="${savedNIDN}"]`).length) {
-                        $('#nidn').val(savedNIDN).prop('disabled', false);
-                    }
-                });
-            }
-        });
-    }
-
-    // Event listener for fakultas dropdown change
-    $('#fakultas').on('change', function () {
-        var idFakultas = this.value;
-        localStorage.setItem('oldFakultas', idFakultas);
-
-        // Clear saved departemen, prodi, and nidn if fakultas is changed
-        localStorage.removeItem('oldDepartemen');
-        localStorage.removeItem('oldProdi');
-        localStorage.removeItem('oldNIDN');
-        $('#departemen').html('<option selected disabled>Loading...</option>').prop('disabled', !idFakultas);
-        $('#prodi').html('<option selected disabled>PILIH PRODI</option>').prop('disabled', true);
-        $('#nidn').html('<option selected disabled>PILIH NIDN</option>').prop('disabled', true);
-
-        if (idFakultas) {
-            loadDepartemen(idFakultas);
+        // If there's a saved fakultas, select it and load the corresponding departemen
+        if (savedFakultas) {
+            $('#fakultas').val(savedFakultas);
+            loadDepartemen(savedFakultas, function() {
+                // Only load the saved departemen if it matches the current fakultas selection
+                if (savedDepartemen && $('#departemen').find(`option[value="${savedDepartemen}"]`).length) {
+                    $('#departemen').val(savedDepartemen).prop('disabled', false);
+                    loadProdi(savedDepartemen, function() {
+                        // Only load the saved prodi if it matches the current departemen selection
+                        if (savedProdi && $('#prodi').find(`option[value="${savedProdi}"]`).length) {
+                            $('#prodi').val(savedProdi).prop('disabled', false);
+                        }
+                    });
+                    loadNIDN(savedDepartemen, function() {
+                        // Only load the saved nidn if it matches the current departemen selection
+                        if (savedNIDN && $('#nidn').find(`option[value="${savedNIDN}"]`).length) {
+                            $('#nidn').val(savedNIDN).prop('disabled', false);
+                        }
+                    });
+                }
+            });
         }
-    });
 
-    // Function to load departemen options based on fakultas ID
-    function loadDepartemen(idDepartemen, callback) {
-        $.ajax({
-            url: "{{ url('api/fetch-departemen') }}",
-            type: "POST",
-            data: {
-                id_fakultas: idDepartemen,
-                _token: '{{ csrf_token() }}'
-            },
-            dataType: 'json',
-            success: function (result) {
-                $('#departemen').html('<option selected disabled>PILIH DEPARTEMEN</option>');
-                $.each(result.departemen, function (key, value) {
-                    $("#departemen").append('<option value="' + value.kode_departemen + '">' + value.nama + '</option>');
-                });
+        // Event listener for fakultas dropdown change
+        $('#fakultas').on('change', function () {
+            var idFakultas = this.value;
+            localStorage.setItem('oldFakultas', idFakultas);
 
-                $('#departemen').prop('disabled', false);
-                if (callback) callback();
-            },
-            error: function() {
-                $("#departemen").html('<option selected disabled>Error loading options</option>');
+            // Clear saved departemen, prodi, and nidn if fakultas is changed
+            localStorage.removeItem('oldDepartemen');
+            localStorage.removeItem('oldProdi');
+            localStorage.removeItem('oldNIDN');
+            $('#departemen').html('<option selected disabled>Loading...</option>').prop('disabled', !idFakultas);
+            $('#prodi').html('<option selected disabled>PILIH PRODI</option>').prop('disabled', true);
+            $('#nidn').html('<option selected disabled>PILIH NIDN</option>').prop('disabled', true);
+
+            if (idFakultas) {
+                loadDepartemen(idFakultas);
             }
         });
-    }
 
-    // Event listener for departemen change
-    $('#departemen').on('change', function () {
-        var idDepartemen = this.value;
-        localStorage.setItem('oldDepartemen', idDepartemen);
-        $('#prodi').prop('disabled', !idDepartemen);
-        $('#nidn').prop('disabled', !idDepartemen);
+        // Function to load departemen options based on fakultas ID
+        function loadDepartemen(idDepartemen, callback) {
+            $.ajax({
+                url: "{{ url('api/fetch-departemen') }}",
+                type: "POST",
+                data: {
+                    id_fakultas: idDepartemen,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function (result) {
+                    $('#departemen').html('<option selected disabled>PILIH DEPARTEMEN</option>');
+                    $.each(result.departemen, function (key, value) {
+                        $("#departemen").append('<option value="' + value.kode_departemen + '">' + value.nama + '</option>');
+                    });
 
-        if (idDepartemen) {
-            loadProdi(idDepartemen);
-            loadNIDN(idDepartemen);
-        } else {
-            $('#prodi').prop('disabled', true).html('<option selected disabled>PILIH PRODI</option>');
-            $('#nidn').prop('disabled', true).html('<option selected disabled>PILIH NIDN</option>');
+                    $('#departemen').prop('disabled', false);
+                    if (callback) callback();
+                },
+                error: function() {
+                    $("#departemen").html('<option selected disabled>Error loading options</option>');
+                }
+            });
         }
-    });
 
-    // Function to load prodi options
-    function loadProdi(idDepartemen, callback) {
-        $("#prodi").html('<option selected disabled>Loading...</option>');
-        $.ajax({
-            url: "{{ url('api/fetch-prodi') }}",
-            type: "POST",
-            data: {
-                id_departemen: idDepartemen,
-                _token: '{{ csrf_token() }}'
-            },
-            dataType: 'json',
-            success: function (result) {
-                $('#prodi').html('<option selected disabled>PILIH PRODI</option>');
-                $.each(result.prodi, function (key, value) {
-                    $("#prodi").append('<option value="' + value.kode_prodi + '">' + value.strata + ' ' + value.nama + '</option>');
-                });
+        // Event listener for departemen change
+        $('#departemen').on('change', function () {
+            var idDepartemen = this.value;
+            localStorage.setItem('oldDepartemen', idDepartemen);
+            $('#prodi').prop('disabled', !idDepartemen);
+            $('#nidn').prop('disabled', !idDepartemen);
 
-                $('#prodi').prop('disabled', false);
-                if (callback) callback();
-            },
-            error: function() {
-                $("#prodi").html('<option selected disabled>Error loading options</option>');
+            if (idDepartemen) {
+                loadProdi(idDepartemen);
+                loadNIDN(idDepartemen);
+            } else {
+                $('#prodi').prop('disabled', true).html('<option selected disabled>PILIH PRODI</option>');
+                $('#nidn').prop('disabled', true).html('<option selected disabled>PILIH NIDN</option>');
             }
         });
-    }
 
-    // Function to load NIDN options
-    function loadNIDN(idDepartemen, callback) {
-        $("#nidn").html('<option selected disabled>Loading...</option>');
-        $.ajax({
-            url: "{{ url('api/fetch-doswal') }}",
-            type: "POST",
-            data: {
-                id_departemen: idDepartemen,
-                _token: '{{ csrf_token() }}'
-            },
-            dataType: 'json',
-            success: function (result) {
-                $('#nidn').html('<option selected disabled>NIDN - NAMA</option>');
-                $.each(result.dosen, function (key, value) {
-                    $("#nidn").append('<option value="' + value.nidn + '">' + value.nidn + ' - '+ value.nama + '</option>');
-                });
+        // Function to load prodi options
+        function loadProdi(idDepartemen, callback) {
+            $("#prodi").html('<option selected disabled>Loading...</option>');
+            $.ajax({
+                url: "{{ url('api/fetch-prodi') }}",
+                type: "POST",
+                data: {
+                    id_departemen: idDepartemen,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function (result) {
+                    $('#prodi').html('<option selected disabled>PILIH PRODI</option>');
+                    $.each(result.prodi, function (key, value) {
+                        $("#prodi").append('<option value="' + value.kode_prodi + '">' + value.strata + ' ' + value.nama + '</option>');
+                    });
 
-                $('#nidn').prop('disabled', false);
-                if (callback) callback();
-            },
-            error: function() {
-                $("#nidn").html('<option selected disabled>Error loading options</option>');
-            }
+                    $('#prodi').prop('disabled', false);
+                    if (callback) callback();
+                },
+                error: function() {
+                    $("#prodi").html('<option selected disabled>Error loading options</option>');
+                }
+            });
+        }
+
+        // Function to load NIDN options
+        function loadNIDN(idDepartemen, callback) {
+            $("#nidn").html('<option selected disabled>Loading...</option>');
+            $.ajax({
+                url: "{{ url('api/fetch-doswal') }}",
+                type: "POST",
+                data: {
+                    id_departemen: idDepartemen,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function (result) {
+                    $('#nidn').html('<option selected disabled>NIDN - NAMA</option>');
+                    $.each(result.dosen, function (key, value) {
+                        $("#nidn").append('<option value="' + value.nidn + '">' + value.nidn + ' - '+ value.nama + '</option>');
+                    });
+
+                    $('#nidn').prop('disabled', false);
+                    if (callback) callback();
+                },
+                error: function() {
+                    $("#nidn").html('<option selected disabled>Error loading options</option>');
+                }
+            });
+        }
+
+        // Save selected prodi to localStorage on change
+        $('#prodi').on('change', function () {
+            var selectedProdi = this.value;
+            localStorage.setItem('oldProdi', selectedProdi);
         });
-    }
 
-    // Save selected prodi to localStorage on change
-    $('#prodi').on('change', function () {
-        var selectedProdi = this.value;
-        localStorage.setItem('oldProdi', selectedProdi);
-    });
-
-    // Save selected nidn to localStorage on change
-    $('#nidn').on('change', function () {
-        var selectedNIDN = this.value;
-        localStorage.setItem('oldNIDN', selectedNIDN);
-    });
-});
-</script>
-
-<script>
-    document.querySelectorAll('.create-btn').forEach(button => {
-    button.addEventListener('click', function (e) {
-        e.preventDefault();
-        const form = this.closest('form'); // Fix form selection
-
-        Swal.fire({
-            title: 'Tambah mahasiswa?',
-            text: "Yakin ingin menambahkan mahasiswa baru?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Submit the form
-                const formData = new FormData(form);
-                $.ajax({
-                    url: form.action,
-                    method: form.method,
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                        Swal.fire('Success!', 'Data mahasiswa telah ditambahkan.', 'success').then(() => {
-                            window.location.href = response.redirect || '/admin/dashboard';
-                        });
-                    },
-                    error: function (xhr) {
-                        Swal.fire('Error!', 'Terjadi kesalahan. Mohon coba lagi.', 'error');
-                    }
-                });
-            }
+        // Save selected nidn to localStorage on change
+        $('#nidn').on('change', function () {
+            var selectedNIDN = this.value;
+            localStorage.setItem('oldNIDN', selectedNIDN);
         });
     });
-});
+    </script>
 
-</script>
-
-    
 @include('../footer')
 {{-- @endsection --}}
+
+
+<!-- SWEET ALERT -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(function(){
+        $(document).on('click', '.alert-create', function(e){
+            e.preventDefault();
+            // Confirm the delete action
+            Swal.fire({
+                title: 'Tambah mahasiswa?',
+                text: "Yakin ingin menambah mahasiswa?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form if confirmed
+                    $(this).closest("form").submit();
+                }
+            });
+        });
+    });
+</script>

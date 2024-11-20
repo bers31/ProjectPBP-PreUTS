@@ -29,7 +29,8 @@ class UpdateRuangRequest extends FormRequest
                 'string',
                 Rule::unique('ruang', 'kode_ruang')->ignore($this->route('ruang')->kode_ruang, 'kode_ruang'),
             ],
-            'kode_departemen' => 'required|string|exists:departemen,kode_departemen',
+            'kode_fakultas' => 'required|string|exists:fakultas,kode_fakultas', 
+            'kapasitas' => 'required|integer|min:1'
         ];
     }
     

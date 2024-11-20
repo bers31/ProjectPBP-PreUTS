@@ -9,14 +9,16 @@ class DetailIRS extends Model
 {
     use HasFactory;
     protected $table = 'detail_irs';
-    protected $fillable = ['irs_id', 'jadwal_id'];
+    protected $primaryKey = 'id_irs';
+    protected $fillable = ['id_irs', 'id_jadwal'];
+
     public function irs()
     {
-        return $this->belongsTo(IRS::class, 'irs_id');
+        return $this->belongsTo(IRS::class, 'id_irs');
     }
 
-    public function mataKuliah()
+    public function jadwal()
     {
-        return $this->belongsTo(Jadwal::class, 'jadwal_id');
+        return $this->belongsTo(Jadwal::class, 'id_jadwal');
     }
 }

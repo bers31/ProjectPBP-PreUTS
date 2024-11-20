@@ -1,6 +1,6 @@
 @include('../header')
 <x-navbar/>
-{{-- @section('content') --}}
+
 <div class="flex flex-col flex-grow">
     <!-- Global Error Message -->
     @if ($errors->any())
@@ -11,15 +11,6 @@
                 <li>{{ $error }}</li>
             @endforeach
         </ul>
-    </div>
-    @endif
-
-    <!-- Success Message -->
-    @if (session('success'))
-    <div class="flex items-center justify-between py-3 p-8">
-        <div class="text-lg md:text-xl pl-4 py-1">
-            {{ session('success') }}
-        </div>
     </div>
     @endif
 
@@ -103,7 +94,7 @@
     
                 <!-- Submit Button -->
                 <div>
-                    <button type="submit" class="edit-btn w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                    <button type="submit" class="alert-edit w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
                         Update Mahasiswa
                     </button>
                 </div>
@@ -111,8 +102,7 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
     // Simpan nilai default dari mahasiswa
@@ -232,31 +222,29 @@
     });
 });
 </script>
+@include('../footer')
 
-    <script>
-    document.querySelectorAll('.edit-btn').forEach(button => {
-            button.addEventListener('click', function (e) {
-                e.preventDefault();
-                const form = this.closest('form');
-
-                Swal.fire({
-                    title: 'Ubah data mahasiswa',
-                    text: "Yakin ingin mengubah data mahasiwa?",
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
+<!-- SWEET ALERT -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(function(){
+        $(document).on('click', '.alert-edit', function(e){
+            e.preventDefault();
+            // Confirm the delete action
+            Swal.fire({
+                title: 'Ubah data mahasiswa?',
+                text: "Yakin ingin mengubah data mahasiswa?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form if confirmed
+                    $(this).closest("form").submit();
+                }
             });
         });
-    </script>
-
-
-
-    
-@include('../footer')
+    });
+</script>

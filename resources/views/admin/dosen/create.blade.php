@@ -53,7 +53,7 @@
 
                 <!-- Submit Button -->
                 <div>
-                    <button type="submit" class="create-btn w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <button type="submit" class="alert-create w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Create User
                     </button>
                 </div>
@@ -62,13 +62,14 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-        document.querySelectorAll('.create-btn').forEach(button => {
-        button.addEventListener('click', function (e) {
-            e.preventDefault();
-            const form = this.closest('form');
+@include('../footer')
+{{-- @endsection --}}
 
+<script>
+    $(function(){
+        $(document).on('click', '.alert-create', function(e){
+            e.preventDefault();
+            // Confirm the delete action
             Swal.fire({
                 title: 'Tambah dosen?',
                 text: "Yakin ingin menambah dosen?",
@@ -79,12 +80,10 @@
                 confirmButtonText: 'Ya!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    form.submit();
+                    // Submit the form if confirmed
+                    $(this).closest("form").submit();
                 }
             });
         });
     });
 </script>
-
-@include('../footer')
-{{-- @endsection --}}

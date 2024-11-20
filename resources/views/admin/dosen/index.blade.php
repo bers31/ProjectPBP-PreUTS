@@ -1,5 +1,6 @@
 @include('../header')
 <x-navbar/>
+
     <div class="flex flex-col flex-grow">
         <!-- Header -->
         <div class="flex items-center justify-between py-3 p-8">
@@ -12,14 +13,6 @@
                 Create New Dosen
             </button>
         </form>
-
-        @if (session('success'))
-            <div class="flex items-center justify-between py-3 p-8">
-                <div class="text-md md:text-xl pl-4 py-1">
-                    {{ session('success') }}
-                </div>
-            </div>
-        @endif
         
         <div class="flex ml-7 mr-7">
             <div class="flex flex-col m-5 border-2 p-5 w-full border-gray-300 rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
@@ -48,7 +41,7 @@
                                     <form action="{{ route('dosen.destroy', $row) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="font-semibold border-2 border-[#80747475] rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.1)] my-4 px-3 py-1 bg-green-500 hover:bg-[#f0f0f0]" onclick="return confirm('Are you sure?')">Delete</button>
+                                        <button type="submit" class="alert-delete font-semibold border-2 border-[#80747475] rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.1)] my-4 px-3 py-1 bg-green-500 hover:bg-[#f0f0f0]" onclick="return confirm('Are you sure?')">Delete</button>
                                     </form>
                                 </td>
                             </tr>
@@ -59,3 +52,43 @@
         </div>
     </div>
 @include('../footer')
+
+<!-- SWEETALERT -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript">
+    $(function(){
+        $(document).on('click', '.alert-delete', function(e){
+            e.preventDefault();
+            
+            // Confirm the delete action
+            Swal.fire({
+                title: "Hapus dosen?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form if confirmed
+                    $(this).closest("form").submit();
+                }
+            });
+        });
+    });
+</script>
+
+@if (session('success'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ session('success') }}',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6'
+        });
+    });
+</script>
+@endif

@@ -19,6 +19,10 @@ class Fakultas extends Model
 
     public function departemen(){
         return $this->hasMany(Departemen::class, 'kode_fakultas', 'kode_fakultas');
-        
+    }
+
+    public function ruang()
+    {
+        return $this->hasMany(Ruang::class, 'kode_fakultas', 'kode_fakultas');
     }
 }

@@ -19,7 +19,7 @@ class RuangController extends Controller
     public function index()
     {
         //
-        $ruang = Ruang::with('departemen')->get();
+        $ruang = Ruang::with('fakultas')->get();
         return view('admin.ruang.index', compact('ruang'));
     }
 
