@@ -108,13 +108,4 @@ class MahasiswaController extends Controller
         return redirect()->route('mahasiswa.index')->with('success', 'Mahasiswa berhasil dihapus!.');
     }
 
-    public function showIrs()
-    {
-        // Retrieve jadwal records and order by day and start time
-        $jadwals = Jadwal::with('mataKuliah')->orderBy('hari')->orderBy('jam_mulai')->get();
-
-        // Return the view with jadwals data
-        return view('mahasiswa.irs_mhs', compact('jadwals'));
-    
-    }
 }

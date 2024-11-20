@@ -47,14 +47,19 @@ class WaliDropdownController extends Controller
     
         // Mengambil daftar mahasiswa berdasarkan kriteria
         $mahasiswaList = $user->dosen->mahasiswa()
-            ->whereIn('kode_prodi', $prodiIds)
-            ->where('tahun_masuk', $tahun)
-            ->whereHas('irs', function ($query) use ($status, $tahunAjaranAktif) {
-                $query->where('status', $status)
-                      ->where('tahun_akademik', $tahunAjaranAktif->kode_tahun);
-            })
-            ->with(['irs', 'prodi'])
-            ->get();
+        ->whereIn('kode_prodi', $prodiIds)
+        ->when($tahun, function ($query) use ($tahun) {
+            $query->where('tahun_masuk', $tahun);
+        })
+        ->whereHas('irs', function ($query) use ($status, $tahunAjaranAktif) {
+            $query->where('tahun_akademik', $tahunAjaranAktif->kode_tahun)
+                ->when($status, function ($query) use ($status) {
+                    $query->where('status', $status);
+                });
+        })
+        ->with(['irs', 'prodi'])
+        ->get();
+
     
         return response()->json(['mahasiswa' => $mahasiswaList, 'tahun_ajaran_aktif' => $tahunAjaranAktif]);
     }

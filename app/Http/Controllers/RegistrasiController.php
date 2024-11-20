@@ -16,8 +16,6 @@ class RegistrasiController extends Controller
     
         return view('mahasiswa.registrasi_mhs', compact('mahasiswa', 'historyRegistrasi'));
     }
-    
-    
 
     public function getRegistrasiData(Request $request)
     {

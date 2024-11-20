@@ -13,7 +13,7 @@ class AkademikController extends Controller
     public function index()
     {
         // Ambil data profil dan ruang kelas untuk dashboard akademik
-        $ruangs = ruang::all();
+        $ruangs = Ruang::all();
 
         return view('akademik.dashboard', [
             'ruangs' => $ruangs,
@@ -32,7 +32,7 @@ class AkademikController extends Controller
         ]);
 
         // Update status ruang kelas
-        $ruang = ruang::where('kode_ruang', $request->kode)->firstOrFail();
+        $ruang = Ruang::where('kode_ruang', $request->kode)->firstOrFail();
         $ruang->status_ketersediaan = $request->status_ketersediaan;
         $ruang->save();
 

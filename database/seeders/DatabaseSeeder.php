@@ -13,13 +13,16 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
+            TahunSeeder::class,
             FDSSeeder::class,
             DosenSeeder::class,
             MahasiswaSeeder::class,
             DekanSeeder::class,
             MKSeeder::class,
             RuangSeeder::class,
-            // JadwalSeeder::class,
+            AkademikSeeder::class,
+            JadwalSeeder::class,
+            IRSSeeder::class,
         ]);
     }
 }

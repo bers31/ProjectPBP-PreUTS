@@ -21,7 +21,11 @@ class JadwalSeeder extends Seeder
         // Pastikan ada ruang kelas yang terdaftar sebelum menambahkan jadwal
 
         Jadwal::create([
+<<<<<<< HEAD
             'kode_mk' => 'PAIK6102',
+=======
+            'kode_mk' => 'PAIK6702',
+>>>>>>> 6683817576b2d737db8527686a8de0605fa1b3e1
             'hari' => 'Senin',
             'kode_kelas' => 'D',
             'jam_mulai' => '13:00:00',
