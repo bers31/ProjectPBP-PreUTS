@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
 use App\Models\HistoryRegistrasi;
+use App\Models\IRS;
+use App\Models\Tahun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,6 +27,14 @@ class RegistrasiController extends Controller
         if ($mahasiswa->status != 'aktif') {
             $mahasiswa->status = 'aktif';
             $mahasiswa->save();
+            $tahun_akademik = Tahun::where('status','aktif')->value('kode_tahun');
+            IRS::firstOrCreate(
+                [
+                    'nim_mahasiswa' => $mahasiswa->nim,
+                    'semester' => $mahasiswa->semester,
+                    'tahun_akademik' => $tahun_akademik,
+                ]
+            );
     
             // Calculate tagihan based on gol_ukt
             $tagihanMap = [

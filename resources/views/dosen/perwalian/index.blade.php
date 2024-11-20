@@ -42,6 +42,11 @@
             </form>
         </div>
         
+         <!-- Tombol Setujui IRS -->
+         <div class="flex justify-end mt-5 px-10">
+            <button type="button" id="approveIRS" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 hidden">Setujui IRS</button>
+        </div>
+
         <!-- Tabel Mahasiswa -->
         <div id="tableWrapper" class="overflow-x-auto p-8 hidden">
             <table id="mahasiswaTable" class="min-w-full bg-white divide-y divide-gray-200 table-fixed hidden w-full cell-border">
@@ -69,10 +74,7 @@
             </table>
         </div>
 
-        <!-- Tombol Setujui IRS -->
-        <div class="flex justify-end mt-5 px-10">
-            <button type="button" id="approveIRS" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 hidden">Setujui IRS</button>
-        </div>
+       
         
         <!-- jQuery, DataTables, dan AJAX Script -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
