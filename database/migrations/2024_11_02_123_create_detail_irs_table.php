@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_jadwal');
             $table->foreign('id_irs')->references('id_irs')->on('irs')->onDelete('cascade');
             $table->foreign('id_jadwal')->references('id_jadwal')->on('jadwal')->onDelete('cascade');
-            $table->unique(['id_irs','id_jadwal']);
+            $table->primary(['id_irs','id_jadwal']);
             $table->timestamps();
         });
     }
