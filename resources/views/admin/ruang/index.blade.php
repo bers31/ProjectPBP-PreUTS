@@ -24,7 +24,6 @@
                         <th class="border border-gray-400 px-4 py-2">Fakultas</th>
                         <th class="border border-gray-400 px-4 py-2">Kapasitas</th>
                         <th class="border border-gray-400 px-4 py-2">Status Ketersediaan</th>
-                        <th class="border border-gray-400 px-4 py-2">Status Verifikasi</th>
                         <th class="border border-gray-400 px-4 py-2">Actions</th>
                     </tr>
                 </thead>
@@ -36,17 +35,6 @@
                             <td class="border border-gray-400 px-4 py-2">Fakultas {{ $data->fakultas->nama_fakultas }}</td>
                             <td class="border border-gray-400 px-4 py-2">{{ $data->kapasitas }}</td>
                             <td class="border border-gray-400 px-4 py-2">{{ $data->status_ketersediaan }}</td>
-                            <td class="border border-gray-400 px-4 py-2">
-                                <span class="font-semibold rounded-lg my-4 px-3 py-1
-                                    @if ($data->status_verifikasi === 'Disetujui')
-                                        bg-green-500
-                                    @elseif ($data->status_verifikasi === 'Belum Disetujui')
-                                        bg-yellow-300
-                                    @endif
-                                ">
-                                    {{ $data->status_verifikasi }}
-                                </span>
-                            </td>
                             
                         
                             <td class="border border-gray-400 px-4 py-2">
