@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Dosen;
+use App\Models\Mahasiswa;
 use App\Models\Prodi;
 use App\Models\Tahun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class WaliDropdownController extends Controller
+class WaliController extends Controller
 {
     public function fetchTahun(Request $request)
     {
@@ -71,4 +72,11 @@ class WaliDropdownController extends Controller
         $DosenList = Dosen::where('kode_departemen',$departemen)->get(['nidn','nama'])->flatten();
         return response()->json(['dosen' => $DosenList]);
     }
+
+    public function view($nim)
+    {
+        $mahasiswa = Mahasiswa::where('nim', $nim)->firstOrFail();
+        return view('dosen.perwalian.view', ['mahasiswa' => $mahasiswa]);
+    }
+    
 }

@@ -21,14 +21,23 @@
                 
                 <!-- Username -->
                 <div class="mb-5">
-                    <input type="text" id="identifier" name="identifier"  placeholder="Email/NIM/NIP" value="{{ old('identifier') }}" class="form-control w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:border-red-600" autocomplete="identifier">  
+                    <input type="text" id="identifier" name="identifier" placeholder="Email/NIM/NIP" value="{{ old('identifier') }}" class="form-control w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:border-red-600" autocomplete="identifier">  
                     @error('identifier')
                     <div class="alert alert-danger mt-1 text-red-500">{{ $message }}</div>
                     @enderror
                 </div>
+                
                 <!-- Password -->
-                <div class="mb-5">
-                    <input type="password" id="password" name="password" placeholder="Password" class="form-control w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:border-red-600">
+                <div class="mb-5 relative">
+                    <div class="relative w-full">
+                        <input type="password" id="password" name="password" placeholder="Password" class="form-control w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:border-red-600">
+                        <span id="toggle-password" class="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer text-gray-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-.733 1.933-2.014 3.658-3.686 4.9m-3.676-3.143c-.609.308-1.275.49-1.98.49-2.21 0-4-1.79-4-4 0-.705.182-1.371.49-1.98" />
+                            </svg>
+                        </span>
+                    </div>
                     @error('password')
                     <div class="alert alert-danger mt-1 text-red-500">{{ $message }}</div>
                     @enderror
@@ -52,5 +61,18 @@
     </div>
 </div>
 
+<script>
+    document.getElementById('toggle-password').addEventListener('click', function () {
+        const passwordField = document.getElementById('password');
+        const icon = this.querySelector('svg');
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            icon.setAttribute('stroke', 'red'); // Change icon color if needed
+        } else {
+            passwordField.type = 'password';
+            icon.setAttribute('stroke', 'currentColor'); // Revert icon color
+        }
+    });
+</script>
 
 @include('footer')

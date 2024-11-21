@@ -1,78 +1,121 @@
 @include('header')
-<div class="flex flex-col min-h-screen">
+<div class="flex flex-col h-full">
     <!-- NavBar -->
-    <x-navbar/>
-    <div class="flex flex-col flex-grow">
+    <x-navbar />
+    <div class="flex flex-col flex-grow p-8">
         <!-- Header -->
-        <div class="flex items-center justify-between py-3 p-8">
+        <div class="flex items-center justify-between py-3">
             <div class="font-bold text-lg md:text-xl pl-4 py-1">
                 Perwalian
             </div>
         </div>
-        
-        <!-- Dropdown Departemen dan Status IRS -->
-        <div class="flex mt-5 p-8">
-            <form id="filterForm" class="max-w-sm mx-start pl-4">
+
+        <!-- Content Section -->
+        <div class="flex flex-row justify-between mt-5">
+            <!-- Dropdown Section -->
+            <form id="filterForm" class="flex flex-col max-w-sm space-y-4">
                 @csrf
-                <label for="departemen" class="block mb-2 text-sm font-medium text-gray-900">Departemen</label>
-                <select id="departemen" name="departemen" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5">
-                    <option selected disabled>---- Pilih Departemen ----</option>
-                    <option value="IF">S1 - Informatika</option>
-                    <option value="S2-Sistem Informasi">S2 - Sistem Informasi</option>
-                    <option value="S3-Sistem Informasi">S3 - Sistem Informasi</option>
-                </select>
-                
-                <label for="tahun" class="block mt-4 mb-2 text-sm font-medium text-gray-900">Tahun Angkatan</label>
-                <select id="tahun" name="tahun" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5">
-                    <option selected disabled>---- Pilih Tahun Angkatan ----</option>
-                    
-                </select>
-
-                <label for="status" class="block mt-4 mb-2 text-sm font-medium text-gray-900">Status IRS</label>
-                <select id="status" name="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5">
-                    <option selected disabled>---- Pilih Status IRS ----</option>
-                    <option value="">Semua</option>
-                    <option value="sudah_disetujui">Disetujui</option>
-                    <option value="belum_irs">Belum IRS</option>
-                    <option value="belum_disetujui">Belum Disetujui</option>
-                </select>
-                
-                <!-- Tombol Submit -->
-                <button type="button" id="submitFilter" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700">Tampilkan Mahasiswa</button>
+                <div>
+                    <label for="departemen" class="block mb-2 text-sm font-medium text-gray-900">Departemen</label>
+                    <select id="departemen" name="departemen" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option selected disabled>---- Pilih Departemen ----</option>
+                        <option value="IF">S1 - Informatika</option>
+                        <option value="S2-Sistem Informasi">S2 - Sistem Informasi</option>
+                        <option value="S3-Sistem Informasi">S3 - Sistem Informasi</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="tahun" class="block mb-2 text-sm font-medium text-gray-900">Tahun Angkatan</label>
+                    <select id="tahun" name="tahun" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option selected disabled>---- Pilih Tahun Angkatan ----</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="status" class="block mb-2 text-sm font-medium text-gray-900">Status IRS</label>
+                    <select id="status" name="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option selected disabled>---- Pilih Status IRS ----</option>
+                        <option value="">Semua</option>
+                        <option value="sudah_disetujui">Disetujui</option>
+                        <option value="belum_irs">Belum IRS</option>
+                        <option value="belum_disetujui">Belum Disetujui</option>
+                    </select>
+                </div>
+                <button type="button" id="submitFilter" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700">
+                    Tampilkan Mahasiswa
+                </button>
             </form>
+
+            <!-- Status Selection Table -->
+            <div class="flex-grow max-w-3xl ml-8">
+                <table class="table-auto w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="border border-gray-300 px-4 py-2">Belum IRS</th>
+                            <th class="border border-gray-300 px-4 py-2">Belum Disetujui</th>
+                            <th class="border border-gray-300 px-4 py-2">Sudah Disetujui</th>
+                            <th class="border border-gray-300 px-4 py-2">Non-Aktif</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-300 px-4 py-2">1</td>
+                            <td class="border border-gray-300 px-4 py-2">0</td>
+                            <td class="border border-gray-300 px-4 py-2">0</td>
+                            <td class="border border-gray-300 px-4 py-2">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+            <!-- Tombol Setujui IRS -->
+        <div class="flex justify-start mt-5 px-2">
+            <button type="button" id="approveIRS" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 hidden">Setujui IRS</button>
+            <button type="button" id="cancelIRS" class="px-4 ml-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 hidden">Batalkan IRS</button>
         </div>
         
-         <!-- Tombol Setujui IRS -->
-         <div class="flex justify-end mt-5 px-10">
-            <button type="button" id="approveIRS" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 hidden">Setujui IRS</button>
-        </div>
 
-        <!-- Tabel Mahasiswa -->
-        <div id="tableWrapper" class="overflow-x-auto p-8 hidden">
-            <table id="mahasiswaTable" class="min-w-full bg-white divide-y divide-gray-200 table-fixed hidden w-full cell-border">
+        <!-- Student Table -->
+        <div id="tableWrapper" class="overflow-x-auto mt-8 hidden">
+            <table id="mahasiswaTable" class="min-w-full bg-white divide-y divide-gray-200 table-fixed w-full">
                 <thead class="bg-gray-200">
                     <tr>
-                        <th id="check" class="w-10 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" >
+                        <th id="check" class="w-10 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             <input type="checkbox" id="selectAll">
                         </th>
-                        <th class="w-32 ml-10 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="padding-left: 0">NIM</th>
-                        <th class="w-48 ml-10 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="padding-left: 0">Nama</th>
-                        <th class="w-40 ml-10 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="padding-left: 0">Departemen</th>
-                        <th class="w-32 ml-10 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="padding-left: 0">Tahun Masuk</th>
-                        <th class="w-48 ml-10 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="padding-left: 0">Status IRS</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NIM</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departemen</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tahun Masuk</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status IRS</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                        
                     </tr>
                     <tr>
                         <th></th>
-                        <th style="padding-left: 0"><input type="text" class="form-control column-search w-full" placeholder="Cari NIM" ></th>
-                        <th style="padding-left: 0"><input type="text" class="form-control column-search w-full" placeholder="Cari Nama" ></th>
-                        <th style="padding-left: 0"><input type="text" class="form-control column-search w-full" placeholder="Cari Departemen" ></th>
-                        <th style="padding-left: 0"><input type="text" class="form-control column-search w-full" placeholder="Cari Tahun Masuk" ></th>
-                        <th style="padding-left: 0"><input type="text" class="form-control column-search w-full" placeholder="Cari Status" ></th>
+                        <th><input type="text" class="form-control column-search w-full" style="padding-left:0; "placeholder="Cari NIM"></th>
+                        <th><input type="text" class="form-control column-search w-full" style="padding-left:0; "placeholder="Cari Nama"></th>
+                        <th><input type="text" class="form-control column-search w-full" style="padding-left:0; "placeholder="Cari Departemen"></th>
+                        <th><input type="text" class="form-control column-search w-full" style="padding-left:0; "placeholder="Cari Tahun Masuk"></th>
+                        <th>
+                            <select class="form-control column-search w-full" style="padding: .5rem .75rem;padding-left:0">
+                                <option selected disabled>Pilih Status IRS</option>
+                                <option value="">Semua</option>
+                                <option value="sudah_disetujui">Disetujui</option>
+                                <option value="belum_irs">Belum IRS</option>
+                                <option value="belum_disetujui">Belum Disetujui</option>
+                            </select>
+                        </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             </table>
         </div>
+    </div>
+</div>
+
+
 
        
         
@@ -92,16 +135,29 @@
                     "searchPanes": false,
                     "ordering": true,
                     "sensitivity": "accent",
+                    columnDefs: [
+                        { 
+                            targets: 6, 
+                            orderable: false,
+                            searchable: false
+                        }
+                    ],
                     initComplete: function () {
                         // Apply search function for each column
-                        this.api().columns().every(function () {
-                            var that = this;
-                            $('input', this.header()).on('keyup change clear', function () {
-                                if (that.search() !== this.value ) {
-                                    console.log(that);
-                                    that.search(this.value).draw();
-                                }
-                            });
+                        this.api().columns().every(function (index) {
+                            var column = this;
+                            if (index === 5) {  // Status IRS column
+                                $('select', this.header()).on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                    column.search(val ? '^' + val + '$' : '', true, false).draw();
+                                });
+                            } else if (index !== 6) {  // Exclude Action column
+                                $('input', this.header()).on('keyup change clear', function () {
+                                    if (column.search() !== this.value) {
+                                        column.search(this.value).draw();
+                                    }
+                                });
+                            }
                         });
                     }
                 });
@@ -152,6 +208,7 @@
                                     $('#tableWrapper').removeClass('hidden');
                                     $('#mahasiswaTable').removeClass('hidden');
                                     $('#approveIRS').removeClass('hidden');
+                                    $('#cancelIRS').removeClass('hidden');
 
                                     $.each(result.mahasiswa, function (index, mahasiswa) {
                                         let irsStatus = "Tidak ada data IRS";
@@ -168,13 +225,29 @@
                                             mahasiswa.nama,
                                             mahasiswa.prodi.nama,
                                             mahasiswa.tahun_masuk,
-                                            irsStatus
+                                            irsStatus,
+                                            '<div class="flex space-x-2">' +
+                                                '<button class="btn-approve bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600" data-nim="' + mahasiswa.nim + '">Approve</button>' +
+                                                '<button class="btn-view bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600" data-nim="' + mahasiswa.nim + '">View</button>' +
+                                            '</div>'
                                         ]).draw(false);
+                                    });
+                                    
+                                    // Add event listeners for approve and view buttons
+                                    $('.btn-approve').on('click', function() {
+                                        var nim = $(this).data('nim');
+                                        // Implement approve logic here
+                                        console.log('Approve clicked for NIM: ' + nim);
+                                    });
+
+                                    $('.btn-view').on('click', function() {
+                                        const nim = $(this).data('nim');
+                                        window.location.href = `/dosen/perwalian/${nim}`;
                                     });
                                 } else {
                                     $('#mahasiswaTable').removeClass('hidden');
                                     $('#approveIRS').addClass('hidden');
-                                    table.row.add(['', 'Tidak ada data mahasiswa', '', '', '', '']).draw(false);
+                                    table.row.add(['', 'Tidak ada data mahasiswa', '', '', '', '', '']).draw(false);
                                 }
                             },
                             error: function () {

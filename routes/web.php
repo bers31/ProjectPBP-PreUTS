@@ -11,7 +11,7 @@ use App\Http\Controllers\IRSController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\WaliDropdownController;
+use App\Http\Controllers\WaliController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\RuangController;
 use App\Http\Controllers\MataKuliahController;
@@ -120,12 +120,13 @@ Route::middleware(['auth','role:dosen'])->group(function(){
     
 });
 
-Route::post('/api/fetch-tahun', [WaliDropdownController::class, 'fetchTahun'])->name('fetch.tahun');
-Route::post('/api/fetch-mahasiswa', [WaliDropdownController::class, 'fetchMahasiswa']);
+Route::post('/api/fetch-tahun', [WaliController::class, 'fetchTahun'])->name('fetch.tahun');
+Route::post('/api/fetch-mahasiswa', [WaliController::class, 'fetchMahasiswa']);
 Route::post('/api/fetch-departemen', [DepartemenController::class, 'fetchDepartemen']);
 Route::post('/api/fetch-prodi', [ProdiController::class, 'fetchProdi']);
-Route::post('/api/fetch-doswal', [WaliDropdownController::class, 'fetchDoswal']);
+Route::post('/api/fetch-doswal', [WaliController::class, 'fetchDoswal']);
 
+Route::get('dosen/perwalian/{nim}', [WaliController::class, 'view'])->name('perwalian.view')->middleware('perwalian');
 
 Route::middleware(['auth', 'role:kaprodi'])->group(function(){
     Route::get('/kaprodi/menu', function() {
