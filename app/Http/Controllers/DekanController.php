@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\jadwal;
-use App\Models\ruang;
+use App\Models\Jadwal;
+use App\Models\Ruang;
 
 class DekanController extends Controller
 {
     public function index()
     {
         // Ambil data jadwal dan ruang kelas dari database
-        $jadwals = jadwal::all();      // Pastikan tabel dan data Jadwal ada
-        $ruangs = ruang::all();   // Pastikan tabel dan data RuangKelas ada
+        $jadwals = Jadwal::all();      // Pastikan tabel dan data Jadwal ada
+        $ruangs = Ruang::all();   // Pastikan tabel dan data RuangKelas ada
 
         // Kirim data jadwal dan ruang ke view dashboard dekan
         return view('dekan.dashboard',[
@@ -24,7 +24,7 @@ class DekanController extends Controller
     public function setJadwal(Request $request)
     {
         // Proses untuk menetapkan jadwal
-        $jadwal = jadwal::findOrFail($request->input('id_jadwal'));
+        $jadwal = Jadwal::findOrFail($request->input('id_jadwal'));
         $jadwal->status = 'disetujui';
         $jadwal->save();
 
@@ -34,7 +34,7 @@ class DekanController extends Controller
     public function setRuang(Request $request)
     {
         // Proses untuk menetapkan ketersediaan ruang kelas
-        $ruang = ruang::findOrFail($request->input('kode_ruang'));
+        $ruang = Ruang::findOrFail($request->input('kode_ruang'));
         $ruang->status_ketersediaan = $request->input('status_ketersediaan');
         $ruang->save();
 
