@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Jadwal;
 use App\Models\Ruang;
-use Illuminate\Http\Request;
 
 class DekanController extends Controller
 {
@@ -15,7 +15,10 @@ class DekanController extends Controller
         $ruangs = Ruang::all();   // Pastikan tabel dan data RuangKelas ada
 
         // Kirim data jadwal dan ruang ke view dashboard dekan
-        return view('dekan.dashboard', compact('jadwals', 'ruangs'));
+        return view('dekan.dashboard',[
+            'ruangs' => $ruangs,
+            'jadwals' => $jadwals
+        ]);
     }
 
     public function setJadwal(Request $request)
