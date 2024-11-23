@@ -103,7 +103,7 @@
                             <td class="border px-4 py-2">
                                 <form action="{{ route('dekan.setRuang') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="kode" value="{{ $ruang->kode_ruang }}">
+                                    <input type="hidden" name="kode_ruang" value="{{ $ruang->kode_ruang }}">
                                     <select name="status_ketersediaan" class="border rounded p-1">
                                         <option value="Tersedia" {{ $ruang->status_ketersediaan == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
                                         <option value="Penuh" {{ $ruang->status_ketersediaan == 'Penuh' ? 'selected' : '' }}>Penuh</option>

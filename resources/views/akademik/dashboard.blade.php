@@ -37,8 +37,7 @@
                 </div>
                 <!-- Info Profile -->
                 <div class="flex flex-col justify-center gap-2 text-center lg:text-left">
-                    <h1 class=" text-gray-600">{{ Auth::user()->username }}</h1>
-                    <p class="text-lg text-gray-600">{{ Auth::user()->akademik->nip }}</p>
+                    <h2 class="text-5xl font-bold">Akademik</h2>
                     <p class="text-lg text-gray-600">Fakultas {{ Auth::user()->akademik->kode_fakultas }}</p>
                     <p class="text-lg text-gray-600">Bagian Akademik</p>
                     <p class="text-lg text-blue-500">{{ Auth::user()->akademik->email }}</p>
