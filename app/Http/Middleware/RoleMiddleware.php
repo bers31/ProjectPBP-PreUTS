@@ -21,10 +21,10 @@ class RoleMiddleware
         if (Auth::check() && Auth::user()->role === $role) {
             return $next($request);
         }
-        if(Auth::user()->role === 'dosen' && Auth::user()->dosen->dekan){
+        else if(Auth::user()->role === 'dosen' && Auth::user()->dosen->dekan && $role === 'dekan'){
             return $next($request);
         }
-        else if(Auth::user()->role === 'dosen' && Auth::user()->dosen->kaprodi){
+        else if(Auth::user()->role === 'dosen' && Auth::user()->dosen->kaprodi && $role === 'kaprodi'){
             return $next($request);
         }
 
