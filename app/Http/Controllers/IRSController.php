@@ -16,7 +16,6 @@ class IRSController extends Controller
     // Display IRS page for a specific Mahasiswa
     public function index(Request $request)
     {   
-
         // get mahasiswa
         $mahasiswa = Auth::user()->mahasiswa;
         
@@ -26,29 +25,28 @@ class IRSController extends Controller
         // Get the Mahasiswa's IRS record
         $irs = IRS::where('nim_mahasiswa', $nim)->firstOrFail();
 
-        // mengambil irs terbaru
-        $latestIrs = $mahasiswa->irs()->latest()->first();
-    
         // Get Mahasiswa's semester
         $semesterMHS = Mahasiswa::where('nim', $nim)->value('semester');
-
+        
         // Get all Mata Kuliah for the semester
         $mataKuliah = MataKuliah::where('semester', $semesterMHS)->get();
-
+        
         // Get all Jadwal based on Mata Kuliah kode_mk
         $jadwals = Jadwal::whereIn('kode_mk', $mataKuliah->pluck('kode_mk'))->get();
-
+        
         // Remove duplicate Mata Kuliah from Jadwal
         $jadwalsAmbil = $jadwals->unique('kode_mk');
-
+        
         // Get all the detail IRS entries for this IRS
         $detailIrs = DetailIrs::where('id_irs', $irs->id_irs)->get();
+        
+        // mengambil irs terbaru
+        $latestIrs = $mahasiswa->irs()->latest()->first();
 
         // Calculate total SKS
         $totalSKS = $detailIrs->sum(function ($detail) {
             return $detail->jadwal->mataKuliah->sks ?? 0;
-        });
-
+        });  
         return view('mahasiswa.irs_mhs', compact('irs', 'jadwals',  'jadwalsAmbil', 'detailIrs', 'latestIrs', 'totalSKS'));
     }
 
@@ -110,7 +108,6 @@ class IRSController extends Controller
             ->where('id_jadwal', $request->id_jadwal)
             ->first();
 
-    
         // Delete the record
         $detailIrs->delete();
     

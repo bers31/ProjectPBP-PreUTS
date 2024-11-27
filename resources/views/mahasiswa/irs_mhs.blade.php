@@ -32,12 +32,21 @@
                 <div class="p-5 border-2 border-[#80747475] rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
                     <h2 class="text-lg font-bold mb-4">Mata kuliah ditampilkan</h2>
                     <div class="flex items-center">
-                        <input 
-                            type="text" 
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" 
-                            placeholder="Cari matakuliah .." 
-                            id="searchInput"
-                        >
+                        <div id="search_mk" class=" mt-2 rounded-md  bg-white p-1 space-y-1">
+                            <div class="relative group">
+                                <!-- Search input -->
+                                <input id="search-input" class=" w-full px-4 py-2 text-gray-800 border rounded-md border-gray-300 " type="text" placeholder="Cari mata kuliah ..." autocomplete="off">
+                                <!-- Dropdown -->
+                                <div id="dropdown" class="hidden absolute bg-white border border-gray-300  w-full z-10 max-h-40 overflow-y-auto">
+                                    @foreach ($jadwals as $jadwal)
+                                        <a  href="#" 
+                                            class="block px-4 py-2 text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md">
+                                            {{ $jadwal->mataKuliah->nama_mk }}
+                                        </a>
+                                    @endforeach
+                                </div>                                
+                            </div>
+                        </div>
                     </div>
                     <div class="flex flex-col my-3">
                         <div class="flex flex-col overflow-y-auto max-h-60 gap-3">
@@ -54,7 +63,6 @@
                             @endforeach
                         </div>
                     </div>
-                    
                 </div>
             </div>
 
@@ -1346,6 +1354,38 @@
                 confirmButtonColor: '#3085d6'
             });
         @endif
+    });
+</script>
+
+<script>
+// JavaScript to toggle the dropdown
+    const dropdownMenu = document.getElementById('dropdown');
+    const searchInput = document.getElementById('search-input');
+    let isOpen = false; // Set to true to open the dropdown by default
+    
+    // Function to toggle the dropdown state
+    function toggleDropdown() {
+        isOpen = !isOpen;
+        dropdownMenu.classList.toggle('hidden', !isOpen);
+    }
+    
+    searchInput.addEventListener('click', () => {
+        toggleDropdown();
+    });
+    
+    // Add event listener to filter items based on input
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        const items = dropdownMenu.querySelectorAll('a');
+    
+        items.forEach((item) => {
+            const text = item.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
     });
 </script>
 
