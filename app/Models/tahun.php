@@ -22,4 +22,5 @@ class Tahun extends Model
     public function irs(){
         return $this->hasMany(IRS::class, 'kode_tahun', 'kode_tahun');
     }
+    
 }

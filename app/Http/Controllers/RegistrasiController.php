@@ -32,7 +32,7 @@ class RegistrasiController extends Controller
                 [
                     'nim_mahasiswa' => $mahasiswa->nim,
                     'semester' => $mahasiswa->semester,
-                    'tahun_akademik' => $tahun_akademik,
+                    'kode_tahun' => $tahun_akademik,
                 ]
             );
     
