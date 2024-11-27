@@ -19,7 +19,9 @@ class Tahun extends Model
         'status',
     ];
 
-    public function irs(){
-        return $this->belongsTo(Tahun::class, 'kode_tahun', 'tahun_akademik');
+    public function irs()
+    {
+        return $this->hasMany(IRS::class, 'tahun_akademik', 'kode_tahun');
     }
+    
 }

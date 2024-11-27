@@ -14,7 +14,7 @@
         <!-- Content -->
         <div class="flex py-3 p-8">
             <!-- SideBar Information -->
-            <div class="flex flex-col pl-4 w-1/4">
+            <div class="flex flex-col pl-4 w-1/4 gap-5">
                 <!-- Info Mahasiswa -->
                 <div class="p-5 border-2 border-[#80747475] rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
                     <p class="font-bold">Nama : </p>
@@ -22,20 +22,50 @@
                     <p class="font-bold">NIM : </p>
                     <p>{{ Auth::user()->mahasiswa->nim }}</p>
                     <p class="font-bold">Tahun Akademik : </p>
-                    <p>{{ Auth::user()->mahasiswa->tahun_akademik }} ({{Auth::user()->mahasiswa->semester % 2 != 0 ? 'Ganjil' : 'Genap'}})</p>
+                    <p>{{ $latestIrs->tahun->tahun_akademik }} ({{Auth::user()->mahasiswa->semester % 2 != 0 ? 'Ganjil' : 'Genap'}})</p>
                     <p class="font-bold">Semester : </p>
                     <p>{{ Auth::user()->mahasiswa->semester }}</p>
                     <p class="font-bold">IPK : </p>
                     <p>{{ Auth::user()->mahasiswa->ipk }}</p>
                 </div>
+                <!-- Search Box -->
+                <div class="p-5 border-2 border-[#80747475] rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                    <h2 class="text-lg font-bold mb-4">Mata kuliah ditampilkan</h2>
+                    <div class="flex items-center">
+                        <input 
+                            type="text" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" 
+                            placeholder="Cari matakuliah .." 
+                            id="searchInput"
+                        >
+                    </div>
+                    <div class="flex flex-col my-3">
+                        <div class="flex flex-col overflow-y-auto max-h-60 gap-3">
+                            @foreach ($jadwalsAmbil as $jadwal)
+                            <div class="rounded p-2 border-l-2 border-purple-600 bg-purple-50">
+                                <div class="flex justify-between items-center">
+                                    <p class="text-sm font-normal text-gray-900 mb-px max-w-24">{{ $jadwal->mataKuliah->nama_mk }}</p>
+                                    <div class="flex flex-col text-right">
+                                        <p class="text-sm font-normal text-gray-600 mb-px">Semester: {{ $jadwal->mataKuliah->semester }}</p>
+                                        <p class="text-sm font-normal text-gray-600 mb-px">SKS: {{ $jadwal->mataKuliah->sks }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    
+                </div>
             </div>
+
+
             <!-- IRS Calendar -->
             <div class="mx-5">
                 <section class="relative border-2 border-[#80747475] rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
                     <div class="w-full max-w-7xl mx-auto px-6 lg:px-8 overflow-x-auto">
                         <!-- Row Hari -->
                         <div class=" relative">
-                            <div class="grid grid-cols-6 border-t border-gray-200 sticky top-0 left-0 w-full">
+                            <div class="grid grid-cols-6 border-t border-r border-gray-200 sticky top-0 left-0 w-full">
                                 <div class="p-3.5 flex items-center justify-center text-sm font-medium  text-gray-900"></div>
                                 <div class="p-3.5 flex items-center justify-center text-sm font-medium  text-gray-900">Senin</div>
                                 <div class="p-3.5 flex items-center justify-center text-sm font-medium  text-gray-900">Selasa</div>
@@ -1218,7 +1248,6 @@
                 </section>                              
             </div>
 
-
             <!-- Sidebar Container -->
             <div class="relative">
                 <!-- Sidebar (Fixed) -->
@@ -1276,9 +1305,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-            
         </div>
     </div>
 
@@ -1294,3 +1321,31 @@
     </script>
 
 @include('footer')
+
+<!-- SWEET ALERT -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: "{{ session('success') }}",
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#3085d6'
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: "{{ session('error') }}",
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#3085d6'
+            });
+        @endif
+    });
+</script>
+

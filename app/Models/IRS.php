@@ -19,8 +19,9 @@ class IRS extends Model
         return $this->belongsTo(Mahasiswa::class, 'nim_mahasiswa', 'nim');
     }
 
-    public function tahun(){
-        return $this->belongsTo(IRS::class, 'kode_tahun', 'tahun_akademik');
+    public function tahun()
+    {
+        return $this->belongsTo(Tahun::class, 'tahun_akademik', 'kode_tahun');
     }
 
     public function detailIrs()
