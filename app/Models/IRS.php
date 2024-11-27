@@ -20,7 +20,7 @@ class IRS extends Model
     }
 
     public function tahun(){
-        return $this->belongsTo(IRS::class, 'tahun_akademik', 'kode_tahun');
+        return $this->belongsTo(IRS::class, 'kode_tahun', 'tahun_akademik');
     }
 
     public function detailIrs()

@@ -16,19 +16,16 @@
         <div class="grid grid-cols-1 lg:grid-cols-4 px-6 md:px-12 gap-5 mb-6">
             <!-- Profile Section -->
             <div class="col-span-1 lg:col-span-3 flex flex-col lg:flex-row p-6 lg:p-8 border-2 border-[#80747475] rounded-lg gap-3 shadow-md">
-                <!-- Foto Profile -->
                 <div class="p-5 flex justify-center lg:justify-start">
                     <img class="rounded-full w-36 h-36 lg:w-52 lg:h-52 object-cover" src="/img/Pasfoto.png" alt="pasfoto">
                 </div>
-                <!-- Info Profile -->
                 <div class="flex flex-col justify-center gap-2 text-center lg:text-left">
-                    <h2 class="text-5xl font-bold">{{ Auth::user()->dosen->nama }}</h2> <!-- Nama Dekan -->
-                    <p class="text-lg text-gray-600">{{ Auth::user()->dosen->nidn }}</p>  <!-- NIP Dekan -->
-                    <p class="text-lg text-gray-600">{{ Auth::user()->dosen->departemen->fakultas->nama_fakultas }}</p>       <!-- Fakultas -->
-                    <p class="text-lg text-gray-600"> {{ Auth::user()->dosen->departemen->nama }}</p>                 <!-- Prodi/Bagian -->
-                    <p class="text-lg text-blue-500">{{ Auth::user()->dosen->email }}</p> <!-- Email Dekan -->
+                    <h2 class="text-5xl font-bold">{{ Auth::user()->dosen->nama }}</h2>
+                    <p class="text-lg text-gray-600">{{ Auth::user()->dosen->nidn }}</p>
+                    <p class="text-lg text-gray-600">{{ Auth::user()->dosen->departemen->fakultas->nama_fakultas }}</p>
+                    <p class="text-lg text-gray-600">{{ Auth::user()->dosen->departemen->nama }}</p>
+                    <p class="text-lg text-blue-500">{{ Auth::user()->dosen->email }}</p>
                 </div>
-                <!-- Tombol Biodata -->
                 <div class="ml-auto mt-4 lg:mt-0 flex justify-center lg:block">
                     <button class="px-4 py-2 border-2 rounded-lg text-black font-semibold text-sm lg:text-lg hover:bg-[#f0f0f0]">
                         Biodata
@@ -43,7 +40,7 @@
                 </div>
                 <div class="flex-grow">
                     <ul class="list-disc space-y-2 text-center">
-                        <li>Terakhir pengisian IRS: 10-juni-2024</li> <!-- Contoh tanggal penting -->
+                        <li>Terakhir pengisian IRS: 10-juni-2024</li>
                     </ul>
                 </div>
             </div>
@@ -52,7 +49,7 @@
         <!-- Penetapan Jadwal Kuliah Section -->
         <div class="border p-6 rounded-lg mb-6 shadow-md">
             <h2 class="font-semibold text-xl mb-4">Penetapan Jadwal Kuliah</h2>
-            <table class="table-auto w-full">
+            <table id="jadwalTable" class="table-auto w-full">
                 <thead>
                     <tr>
                         <th class="px-4 py-2">Mata Kuliah</th>
@@ -85,7 +82,7 @@
         <!-- Penetapan Ketersediaan Ruang Kelas Section -->
         <div class="border p-6 rounded-lg shadow-md">
             <h2 class="font-semibold text-xl mb-4">Penetapan Ketersediaan Ruang Kelas</h2>
-            <table class="table-auto w-full">
+            <table id="ruangTable" class="table-auto w-full">
                 <thead>
                     <tr>
                         <th class="px-4 py-2">Nama/Kode Ruang</th>
@@ -120,3 +117,22 @@
 
     @include('footer')
 </div>
+
+<!-- DataTables JS dan Inisialisasi -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#jadwalTable').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/Indonesian.json"
+            }
+        });
+
+        $('#ruangTable').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/Indonesian.json"
+            }
+        });
+    });
+</script>
