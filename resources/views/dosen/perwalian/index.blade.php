@@ -100,9 +100,6 @@
             </table>
         </div>
     </div>
-<!-- </div> -->
-
-
 
         <style>
             .dataTables_length select {
@@ -478,7 +475,5 @@
                 // });
             });
         </script>
-    <!-- </div>
-</div> -->
 
 @include('footer')

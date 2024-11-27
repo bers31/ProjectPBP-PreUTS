@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DetailIRS;
 use App\Models\IRS;
 use App\Models\Jadwal;
+use App\Models\Mahasiswa;
 use App\Models\MataKuliah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,24 +15,39 @@ class IRSController extends Controller
 {
     // Display IRS page for a specific Mahasiswa
     public function index(Request $request)
-    {
-        // Assuming you use authenticated Mahasiswa
-        $nim = Auth::user()->mahasiswa->nim;
+    {   
+        // get mahasiswa
+        $mahasiswa = Auth::user()->mahasiswa;
+        
+        // Get mahasiswa nim
+        $nim = $mahasiswa->nim;
 
         // Get the Mahasiswa's IRS record
         $irs = IRS::where('nim_mahasiswa', $nim)->firstOrFail();
 
-        // Get all the jadwals (for selection)
-        $jadwals = Jadwal::all();
-
+        // Get Mahasiswa's semester
+        $semesterMHS = Mahasiswa::where('nim', $nim)->value('semester');
+        
+        // Get all Mata Kuliah for the semester
+        $mataKuliah = MataKuliah::where('semester', $semesterMHS)->get();
+        
+        // Get all Jadwal based on Mata Kuliah kode_mk
+        $jadwals = Jadwal::whereIn('kode_mk', $mataKuliah->pluck('kode_mk'))->get();
+        
+        // Remove duplicate Mata Kuliah from Jadwal
+        $jadwalsAmbil = $jadwals->unique('kode_mk');
+        
         // Get all the detail IRS entries for this IRS
         $detailIrs = DetailIrs::where('id_irs', $irs->id_irs)->get();
+        
+        // mengambil irs terbaru
+        $latestIrs = $mahasiswa->irs()->latest()->first();
 
+        // Calculate total SKS
         $totalSKS = $detailIrs->sum(function ($detail) {
             return $detail->jadwal->mataKuliah->sks ?? 0;
-        });
-
-        return view('mahasiswa.irs_mhs', compact('irs', 'jadwals', 'detailIrs', 'totalSKS'));
+        });  
+        return view('mahasiswa.irs_mhs', compact('irs', 'jadwals',  'jadwalsAmbil', 'detailIrs', 'latestIrs', 'totalSKS'));
     }
 
     // Add jadwal to detail IRS
@@ -42,24 +58,42 @@ class IRSController extends Controller
             'id_jadwal' => 'required|exists:jadwal,id_jadwal', // Ensure the Jadwal ID exists in the Jadwal table
         ]);
 
+        $id_jadwal = $request->id_jadwal;
+        $id_irs = $request->id_irs;
 
-        // // Check if the jadwal already exists in detail_irs
-        // $exists = DetailIrs::where('id_jadwal', $request->id_jadwal)
-        //     ->where('id_irs', $request->id_irs)
-        //     ->exists();
+        // get mk
+        $kode_mk = Jadwal::where('id_jadwal', $id_jadwal)->value('kode_mk');
 
-        // if ($exists) {
-        //     return response()->json(['message' => 'Jadwal already added'], 400);
-        // }
+        // check mk
+        $existsMK = DetailIrs::where('id_irs', $id_irs)
+            ->whereHas('jadwal', function ($query) use ($kode_mk, $id_jadwal) {
+                $query->where('kode_mk', $kode_mk)
+                    ->where('id_jadwal', '!=', $id_jadwal); // Pastikan id_jadwal berbeda
+            })
+            ->exists();
+
+        if ($existsMK) {
+            return redirect()->back()->with('error', 'Mata kuliah sudah diambil di jadwal lain!');
+        }
+
+        // check jadwal
+        $existsJadwal = DetailIrs::where('id_irs', $id_irs)
+            ->where('id_jadwal', $id_jadwal)
+            ->exists();
+
+        if ($existsJadwal) {
+            return redirect()->back()->with('error', 'Jadwal sudah ada!');
+        }
 
         // Add jadwal to detail_irs
         DetailIrs::create([
-            'id_irs' => $request->id_irs,
-            'id_jadwal' => $request->id_jadwal,
+            'id_irs' => $id_irs,
+            'id_jadwal' => $id_jadwal,
         ]);
 
         return redirect()->route('mahasiswa.irs_mhs')->with('success', 'Jadwal berhasil ditambahkan!');
     }
+
 
     public function delete(Request $request)
     {   
@@ -74,7 +108,6 @@ class IRSController extends Controller
             ->where('id_jadwal', $request->id_jadwal)
             ->first();
 
-    
         // Delete the record
         $detailIrs->delete();
     
