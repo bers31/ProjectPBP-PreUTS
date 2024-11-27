@@ -27,7 +27,23 @@
 
     @if(Auth::user()->role === "mahasiswa")
       <x-navbar.list href="{{ route('mahasiswa.status_akademik') }}">Status Akademik</x-navbar.list>
-      <x-navbar.list href="{{ route('mahasiswa.irs_mhs') }}">IRS</x-navbar.list>
+      <div class="relative group">
+        <!-- Trigger Dropdown -->
+        <x-navbar.list id="navbar-irs" href='#' class="cursor-pointer">IRS</x-navbar.list>
+    
+        <!-- Dropdown Menu -->
+        <div id="irs-dropdown" 
+            class="absolute hidden group-hover:block mt-2 bg-white rounded-lg shadow-lg w-48 z-10 border border-gray-200">
+            <a href="{{ route('mahasiswa.irs_mhs') }}" 
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                Buat IRS
+            </a>
+            <a href="{{ route('mahasiswa.history_irs') }}" 
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                IRS
+            </a>
+        </div>
+      </div>    
       <x-navbar.list href="{{ route('mahasiswa.khs_mhs') }}">KHS</x-navbar.list>
       <x-navbar.list href="{{ route('mahasiswa.transkrip_mhs') }}">Transkrip</x-navbar.list>
     @endif
@@ -62,3 +78,28 @@
     @endif
   </div>
 </div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const irsMenu = document.getElementById('navbar-irs');
+      const irsDropdown = document.getElementById('irs-dropdown');
+
+      // Toggle dropdown saat diklik
+      irsMenu.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (irsDropdown.classList.contains('hidden')) {
+              irsDropdown.classList.remove('hidden');
+          } else {
+              irsDropdown.classList.add('hidden');
+          }
+      });
+
+      // Menutup dropdown jika klik di luar
+      document.addEventListener('click', function (e) {
+          if (!irsMenu.contains(e.target) && !irsDropdown.contains(e.target)) {
+              irsDropdown.classList.add('hidden');
+          }
+      });
+  });
+</script>

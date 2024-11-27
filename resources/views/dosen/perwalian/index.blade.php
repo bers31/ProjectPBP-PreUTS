@@ -1,5 +1,5 @@
 @include('header')
-<div class="flex flex-col h-full">
+<div class="flex flex-col min-h-screen">
     <!-- NavBar -->
     <x-navbar />
     <div class="flex flex-col flex-grow p-8">
@@ -100,9 +100,6 @@
             </table>
         </div>
     </div>
-</div>
-
-
 
         <style>
             .dataTables_length select {
@@ -478,7 +475,5 @@
                 // });
             });
         </script>
-    </div>
-</div>
 
 @include('footer')
