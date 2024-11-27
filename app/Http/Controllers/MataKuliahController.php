@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\MataKuliah;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreMatKulRequest;
+use App\Http\Requests\UpdateMatKulRequest;
 
 class MataKuliahController extends Controller
 {
@@ -22,7 +24,8 @@ class MataKuliahController extends Controller
      */
     public function create()
     {
-        //
+
+        return view('kaprodi.matkul.create');
     }
 
     /**
@@ -31,10 +34,9 @@ class MataKuliahController extends Controller
     public function store(StoreMatKulRequest $request)
     {
         $validated = $request->validated();
-
         MataKuliah::create($validated);
         
-        return redirect()->route('matkul.index')->with('success', 'Mahasiswa berhasil dibuat!');
+        return redirect()->route('matkul.index')->with('success', 'Matkul berhasil dibuat!');
     }
 
     /**
@@ -48,18 +50,27 @@ class MataKuliahController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MataKuliah $mataKuliah)
-    {
-        //
+    public function edit(string $matakuliah)
+    {   
+        $matakuliah = MataKuliah::where('kode_mk', $matakuliah)->first();
+        return view('kaprodi.matkul.edit', compact('matakuliah'));        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, MataKuliah $mataKuliah)
+    public function update(UpdateMatKulRequest $request, MataKuliah $matakuliah)
     {
-        //
-    }
+
+        $validated = $request->validated();
+        
+        // Update data mahasiswa
+        $matakuliah->update($validated);
+
+        // Aktifkan kembali foreign key checks
+        return redirect()->route('matkul.index')
+                        ->with('success', 'Matakuliah berhasil diupdate!');
+        } 
 
     /**
      * Remove the specified resource from storage.
