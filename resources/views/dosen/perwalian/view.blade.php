@@ -1,6 +1,6 @@
 @include('header')
 
-<div class="flex flex-col h-full">
+<div class="flex flex-col min-h-screen">
   <x-navbar/>
   <div class="flex items-center py-3 ml-6">
     <div class="font-bold text-lg md:text-xl pl-4 py-1 px-1">
@@ -139,10 +139,8 @@
     </div> {{-- TAbbed --}}
 
   </div>
-</div>
 
 
-</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
   $(document).ready(function () {

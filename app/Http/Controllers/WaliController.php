@@ -90,7 +90,6 @@ class WaliController extends Controller
             ->with(['irs', 'prodi'])
             ->get();
     
-        
         return response()->json([
             'mahasiswa' => $mahasiswaList,
             'tahun_ajaran_aktif' => $tahunAjaranAktif,

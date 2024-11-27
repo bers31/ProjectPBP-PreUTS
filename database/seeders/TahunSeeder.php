@@ -31,7 +31,19 @@ class TahunSeeder extends Seeder{
                     'status'=>'non-aktif']);
       Tahun::create(['kode_tahun'=>'21/22GE',
                     'bag_semester'=>'genap',
-                    'tahun_akademik'=>'2021/2023',
+                    'tahun_akademik'=>'2021/2022',
+                    'status'=>'non-aktif']);
+      Tahun::create(['kode_tahun'=>'21/22GA',
+                    'bag_semester'=>'genap',
+                    'tahun_akademik'=>'2021/2022',
+                    'status'=>'non-aktif']);
+      Tahun::create(['kode_tahun'=>'20/21GE',
+                    'bag_semester'=>'genap',
+                    'tahun_akademik'=>'2020/2021',
+                    'status'=>'non-aktif']);
+      Tahun::create(['kode_tahun'=>'20/21GA',
+                    'bag_semester'=>'gasal',
+                    'tahun_akademik'=>'2020/2021',
                     'status'=>'non-aktif']);
     }
 }
