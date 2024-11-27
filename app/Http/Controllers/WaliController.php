@@ -56,17 +56,17 @@ class WaliController extends Controller
         $statusCounts = [
             'belum_irs' => (clone $allMahasiswaQuery)
                 ->whereHas('irs', function ($query) use ($tahunAjaranAktif) {
-                    $query->where('tahun_akademik', $tahunAjaranAktif->kode_tahun)
+                    $query->where('kode_tahun', $tahunAjaranAktif->kode_tahun)
                         ->where('status', 'belum_irs');
                 })->count(),
             'belum_disetujui' => (clone $allMahasiswaQuery)
                 ->whereHas('irs', function ($query) use ($tahunAjaranAktif) {
-                    $query->where('tahun_akademik', $tahunAjaranAktif->kode_tahun)
+                    $query->where('kode_tahun', $tahunAjaranAktif->kode_tahun)
                         ->where('status', 'belum_disetujui');
                 })->count(),
             'sudah_disetujui' => (clone $allMahasiswaQuery)
                 ->whereHas('irs', function ($query) use ($tahunAjaranAktif) {
-                    $query->where('tahun_akademik', $tahunAjaranAktif->kode_tahun)
+                    $query->where('kode_tahun', $tahunAjaranAktif->kode_tahun)
                         ->where('status', 'sudah_disetujui');
                 })->count(),
             'non_aktif' => (clone $allMahasiswaQuery)
@@ -82,7 +82,7 @@ class WaliController extends Controller
                 $query->where('tahun_masuk', $tahun);
             })
             ->whereHas('irs', function ($query) use ($status, $tahunAjaranAktif) {
-                $query->where('tahun_akademik', $tahunAjaranAktif->kode_tahun)
+                $query->where('kode_tahun', $tahunAjaranAktif->kode_tahun)
                     ->when($status, function ($query) use ($status) {
                         $query->where('status', $status);
                     });
@@ -120,22 +120,23 @@ class WaliController extends Controller
     public function fetchAjuanIRS(Request $request){
         $tahunAjaranAktif = Tahun::where('status', 'aktif')->value('kode_tahun');
         $nim = $request->nim;
-        $id_irs = IRS::where('nim_mahasiswa', $nim)->where('tahun_akademik', $tahunAjaranAktif)->value('id_irs');
+        $id_irs = IRS::where('nim_mahasiswa', $nim)->where('kode_tahun', $tahunAjaranAktif)->value('id_irs');
         $ListJadwal = DetailIRS::where('id_irs', $id_irs)->with(['jadwal.mataKuliah'])->get();
         return response()->json(['aju_irs' => $ListJadwal]);
     } 
 
-    public function fetchHistoryIRS(Request $request){
+    public function fetchHistoryIRS(Request $request)
+    {
         $nim = $request->nim;
-        
-        // Ambil seluruh IRS mahasiswa, diurutkan dari semester terkecil
+
+        // Fetch all IRS records for the student, sorted by semester
         $historyIRS = IRS::where('nim_mahasiswa', $nim)
             ->orderBy('semester', 'asc')
-            ->with(['detailIRS.jadwal.mataKuliah'])
+            ->with(['detailIRS.jadwal.mataKuliah', 'tahun'])
             ->get();
-        
-        // Transformasi data untuk frontend
-        $formattedHistory = $historyIRS->map(function($irs, $index) {
+
+        // Transform data for frontend
+        $formattedHistory = $historyIRS->map(function($irs) {
             $totalSKS = 0;
             $jadwalList = $irs->detailIRS->map(function($detail) use (&$totalSKS) {
                 $totalSKS += $detail->jadwal->mataKuliah->sks;
@@ -151,16 +152,17 @@ class WaliController extends Controller
                     'dosen' => $detail->jadwal->dosen ?? 'Tidak Tersedia'
                 ];
             });
-            
+
             return [
                 'semester' => $irs->semester,
-                'tahun_akademik' => $irs->tahun_akademik, // Asumsikan relasi dengan tabel tahun akademik
+                'tahun_akademik' => $irs->tahun->tahun_akademik ?? 'Tidak Tersedia',
                 'total_sks' => $totalSKS,
                 'jadwal' => $jadwalList
             ];
         });
-    
+
         return response()->json(['history_irs' => $formattedHistory]);
     }
+
 
 }

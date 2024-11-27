@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreign('nim_mahasiswa')->references('nim')->on('mahasiswa')->onDelete('cascade');
             $table->integer('semester');
             $table->unique(['nim_mahasiswa', 'semester']);
-            $table->string('tahun_akademik');
-            $table->foreign('tahun_akademik')->references('kode_tahun')->on('tahun_ajaran')->onDelete('cascade');
+            $table->string('kode_tahun');
+            $table->foreign('kode_tahun')->references('kode_tahun')->on('tahun_ajaran')->onDelete('cascade');
             $table->date('tanggal_pengisian')->nullable();
             $table->enum('status',['belum_irs','belum_disetujui','sudah_disetujui'])->default('belum_irs');
             $table->timestamps();

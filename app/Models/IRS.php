@@ -11,7 +11,7 @@ class IRS extends Model
     protected $table ='irs';
     protected $primaryKey = 'id_irs';
     protected $fillable =[
-        'id_irs', 'nim_mahasiswa', 'semester', 'tahun_akademik', 'tanggal_pengisian', 'status'
+        'id_irs', 'nim_mahasiswa', 'semester', 'kode_tahun', 'tanggal_pengisian', 'status'
     ];
 
     public function mahasiswa()
@@ -20,7 +20,7 @@ class IRS extends Model
     }
 
     public function tahun(){
-        return $this->belongsTo(IRS::class, 'kode_tahun', 'tahun_akademik');
+        return $this->belongsTo(Tahun::class, 'kode_tahun', 'kode_tahun');
     }
 
     public function detailIrs()

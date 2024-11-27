@@ -220,10 +220,12 @@
         success: function (response) {
             let historyIRS = response.history_irs;
             let historyContent = '';
-
+            
             // Check if historyIRS exists and has data
             if (historyIRS && historyIRS.length > 0) {
                 historyIRS.forEach((semester, index) => {
+                  console.log(semester);
+                  
                     historyContent += `
                     <div class="border-b last:border-b-0">
                         <!-- Semester Header -->
