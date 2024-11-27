@@ -136,11 +136,16 @@ Route::middleware(['auth', 'role:kaprodi'])->group(function(){
         return view('kaprodi.menu');
     })->name('kaprodi.menu')
       ->middleware('role:kaprodi');
-      
-    Route::resource('/kaprodi/matkul', MataKuliahController::class)->name('index','matkul.index')
-                                                           ->name('edit','matkul.edit')
-                                                           ->name('create','matkul.create')
-                                                           ->name('update','matkul.update');
+    Route::resource('/kaprodi/matkul', MataKuliahController::class)
+    ->names([
+        'index' => 'matkul.index',
+        'edit' => 'matkul.edit',
+        'create' => 'matkul.create',
+        'update' => 'matkul.update',
+        'store' => 'matkul.store',
+        'destroy' => 'matkul.destroy',
+        'show' => 'matkul.show',
+    ]);
 });
 
 // // Admin-specific routes with authentication and 'admin' middleware
