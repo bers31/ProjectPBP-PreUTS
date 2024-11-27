@@ -127,7 +127,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"/>
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             
             $(document).ready(function () {
@@ -256,7 +256,7 @@
                 $.each(result.mahasiswa, function (index, mahasiswa) {
                     let irsStatus = "Tidak ada data IRS";
                     if (mahasiswa.irs && mahasiswa.irs.length > 0) {
-                        let irsAktif = mahasiswa.irs.find(irs => irs.tahun_akademik === result.tahun_ajaran_aktif.kode_tahun);
+                        let irsAktif = mahasiswa.irs.find(irs => irs.kode_tahun === result.tahun_ajaran_aktif.kode_tahun);
                         if (irsAktif) {
                             irsStatus = irsAktif.status;
                         }
@@ -288,15 +288,15 @@
                 });
                 
                 // Add event listeners for approve and view buttons
-                $('.btn-approve').on('click', function() {
-                    var nim = $(this).data('nim');
-                    console.log('Approve clicked for NIM: ' + nim);
-                });
+                // $('.btn-approve').on('click', function() {
+                //     var nim = $(this).data('nim');
+                //     console.log('Approve clicked for NIM: ' + nim);
+                // });
 
-                $('.btn-view').on('click', function() {
-                    const nim = $(this).data('nim');
-                    window.location.href = `/dosen/perwalian/${nim}`;
-                });
+                // $('.btn-view').on('click', function() {
+                //     const nim = $(this).data('nim');
+                //     window.location.href = `/dosen/perwalian/${nim}`;
+                // });
             } else {
                 $('#mahasiswaTable').removeClass('hidden');
                 $('#approveIRS').addClass('hidden');
@@ -365,80 +365,146 @@
 
             // Update status counts when filter is submitted
             fetchMahasiswaStatus(prodi, tahun);
-
-            if (status != null) {
-                $.ajax({
-                    url: "{{ url('api/fetch-mahasiswa') }}",
-                    type: "POST",
-                    data: {
-                        prodi: prodi,
-                        tahun: tahun,
-                        status: status,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-                        table.clear().draw();
-
-                        if (result.mahasiswa.length > 0) {
-                            $('#tableWrapper').removeClass('hidden');
-                            $('#mahasiswaTable').removeClass('hidden');
-                            $('#approveIRS').removeClass('hidden');
-                            $('#cancelIRS').removeClass('hidden');
-
-                            $.each(result.mahasiswa, function (index, mahasiswa) {
-                                let irsStatus = "Tidak ada data IRS";
-                                if (mahasiswa.irs && mahasiswa.irs.length > 0) {
-                                    let irsAktif = mahasiswa.irs.find(irs => irs.tahun_akademik === result.tahun_ajaran_aktif.kode_tahun);
+                if (status != null) {
+                    $.ajax({
+                        url: "{{ url('api/fetch-mahasiswa') }}",
+                        type: "POST",
+                        data: {
+                            prodi: prodi,
+                            tahun: tahun,
+                            status: status,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        dataType: 'json',
+                        success: function (result) {
+                            table.clear().draw();
+                            
+                            if (result.mahasiswa.length > 0) {
+                                $('#tableWrapper').removeClass('hidden');
+                                $('#mahasiswaTable').removeClass('hidden');
+                                $('#approveIRS').removeClass('hidden');
+                                $('#cancelIRS').removeClass('hidden');
+                                
+                                $.each(result.mahasiswa, function (index, mahasiswa) {
+                                    // Dynamic IRS status determination
+                                    let irsStatus = "Tidak ada data IRS";
+                                    let irsAktif = mahasiswa.irs ? 
+                                        mahasiswa.irs.find(irs => irs.kode_tahun === result.tahun_ajaran_aktif.kode_tahun) 
+                                        : null;
+                                    
                                     if (irsAktif) {
                                         irsStatus = irsAktif.status;
                                     }
-                                }
 
-                                table.row.add([
-                                    '<input type="checkbox" class="studentCheckbox" value="' + mahasiswa.nim + '">',
-                                    mahasiswa.nim,
-                                    mahasiswa.nama,
-                                    mahasiswa.prodi.nama,
-                                    mahasiswa.status,
-                                    "",
-                                    "",
-                                    mahasiswa.tahun_masuk,
-                                    irsStatus,
-                                    '<div class="flex space-x-2">' +
-                                        '<button class="btn-approve bg-green-500 text-white px-1 py-1 rounded hover:bg-green-600" data-nim="' + mahasiswa.nim + '">Approve</button>' +
-                                        '<button class="btn-view bg-blue-500 text-white px-1 py-1 rounded hover:bg-blue-600" data-nim="' + mahasiswa.nim + '">View</button>' +
-                                    '</div>'
-                                ]).draw(false);
-                            });
+                                    // Function to render dynamic action buttons
+                                    function renderActionButtons(mahasiswa, tahunAjaranAktif) {
+                                        let irsAktif = mahasiswa.irs ? 
+                                            mahasiswa.irs.find(irs => irs.kode_tahun === tahunAjaranAktif) 
+                                            : null;
+                                        
+                                        let buttonHtml = '<div class="flex space-x-2">';
+                                        
+                                        if (irsAktif) {
+                                            if (irsAktif.status === 'belum_disetujui' || irsAktif.status === 'belum_irs') {
+                                                buttonHtml += `
+                                                    <button class="btn-approve bg-green-500 text-white px-1 py-1 rounded hover:bg-green-600" 
+                                                        data-nim="${mahasiswa.nim}" 
+                                                        data-action="approve">
+                                                        Setujui IRS
+                                                    </button>`;
+                                            } else if (irsAktif.status === 'sudah_disetujui') {
+                                                buttonHtml += `
+                                                    <button class="btn-reject bg-red-500 text-white px-1 py-1 rounded hover:bg-red-600" 
+                                                        data-nim="${mahasiswa.nim}" 
+                                                        data-action="reject">
+                                                        Batalkan IRS
+                                                    </button>`;
+                                            }
+                                        }
+                                        
+                                        buttonHtml += `
+                                            <button class="btn-view bg-blue-500 text-white px-1 py-1 rounded hover:bg-blue-600" 
+                                                data-nim="${mahasiswa.nim}">
+                                                View
+                                            </button>
+                                        </div>`;
+                                        
+                                        return buttonHtml;
+                                    }
+
+                                    table.row.add([
+                                        '<input type="checkbox" class="studentCheckbox" value="' + mahasiswa.nim + '">',
+                                        mahasiswa.nim,
+                                        mahasiswa.nama,
+                                        mahasiswa.prodi.nama,
+                                        mahasiswa.status,
+                                        "",
+                                        "",
+                                        mahasiswa.tahun_masuk,
+                                        irsStatus,
+                                        renderActionButtons(mahasiswa, result.tahun_ajaran_aktif.kode_tahun)
+                                    ]).draw(false);
+                                });
                             
-                            // Add event listeners for approve and view buttons
-                            $('.btn-approve').on('click', function() {
-                                var nim = $(this).data('nim');
-                                console.log('Approve clicked for NIM: ' + nim);
-                            });
+                                // Add event listeners for approve, reject, and view buttons
+                                $('.btn-approve, .btn-reject').on('click', function() {
+                                    var nim = $(this).data('nim');
+                                    var action = $(this).data('action');
+                                    
+                                    $.ajax({
+                                        url: "{{ url('api/approve-irs') }}",
+                                        type: "POST",
+                                        data: {
+                                            nim: [nim],
+                                            action: action,
+                                            _token: '{{ csrf_token() }}'
+                                        },
+                                        success: function(response) {
+                                            if (response.success) {
+                                                // Refresh the table to reflect the new status
+                                                $('#submitFilter').click();
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Berhasil',
+                                                    text: response.message
+                                                });
+                                            } else {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Gagal',
+                                                    text: response.message
+                                                });
+                                            }
+                                        },
+                                        error: function() {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Gagal',
+                                                text: 'Terjadi kesalahan saat memproses IRS'
+                                            });
+                                        }
+                                    });
+                                });
 
-                            $('.btn-view').on('click', function() {
-                                const nim = $(this).data('nim');
-                                window.location.href = `/dosen/perwalian/${nim}`;
-                            });
-
-                        } else {
-                            $('#tableWrapper').removeClass('hidden');
-                            $('#mahasiswaTable').removeClass('hidden');
-                            $('#approveIRS').addClass('hidden');
-                            $('#cancelIRS').addClass('hidden');
-                            console.log("masuk");
-                            table.row.add(['', '', 'Tidak ada data mahasiswa', '', '', '', '', '','','']).draw(false);
+                                $('.btn-view').on('click', function() {
+                                    const nim = $(this).data('nim');
+                                    window.location.href = `/dosen/perwalian/${nim}`;
+                                });
+                            } else {
+                                $('#tableWrapper').removeClass('hidden');
+                                $('#mahasiswaTable').removeClass('hidden');
+                                $('#approveIRS').addClass('hidden');
+                                $('#cancelIRS').addClass('hidden');
+                                table.row.add(['', '', 'Tidak ada data mahasiswa', '', '', '', '', '','','']).draw(false);
+                            }
+                        },
+                        error: function () {
+                            alert("Gagal mengambil data mahasiswa.");
                         }
-                    },
-                    error: function () {
-                        alert("Gagal mengambil data mahasiswa.");
-                    }
-                });
-            } else {
-                alert("Mohon pilih Status IRS.");
-            }
+                    });
+                } else {
+                    alert("Mohon pilih Status IRS.");
+                }
         });
 
 
@@ -447,6 +513,56 @@
                 $('.studentCheckbox').prop('checked', this.checked);
             });
 
+            $('#approveIRS, #cancelIRS').on('click', function() {
+            var action = $(this).attr('id') === 'approveIRS' ? 'approve' : 'reject';
+            var selectedStudents = [];
+            $('.studentCheckbox:checked').each(function() {
+                selectedStudents.push($(this).val());
+            });
+            
+            if (selectedStudents.length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Peringatan',
+                    text: 'Pilih mahasiswa terlebih dahulu'
+                });
+                return;
+            }
+            
+            $.ajax({
+                url: "{{ url('api/approve-irs') }}",
+                type: "POST",
+                data: {
+                    nim: selectedStudents,
+                    action: action,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Refresh the table to reflect the new status*
+                        $('#submitFilter').click();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: response.message
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: response.message
+                        });
+                    }
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Terjadi kesalahan saat memproses IRS'
+                    });
+                }
+            });
+        });
                 // Approve IRS for selected students
                 // $('#approveIRS').on('click', function () {
                 //     var selectedStudents = [];
@@ -473,7 +589,110 @@
                 //         alert("Tidak ada mahasiswa yang dipilih.");
                 //     }
                 // });
-            });
+    });
         </script>
 
+    <script>
+        function renderActionButtons(mahasiswa, tahunAjaranAktif) {
+            let irsAktif = mahasiswa.irs ? 
+                mahasiswa.irs.find(irs => irs.kode_tahun === tahunAjaranAktif) 
+                : null;
+            
+            let buttonHtml = '<div class="flex space-x-2">';
+            
+            if (irsAktif) {
+                if (irsAktif.status === 'belum_disetujui' || irsAktif.status === 'belum_irs') {
+                    buttonHtml += `
+                        <button class="btn-approve bg-green-500 text-white px-1 py-1 rounded hover:bg-green-600" 
+                            data-nim="${mahasiswa.nim}" 
+                            data-action="approve">
+                            Setujui IRS
+                        </button>`;
+                } else if (irsAktif.status === 'sudah_disetujui') {
+                    buttonHtml += `
+                        <button class="btn-reject bg-red-500 text-white px-1 py-1 rounded hover:bg-red-600" 
+                            data-nim="${mahasiswa.nim}" 
+                            data-action="reject">
+                            Batalkan IRS
+                        </button>`;
+                }
+            }
+            
+            buttonHtml += `
+                <button class="btn-view bg-blue-500 text-white px-1 py-1 rounded hover:bg-blue-600" 
+                    data-nim="${mahasiswa.nim}">
+                    View
+                </button>
+            </div>`;
+            
+            return buttonHtml;
+        }
+
+        // Modify the table rendering to use the new action button renderer*
+        $.each(result.mahasiswa, function (index, mahasiswa) {
+            let irsStatus = "Tidak ada data IRS";
+            let irsAktif = mahasiswa.irs ? 
+                mahasiswa.irs.find(irs => irs.kode_tahun === result.tahun_ajaran_aktif.kode_tahun) 
+                : null;
+            
+            if (irsAktif) {
+                irsStatus = irsAktif.status;
+            }
+            
+            table.row.add([
+                '<input type="checkbox" class="studentCheckbox" value="' + mahasiswa.nim + '">',
+                mahasiswa.nim,
+                mahasiswa.nama,
+                mahasiswa.prodi.nama,
+                mahasiswa.status,
+                "",
+                "",
+                mahasiswa.tahun_masuk,
+                irsStatus,
+                renderActionButtons(mahasiswa, result.tahun_ajaran_aktif.kode_tahun)
+            ]).draw(false);
+        });
+
+        // Approve/Reject IRS Event Handler*
+        $(document).on('click', '.btn-approve, .btn-reject', function() {
+            var nim = $(this).data('nim');
+            var action = $(this).data('action');
+            $.ajax({
+                url: "{{ url('api/approve-irs') }}",
+                type: "POST",
+                data: {
+                    nim: [nim],
+                    action: action,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Refresh the table to reflect the new status*
+                        $('#submitFilter').click();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: response.message
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: response.message
+                        });
+                    }
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Terjadi kesalahan saat memproses IRS'
+                    });
+                }
+            });
+        });
+
+        // Bulk Approve/Reject IRS*
+        
+    </script>
 @include('footer')

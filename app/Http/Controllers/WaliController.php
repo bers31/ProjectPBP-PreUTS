@@ -11,6 +11,8 @@ use App\Models\Prodi;
 use App\Models\Tahun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class WaliController extends Controller
 {
@@ -98,7 +100,56 @@ class WaliController extends Controller
         ]);
     }
     
-
+    public function approveIRS(Request $request)
+    {   
+        $tahunAjaranAktif = Tahun::where('status', 'aktif')->value('kode_tahun');
+        $validator = Validator::make($request->all(), [
+            'nim' => 'required|array',
+            'nim.*' => 'exists:mahasiswa,nim',
+            'action' => 'required|in:approve,reject'
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ], 400);
+        }
+    
+        try {
+            DB::beginTransaction();
+            foreach ($request->nim as $nim) {
+                // Find the active IRS for the current academic year
+                $irs = IRS::where('nim_mahasiswa', $nim)
+                    ->where('kode_tahun', $tahunAjaranAktif)
+                    ->first();
+    
+                if ($irs) {
+                    if ($request->action === 'approve') {
+                        $irs->status = 'sudah_disetujui';
+                    } else {
+                        $irs->status = 'belum_disetujui';
+                    }
+                    $irs->save();
+                }
+            }
+    
+            DB::commit();
+    
+            return response()->json([
+                'success' => true,
+                'message' => $request->action === 'approve' 
+                    ? 'IRS berhasil disetujui' 
+                    : 'IRS berhasil dibatalkan'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }    
 
     public function fetchDoswal(Request $request){
         $departemen = $request->id_departemen;

@@ -133,6 +133,7 @@ Route::post('/api/fetch-doswal', [WaliController::class, 'fetchDoswal']);
 Route::post('/api/count-status', [WaliController::class, 'fetchDoswal']);
 
 Route::get('dosen/perwalian/{nim}', [WaliController::class, 'view'])->name('perwalian.view')->middleware('perwalian');
+Route::post('api/approve-irs', [WaliController::class, 'approveIRS']);
 Route::post('/api/fetch-aju-irs', [WaliController::class, 'fetchAjuanIRS']);
 Route::post('/api/fetch-history-irs', [WaliController::class, 'fetchHistoryIRS']);
 
