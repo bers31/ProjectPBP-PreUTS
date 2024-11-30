@@ -15,6 +15,7 @@ use App\Http\Controllers\WaliController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\RuangController;
 use App\Http\Controllers\MataKuliahController;
+use App\Http\Controllers\PDFController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -133,19 +134,27 @@ Route::post('/api/fetch-doswal', [WaliController::class, 'fetchDoswal']);
 Route::post('/api/count-status', [WaliController::class, 'fetchDoswal']);
 
 Route::get('dosen/perwalian/{nim}', [WaliController::class, 'view'])->name('perwalian.view')->middleware('perwalian');
+Route::post('api/approve-irs', [WaliController::class, 'approveIRS']);
 Route::post('/api/fetch-aju-irs', [WaliController::class, 'fetchAjuanIRS']);
 Route::post('/api/fetch-history-irs', [WaliController::class, 'fetchHistoryIRS']);
+
+Route::get('/mhs/print_irs/{nim}', [PDFController::class, 'viewIRS']);
 
 Route::middleware(['auth', 'role:kaprodi'])->group(function(){
     Route::get('/kaprodi/menu', function() {
         return view('kaprodi.menu');
     })->name('kaprodi.menu')
       ->middleware('role:kaprodi');
-      
-    Route::resource('/kaprodi/matkul', MataKuliahController::class)->name('index','matkul.index')
-                                                           ->name('edit','matkul.edit')
-                                                           ->name('create','matkul.create')
-                                                           ->name('update','matkul.update');
+    Route::resource('/kaprodi/matkul', MataKuliahController::class)
+    ->names([
+        'index' => 'matkul.index',
+        'edit' => 'matkul.edit',
+        'create' => 'matkul.create',
+        'update' => 'matkul.update',
+        'store' => 'matkul.store',
+        'destroy' => 'matkul.destroy',
+        'show' => 'matkul.show',
+    ]);
 });
 
 // // Admin-specific routes with authentication and 'admin' middleware

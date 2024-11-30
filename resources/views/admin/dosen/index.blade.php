@@ -37,7 +37,6 @@
                                 <td class="border border-gray-400 px-4 py-2">{{ $row->mahasiswa()->count() ?? 0 }}</td>
                                 <td class="border border-gray-400 px-4 py-2">
                                     <a href="{{ route('dosen.edit', $row) }}" class="font-semibold border-2 border-[#80747475] rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.1)] my-4 px-3 py-1 bg-green-500 hover:bg-[#f0f0f0]">Edit</a>
-
                                     <form action="{{ route('dosen.destroy', $row) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')

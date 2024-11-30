@@ -11,6 +11,10 @@ use App\Models\Prodi;
 use App\Models\Tahun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+
+use function PHPUnit\Framework\isNull;
 
 class WaliController extends Controller
 {
@@ -36,12 +40,11 @@ class WaliController extends Controller
     public function fetchMahasiswa(Request $request)
     {
         $user = Auth::user();
-        $flag = $request->is_status_mahasiswa;
-        $prodi = $request->prodi;
-        $tahun = $request->tahun;
-        $status = $request->status;
-        $prodiIds = Prodi::where('kode_prodi', $prodi)->pluck('kode_prodi');
-    
+        $prodi = $request->prodi==="semua" ? "" :  $request->prodi;
+        $tahun = $request->tahun==="semua" ? "" : $request->tahun;
+        $status = $request->status ? $request->status : "" ;
+        $non_aktif = ['non-aktif', 'cuti','skorsing','lulus','mangkir'];
+
         // Mendapatkan kode tahun dari tahun ajaran yang aktif
         $tahunAjaranAktif = Tahun::where('status', 'aktif')->first('kode_tahun');
     
@@ -70,36 +73,93 @@ class WaliController extends Controller
                         ->where('status', 'sudah_disetujui');
                 })->count(),
             'non_aktif' => (clone $allMahasiswaQuery)
-                ->where('status', 'non-aktif')->count()
+                ->whereNot('status', 'aktif')->count()
         ];
-    
         // Query untuk data mahasiswa dengan filter
-        $mahasiswaList = ($flag) ? $user->dosen->mahasiswa()->whereNot('status','aktif')->with(['prodi'])->get() : $user->dosen->mahasiswa()
-            ->when($prodi, function ($query) use ($prodi) {
-                $query->where('kode_prodi', $prodi);
-            })
-            ->when($tahun, function ($query) use ($tahun) {
-                $query->where('tahun_masuk', $tahun);
-            })
-            ->whereHas('irs', function ($query) use ($status, $tahunAjaranAktif) {
+        $mahasiswaList = $user->dosen->mahasiswa()
+        ->when($prodi, function ($query) use ($prodi) {
+            $query->where('kode_prodi', $prodi);
+        })
+        ->when($tahun, function ($query) use ($tahun) {
+            $query->where('tahun_masuk', $tahun);
+        })
+        ->when($status !== 'non_aktif', function ($query) use ($status, $tahunAjaranAktif) {
+            $query->whereHas('irs', function ($query) use ($status, $tahunAjaranAktif) {
                 $query->where('kode_tahun', $tahunAjaranAktif->kode_tahun)
                     ->when($status, function ($query) use ($status) {
                         $query->where('status', $status);
                     });
-            })
-            ->with(['irs', 'prodi'])
-            ->get();
+            });
+        })
+        ->when($status === 'non_aktif', function ($query) use ($non_aktif) {
+            // If status is 'non_aktif', we don't apply the `whereHas` for 'irs'
+            $query->whereIn('status', $non_aktif);
+        })
+        ->with(['prodi', 'irs']) // Fetching only 'prodi' when 'non_aktif'
+        ->get();
     
-        
         return response()->json([
             'mahasiswa' => $mahasiswaList,
             'tahun_ajaran_aktif' => $tahunAjaranAktif,
             'status_counts' => $statusCounts,
-            'is_status_mahasiswa' => $flag
         ]);
     }
     
-
+    public function approveIRS(Request $request)
+    {   
+        $tahunAjaranAktif = Tahun::where('status', 'aktif')->value('kode_tahun');
+        $validator = Validator::make($request->all(), [
+            'nim' => 'required|array',
+            'nim.*' => 'exists:mahasiswa,nim',
+            'action' => 'required|in:approve,cancel'
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ], 400);
+        }
+    
+        try {
+            DB::beginTransaction();
+            foreach ($request->nim as $nim) {
+                // Find the active IRS for the current academic year
+                $irs = IRS::where('nim_mahasiswa', $nim)
+                    ->where('kode_tahun', $tahunAjaranAktif)
+                    ->first();
+                if ($irs->status === "belum_irs"){
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Mahasiswa belum melakukan IRS!'
+                    ]);
+                }
+                if ($irs) {
+                    if ($request->action === 'approve') {
+                        $irs->status = 'sudah_disetujui';
+                    } else {
+                        $irs->status = 'belum_disetujui';
+                    }
+                    $irs->save();
+                }
+            }
+    
+            DB::commit();
+    
+            return response()->json([
+                'success' => true,
+                'message' => $request->action === 'approve' 
+                    ? 'IRS berhasil disetujui' 
+                    : 'IRS berhasil dibatalkan'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }    
 
     public function fetchDoswal(Request $request){
         $departemen = $request->id_departemen;
@@ -117,13 +177,32 @@ class WaliController extends Controller
     }
     
     
-    public function fetchAjuanIRS(Request $request){
+    public function fetchAjuanIRS(Request $request)
+    {
         $tahunAjaranAktif = Tahun::where('status', 'aktif')->value('kode_tahun');
         $nim = $request->nim;
-        $id_irs = IRS::where('nim_mahasiswa', $nim)->where('kode_tahun', $tahunAjaranAktif)->value('id_irs');
-        $ListJadwal = DetailIRS::where('id_irs', $id_irs)->with(['jadwal.mataKuliah'])->get();
-        return response()->json(['aju_irs' => $ListJadwal]);
-    } 
+    
+        // Retrieve the IRS record for the active academic year
+        $irs = IRS::where('nim_mahasiswa', $nim)
+            ->where('kode_tahun', $tahunAjaranAktif)
+            ->first(['id_irs', 'status']); // Use `first()` to get a single record
+    
+        // Handle the case where no IRS record is found
+        if (!$irs) {
+            return response()->json(['message' => 'IRS record not found for the given NIM and active academic year.'], 404);
+        }
+    
+        // Fetch the list of schedules associated with the IRS
+        $ListJadwal = DetailIRS::where('id_irs', $irs->id_irs)
+            ->with(['jadwal.mataKuliah'])
+            ->get();
+    
+        return response()->json([
+            'aju_irs' => $ListJadwal,
+            'status_irs' => $irs->status,
+        ]);
+    }
+    
 
     public function fetchHistoryIRS(Request $request)
     {

@@ -28,6 +28,7 @@ class RegistrasiController extends Controller
             $mahasiswa->status = 'aktif';
             $mahasiswa->save();
             $tahun_akademik = Tahun::where('status','aktif')->value('kode_tahun');
+
             IRS::firstOrCreate(
                 [
                     'nim_mahasiswa' => $mahasiswa->nim,

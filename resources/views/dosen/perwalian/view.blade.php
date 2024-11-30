@@ -1,6 +1,6 @@
 @include('header')
 
-<div class="flex flex-col h-full">
+<div class="flex flex-col min-h-screen">
   <x-navbar/>
   <div class="flex items-center py-3 ml-6">
     <div class="font-bold text-lg md:text-xl pl-4 py-1 px-1">
@@ -18,14 +18,6 @@
       <div class="p-5 flex justify-center lg:justify-start">
           <img class="rounded-full w-36 h-36 lg:w-52 lg:h-52 object-cover" src="/img/Pasfoto.png" alt="pasfoto">
       </div>
-      <!-- Info Profile -->
-      {{-- <div class="flex flex-col justify-center gap-2 text-center lg:text-left">
-          <h1 class="text-5xl text-bold text-gray-600"> {{$mahasiswa->nama}} </h1>
-          <p class="text-lg text-gray-600"> {{$mahasiswa->nim}} </p>
-          <p class="text-lg text-gray-600"> </p>
-          <p class="text-lg text-gray-600"> </p>
-          <p class="text-lg text-blue-500">  </p>
-      </div> --}}
 
       {{-- Info Mahasiswa --}}
       <div class="bg-gray-50 rounded-lg p-6 grid grid-cols-2 gap-x-96 gap-y-2">
@@ -64,8 +56,27 @@
       </div>
     </div>
 
+    <div class="flex px-4 py-4 justify-end" id="irsActions">
+      <!-- Buttons for approval and cancellation -->
+      <button 
+          type="button" 
+          id="approveIRS" 
+          data-nim="{{ $nim }}"
+          data-action="approve"
+          class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 hidden">
+          Setujui IRS
+      </button>
+      <button 
+          type="button" 
+          id="cancelIRS" 
+          data-nim="{{ $nim }}"
+          data-action="cancel"
+          class="px-4 ml-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 hidden">
+          Batalkan IRS
+      </button>
+    </div>
     <!-- Tabbed Section -->
-    <div class="max-w-7xl mx-auto px-4 py-6" x-data="{ activeTab: 'irs' }"">
+    <div class=min-h-screen mx-auto px-4 py-6" x-data="{ activeTab: 'irs' }"">
       <!-- Tab Headers -->
       <div class="flex border-b">
           <button 
@@ -139,11 +150,8 @@
     </div> {{-- TAbbed --}}
 
   </div>
-</div>
-
-
-</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   $(document).ready(function () {
       let nim = "{{ $nim }}"; // Pass 'nim' dynamically from Blade
@@ -156,6 +164,20 @@
           },
           dataType: 'json',
           success: function (response) {
+            const statusIrs = response.status_irs;
+
+            // Select the buttons
+            const approveButton = $("#approveIRS");
+            const cancelButton = $("#cancelIRS");
+
+            // Determine which button to show
+            if (statusIrs === "belum_disetujui") {
+                approveButton.removeClass("hidden"); // Show approve button
+                cancelButton.addClass("hidden"); // Hide cancel button
+            } else if (statusIrs === "sudah_disetujui") {
+                cancelButton.removeClass("hidden"); // Show cancel button
+                approveButton.addClass("hidden"); // Hide approve button
+            }
               // Clear the table body and footer placeholders
               $('#list-jadwal-body').empty();
               $('#list-jadwal-footer').empty();
@@ -196,16 +218,75 @@
               }
           },
           error: function (xhr, status, error) {
+              $('#list-jadwal-body').html('<tr><td colspan="8" class="text-center px-4 py-3 border">Tidak ada ajuan IRS.</td></tr>');
               console.error("Error:", error);
-              alert("Terjadi kesalahan saat mengambil data status mahasiswa.");
+              // alert("Terjadi kesalahan saat mengambil data status mahasiswa.");
           }
       });
+
+      $('#approveIRS, #cancelIRS').on('click', function() {
+        var nim = $(this).data('nim');
+        var action = $(this).data('action');
+       
+        var actionText = action === 'approve' ? 'menyetujui' : 'membatalkan';
+        Swal.fire({
+            title: `Apakah Anda yakin ingin ${actionText} IRS ini?`,
+            text: `Anda akan mengubahnya!`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, lanjutkan!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Jika pengguna menekan tombol "Ya, lanjutkan!"
+                $.ajax({
+                    url: "{{ url('api/approve-irs') }}",
+                    type: "POST",
+                    data: {
+                        nim:[nim],
+                        action: action,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Refresh the table to reflect the new status*
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: response.message
+                            });
+                          
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal',
+                                text: response.message
+                            });
+                        }
+                        setTimeout(function(){
+                            location.reload();
+                        }, 1500);
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Terjadi kesalahan saat memproses IRS'
+                        });
+                    }
+                });
+            }
+        });
+    });
   });
 
 
 </script>
 
 <script>
+  // History IRS
   $(document).ready(function () {
       let nim = "{{ $nim }}"; // Pass 'nim' dynamically from Blade
 
@@ -224,7 +305,6 @@
             // Check if historyIRS exists and has data
             if (historyIRS && historyIRS.length > 0) {
                 historyIRS.forEach((semester, index) => {
-                  console.log(semester);
                   
                     historyContent += `
                     <div class="border-b last:border-b-0">
@@ -293,6 +373,7 @@
         error: function (xhr, status, error) {
             console.error("Error:", error);
             alert("Terjadi kesalahan saat mengambil riwayat IRS.");
+            $('#history-irs-container').html('<div class="text-center p-4">Tidak ada riwayat IRS.</div>');
         }
     });
   });

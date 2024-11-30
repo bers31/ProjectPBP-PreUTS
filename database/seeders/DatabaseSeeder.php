@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             AkademikSeeder::class,
             JadwalSeeder::class,
             IRSSeeder::class,
+            IRSDetailSeeder::class,
         ]);
     }
 }

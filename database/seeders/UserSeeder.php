@@ -21,6 +21,11 @@ class UserSeeder extends Seeder
         // ]);
         // Create a default admin user
         User::create([
+            'email' => 'budi@students.undip.ac.id',
+            'password' => '12345', // Admin password
+            'role' => 'mahasiswa', // Assign the admin role
+        ]);
+        User::create([
             'email' => 'admin@example.com',
             'password' => '12345', // Admin password
             'role' => 'admin', // Assign the admin role

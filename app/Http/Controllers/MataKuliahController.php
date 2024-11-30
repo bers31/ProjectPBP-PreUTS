@@ -50,9 +50,10 @@ class MataKuliahController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $matakuliah)
+    public function edit(MataKuliah $matakuliah)
     {   
-        $matakuliah = MataKuliah::where('kode_mk', $matakuliah)->first();
+        
+        // $mataKuliah = MataKuliah::where('kode_mk', $matakuliah)->first();
         return view('kaprodi.matkul.edit', compact('matakuliah'));        
     }
 
@@ -61,9 +62,7 @@ class MataKuliahController extends Controller
      */
     public function update(UpdateMatKulRequest $request, MataKuliah $matakuliah)
     {
-
         $validated = $request->validated();
-        
         // Update data mahasiswa
         $matakuliah->update($validated);
 

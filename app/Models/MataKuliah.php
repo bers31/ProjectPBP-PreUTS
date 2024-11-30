@@ -16,6 +16,10 @@ class MataKuliah extends Model
     public $incrementing = false;
 
     protected $keyType = 'string';
+    public function getRouteKeyName()
+    {
+        return 'kode_mk'; // Use kode_mk for route model binding
+    }
 
     protected $fillable = [
         'kode_mk',
@@ -30,7 +34,7 @@ class MataKuliah extends Model
     /**
      * Relationship with Jadwal model.
      */
-    public function jadwals()
+    public function jadwal()
     {
         return $this->hasMany(Jadwal::class, 'kode_mk', 'kode_mk');
     }
