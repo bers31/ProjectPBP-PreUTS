@@ -15,6 +15,7 @@ use App\Http\Controllers\WaliController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\RuangController;
 use App\Http\Controllers\MataKuliahController;
+use App\Http\Controllers\PDFController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -136,6 +137,8 @@ Route::get('dosen/perwalian/{nim}', [WaliController::class, 'view'])->name('perw
 Route::post('api/approve-irs', [WaliController::class, 'approveIRS']);
 Route::post('/api/fetch-aju-irs', [WaliController::class, 'fetchAjuanIRS']);
 Route::post('/api/fetch-history-irs', [WaliController::class, 'fetchHistoryIRS']);
+
+Route::get('/mhs/print_irs/{nim}', [PDFController::class, 'viewIRS']);
 
 Route::middleware(['auth', 'role:kaprodi'])->group(function(){
     Route::get('/kaprodi/menu', function() {
