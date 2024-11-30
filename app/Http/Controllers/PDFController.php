@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\DetailIRS;
 use App\Models\IRS;
+use App\Models\Mahasiswa;
 use App\Models\Tahun;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf ;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+
+
 
 
 class PDFController extends Controller
@@ -16,11 +20,12 @@ class PDFController extends Controller
     //
     public function printIRS($nim)
     {
-        $tahunAjaranAktif = Tahun::where('status', 'aktif')->value('kode_tahun');
-    
+        $tahunAjaranAktif = Tahun::where('status', 'aktif')->first(['kode_tahun', 'bag_semester']);
+        
+
         // Retrieve the IRS record for the active academic year
         $irs = IRS::where('nim_mahasiswa', $nim)
-            ->where('kode_tahun', $tahunAjaranAktif)
+            ->where('kode_tahun', $tahunAjaranAktif->kode_tahun)
             ->first(['id_irs', 'status']); // Use `first()` to get a single record
     
         // Handle the case where no IRS record is found
@@ -44,11 +49,12 @@ class PDFController extends Controller
 
     public function viewIRS($nim)
     {
-        $tahunAjaranAktif = Tahun::where('status', 'aktif')->value('kode_tahun');
-    
+        $tahunAjaranAktif = Tahun::where('status', 'aktif')->first(['kode_tahun', 'bag_semester', 'tahun_akademik']);
+        $mahasiswa = Mahasiswa::where('nim',$nim)->first();
+
         // Retrieve the IRS record for the active academic year
         $irs = IRS::where('nim_mahasiswa', $nim)
-            ->where('kode_tahun', $tahunAjaranAktif)
+            ->where('kode_tahun', $tahunAjaranAktif->kode_tahun)
             ->first(['id_irs', 'status']); // Use `first()` to get a single record
     
         // Handle the case where no IRS record is found
@@ -64,9 +70,9 @@ class PDFController extends Controller
         // $data = [
         //     'listJadwal' => $ListJadwal
         // ];
-
+        Carbon::setLocale('idn');
+        $date = now()->translatedFormat('d F Y');
         // $pdf = Pdf::loadView('print_irs', $data);
-
-        return view('print_irs',compact('ListJadwal'));
+        return view('print_irs',compact(['ListJadwal','mahasiswa', 'tahunAjaranAktif', 'date']));
     }
 }
