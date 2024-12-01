@@ -15,11 +15,12 @@ class IRSSeeder extends Seeder
     {
         IRS::create(['nim_mahasiswa'=> '24060122130001', 'semester'=>'1', 'kode_tahun'=> '24/25GA', 'status'=>'belum_irs']);
         IRS::create(['nim_mahasiswa'=> '24060122130068', 'semester'=>'5', 'kode_tahun'=> '24/25GA', 'status'=>'belum_irs']);
+        // IRS::create(['nim_mahasiswa'=> '24060122130001', 'semester'=>'1', 'kode_tahun'=> '24/25GA', 'status'=>'belum_irs']);
+        // IRS::create(['nim_mahasiswa'=> '24060122130068', 'semester'=>'5', 'kode_tahun'=> '24/25GA', 'status'=>'belum_irs']);
         IRS::create(['nim_mahasiswa'=> '24060122130068', 'semester'=>'4', 'kode_tahun'=> '24/25GA', 'status'=>'sudah_disetujui']);
         IRS::create(['nim_mahasiswa'=> '24060122130068', 'semester'=>'3', 'kode_tahun'=> '24/25GA', 'status'=>'sudah_disetujui']);
         IRS::create(['nim_mahasiswa'=> '24060122130068', 'semester'=>'2', 'kode_tahun'=> '24/25GA', 'status'=>'sudah_disetujui']);
         IRS::create(['nim_mahasiswa'=> '24060122130068', 'semester'=>'1', 'kode_tahun'=> '24/25GA', 'status'=>'sudah_disetujui']);
-    
         IRS::Create(['nim_mahasiswa' => '24060120130101', 'semester' => '9', 'kode_tahun' => '24/25GA', 'status' => 'belum_disetujui']);
         IRS::Create(['nim_mahasiswa' => '24060120130101', 'semester' => '8', 'kode_tahun' => '23/24GE', 'status' => 'sudah_disetujui']);
         IRS::Create(['nim_mahasiswa' => '24060120130101', 'semester' => '7', 'kode_tahun' => '23/24GA', 'status' => 'sudah_disetujui']);
@@ -620,5 +621,6 @@ class IRSSeeder extends Seeder
         IRS::Create(['nim_mahasiswa' => '24060121120029', 'semester' => '6', 'kode_tahun' => '22/23GE', 'status' => 'sudah_disetujui']);
         IRS::Create(['nim_mahasiswa' => '24060121120029', 'semester' => '5', 'kode_tahun' => '22/23GA', 'status' => 'sudah_disetujui']);
         IRS::Create(['nim_mahasiswa' => '24060121120029', 'semester' => '4', 'kode_tahun' => '21/22GE', 'status' => 'sudah_disetujui']);
+
     }
 }

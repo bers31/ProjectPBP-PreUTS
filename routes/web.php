@@ -15,6 +15,7 @@ use App\Http\Controllers\WaliController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\RuangController;
 use App\Http\Controllers\MataKuliahController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\JadwalController;
 use Illuminate\Support\Facades\Route;
 
@@ -70,6 +71,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/dekan/dashboard/set-ruang', [DekanController::class, 'setRuang'])->name('dekan.setRuang');
     }); // Check for 'dekan' role
 
+    Route::middleware(['auth'])->group(function () {
+        // Rute untuk setujui semua jadwal
+        Route::post('/dekan/set-all-jadwal', [DekanController::class, 'setAllJadwal'])->name('dekan.setAllJadwal');
+        // Rute untuk tetapkan semua status ruang
+        Route::post('/dekan/set-all-ruang', [DekanController::class, 'setAllRuang'])->name('dekan.setAllRuang');
+    });
+
     Route::middleware(['auth', 'role:akademik'])->group(function () {
         Route::get('/akademik/dashboard', [AkademikController::class, 'index'])->name('akademik.dashboard');
         Route::post('/akademik/set-ruang', [AkademikController::class, 'setRuang'])->name('akademik.setRuang');
@@ -89,6 +97,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('mahasiswa/irs_mhs', function(){
         return view('mahasiswa.irs_mhs');
     })->name('mahasiswa.irs_mhs')
+    ->middleware('role:mahasiswa');
+
+    Route::get('mahasiswa/history_irs', function(){
+        return view('mahasiswa.history_irs');
+    })->name('mahasiswa.history_irs')
     ->middleware('role:mahasiswa');
 
     Route::get('mahasiswa/khs_mhs', function(){
@@ -129,8 +142,11 @@ Route::post('/api/fetch-doswal', [WaliController::class, 'fetchDoswal']);
 Route::post('/api/count-status', [WaliController::class, 'fetchDoswal']);
 
 Route::get('dosen/perwalian/{nim}', [WaliController::class, 'view'])->name('perwalian.view')->middleware('perwalian');
+Route::post('api/approve-irs', [WaliController::class, 'approveIRS']);
 Route::post('/api/fetch-aju-irs', [WaliController::class, 'fetchAjuanIRS']);
 Route::post('/api/fetch-history-irs', [WaliController::class, 'fetchHistoryIRS']);
+
+Route::get('/mhs/print_irs/{nim}', [PDFController::class, 'viewIRS']);
 
 Route::middleware(['auth', 'role:kaprodi'])->group(function(){
     Route::get('/kaprodi/menu', function() {
@@ -142,16 +158,7 @@ Route::middleware(['auth', 'role:kaprodi'])->group(function(){
                                                            ->name('edit','matkul.edit')
                                                            ->name('create','matkul.create')
                                                            ->name('update','matkul.update');
-                                                
-    Route::resource('/kaprodi/jadwal', JadwalController::class)->name('index','jadwal.index')
-                                                           ->name('edit','jadwal.edit')
-                                                           ->name('create','jadwal.create')
-                                                           ->name('update','jadwal.update');
-    Route::post('/kaprodi/jadwal/save', [JadwalController::class, 'saveChanges'])->name('jadwal.saveChanges');
-
 });
-
-Route::post('/api/fetch-dosen', [JadwalController::class, 'fetchDosen'])->name('fetch.dosen');
 
 // // Admin-specific routes with authentication and 'admin' middleware
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -180,18 +187,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 });
 
-// Menampilkan history registrasi pada page registrasi_mhs
-Route::post('/get-registrasi-data', [RegistrasiController::class, 'getRegistrasiData'])->name('getRegistrasiData');
-Route::get('/mahasiswa/registrasi_mhs', [RegistrasiController::class, 'index'])->name('mahasiswa.registrasi_mhs');
 
 
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
+    // Registrasi Mahasiswa
     Route::post('/get-registrasi-data', [RegistrasiController::class, 'getRegistrasiData'])->name('getRegistrasiData');
     Route::get('/mahasiswa/registrasi_mhs', [RegistrasiController::class, 'index'])->name('mahasiswa.registrasi_mhs');
-
+    
+    // IRS mahasiswa
     Route::get('/mahasiswa/irs_mhs', [IRSController::class, 'index'])->name('mahasiswa.irs_mhs');
     Route::post('/mahasiswa/irs_mhs', [IRSController::class, 'add'])->name('irs.add');
     Route::delete('/mahasiswa/irs_mhs', [IRSController::class, 'delete'])->name('irs.delete');
-
-
+    Route::post('/mahasiswa/irs_mhs/update', [IRSController::class, 'updateMK'])->name('irs.update');
 });

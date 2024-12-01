@@ -6,8 +6,11 @@
         <!-- Header -->
         <div class="flex items-center justify-between py-3 p-8">
             <div class="font-bold text-lg md:text-xl pl-4 py-1">
-                Input Nilai 
+                IRS
             </div>
         </div>
+        
+
+        
     </div>
 @include('footer')

@@ -30,11 +30,11 @@ class DetailIRS extends Model
 
     public function irs()
     {
-        return $this->belongsTo(IRS::class, 'id_irs');
+        return $this->belongsTo(IRS::class, 'id_irs', 'id_irs');
     }
 
     public function jadwal()
     {
-        return $this->belongsTo(Jadwal::class, 'id_jadwal');
+        return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id_jadwal');
     }
 }

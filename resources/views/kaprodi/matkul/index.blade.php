@@ -44,7 +44,9 @@
                             <td class="border border-gray-400 px-4 py-2">{{ $row->kode_prodi }}</td>
                             <td class="border border-gray-400 px-4 py-2">{{ $row->sifat }}</td>
                             <td class="border border-gray-400 px-4 py-5">
-                                <a href="{{ route('matkul.edit', $row) }}" class="edit-btn font-semibold border-1 border-[#80747475] rounded-lg px-6 py-1 bg-gray-200 hover:bg-[#707070]">
+                            
+                                <a id="edit-btn" href="{{ route('matkul.edit', $row->kode_mk) }}" class=" font-semibold border-1 border-[#80747475] rounded-lg px-6 py-1 bg-gray-200 hover:bg-[#707070]"
+                                 data-url="{{ route('matkul.edit', $row->kode_mk) }}">
                                     Edit                                
                                 </a>
                                 <form action="{{ route('matkul.destroy', $row) }}" method="POST" class="delete-form" style="display:inline;">
@@ -99,24 +101,26 @@
                 }
             });
         });
+    });
+</script>
 
-        // Handle Edit Button
-        $('.edit-btn').on('click', function (e) {
-            e.preventDefault();
-            const url = "{{ route('matkul.edit', $row) }}"
-            Swal.fire({
-                title: 'Edit Matakuliah',
-                text: "Yakin ingin melakukan perubahan pada mata kuliah?",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = url;
-                }
-            });
+<script>
+    $(document).on('click', '#edit-btn', function (e) {
+        e.preventDefault();
+        let url = $(this).data('url'); // Get the URL
+        console.log(url); // Debug if undefined
+        Swal.fire({
+            title: 'Edit Matakuliah',
+            text: "Yakin ingin melakukan perubahan pada mata kuliah?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
         });
     });
 </script>

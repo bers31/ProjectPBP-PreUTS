@@ -6,6 +6,7 @@
     <div class="flex items-center justify-center min-h-screen bg-gray-100">
         <div class="max-w-lg mx-auto bg-white border border-gray-200 rounded-lg shadow-md p-8">
             <h1 class="text-3xl font-semibold mb-6 text-gray-800">Update Matakuliah</h1>
+            
             <form action="{{ route('matkul.update', $matakuliah) }}" method="POST">
                 @csrf
                 @method('PUT') <!-- Tambahkan ini untuk method PUT -->
