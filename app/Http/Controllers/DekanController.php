@@ -68,6 +68,4 @@ class DekanController extends Controller
 
         return back()->with('success', 'Semua status ruang berhasil diperbarui.');
     }
-
-
 }
