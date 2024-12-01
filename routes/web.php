@@ -15,6 +15,7 @@ use App\Http\Controllers\WaliController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\RuangController;
 use App\Http\Controllers\MataKuliahController;
+use App\Http\Controllers\JadwalController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -141,7 +142,16 @@ Route::middleware(['auth', 'role:kaprodi'])->group(function(){
                                                            ->name('edit','matkul.edit')
                                                            ->name('create','matkul.create')
                                                            ->name('update','matkul.update');
+                                                
+    Route::resource('/kaprodi/jadwal', JadwalController::class)->name('index','jadwal.index')
+                                                           ->name('edit','jadwal.edit')
+                                                           ->name('create','jadwal.create')
+                                                           ->name('update','jadwal.update');
+    Route::post('/kaprodi/jadwal/save', [JadwalController::class, 'saveChanges'])->name('jadwal.saveChanges');
+
 });
+
+Route::post('/api/fetch-dosen', [JadwalController::class, 'fetchDosen'])->name('fetch.dosen');
 
 // // Admin-specific routes with authentication and 'admin' middleware
 Route::middleware(['auth', 'role:admin'])->group(function () {

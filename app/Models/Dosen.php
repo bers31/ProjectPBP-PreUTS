@@ -39,4 +39,14 @@ class Dosen extends Model
     public function kaprodi(){
         return $this->hasOne(Kaprodi::class, 'nidn', 'nidn');
     }
+
+    public function dosen_pengampu(){
+        return $this->hasMany(DosenPengampu::class, 'nidn_dosen', 'nidn');
+    }
+
+    public function jadwal(): HasManyThrough
+    {
+        return $this->hasManyThrough(Jadwal::class, DosenPengampu::class, 'nidn', 'id_jadwal', 'nidn', 'id_jadwal');
+    }
+
 }

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreMatKulRequest;
 use App\Http\Requests\UpdateMatKulRequest;
 
+
 class MataKuliahController extends Controller
 {
     /**
@@ -56,6 +57,7 @@ class MataKuliahController extends Controller
         return view('kaprodi.matkul.edit', compact('matakuliah'));        
     }
 
+
     /**
      * Update the specified resource in storage.
      */
@@ -63,6 +65,7 @@ class MataKuliahController extends Controller
     {
 
         $validated = $request->validated();
+
         
         // Update data mahasiswa
         $matakuliah->update($validated);

@@ -41,8 +41,21 @@ class Jadwal extends Model
      * Relationship with Ruang model.
      * Assumes that `ruang` in `jadwal` refers to `kode_ruang` in `ruang`.
      */
-    public function ruang()
+
+     public function detail_irs(){
+        return $this->hasMany(DetailIRS::class, 'id_jadwal', 'id_jadwal');
+     } 
+
+    public function ruangan()
     {
         return $this->belongsTo(Ruang::class, 'ruang', 'kode_ruang');
     }
+    
+
+    public function dosen_pengampu()
+    {
+        return $this->hasMany(DosenPengampu::class, 'id_jadwal', 'id_jadwal');
+    }
+
+
 }
