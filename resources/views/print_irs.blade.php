@@ -48,7 +48,9 @@
                 <td class="px-4 py-3 text-center border">{{$detail->jadwal->matakuliah->sks}}</td>
                 <td class="px-4 py-3 text-center border">{{$detail->jadwal->kode_kelas}}</td>
                 <td class="px-4 py-3 text-center border">{{$detail->jadwal->ruang}}</td>
-                <td class="px-4 py-3 border">{{$detail->jadwal->dosen}}</td>
+                <td class="px-4 py-3 border">
+                       dosne
+                </td>   
             </tr>
             <tr>
                 <td class="px-4 py-3 border" colspan='5'>{{$detail->jadwal->hari}} pukul {{$detail->jadwal->jam_mulai}} - {{$detail->jadwal->jam_selesai}}</td>

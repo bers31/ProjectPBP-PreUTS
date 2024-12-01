@@ -7,6 +7,7 @@ use App\Http\Controllers\DosenController;
 use App\Http\Controllers\DekanController;
 use App\Http\Controllers\FakultasController;
 use App\Http\Controllers\AkademikController;
+use App\Http\Controllers\InputNilaiController;
 use App\Http\Controllers\IRSController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProdiController;
@@ -122,6 +123,10 @@ Route::middleware(['auth','role:dosen'])->group(function(){
         return view('dosen.input_nilai');
     })->name('dosen.input_nilai')
     ->middleware('role:dosen');
+    // Route::get('/dosen/input_nilai', function(){
+    //     return view('dosen.input_nilai');
+    // })->name('dosen.input_nilai')
+    // ->middleware('role:dosen');
 
     
 });
@@ -137,8 +142,10 @@ Route::get('dosen/perwalian/{nim}', [WaliController::class, 'view'])->name('perw
 Route::post('api/approve-irs', [WaliController::class, 'approveIRS']);
 Route::post('/api/fetch-aju-irs', [WaliController::class, 'fetchAjuanIRS']);
 Route::post('/api/fetch-history-irs', [WaliController::class, 'fetchHistoryIRS']);
+Route::post('/api/fetch-mhs-mk', [InputNilaiController::class, 'fetchMhs']);
 
 Route::get('/mhs/print_irs/{nim}', [PDFController::class, 'viewIRS']);
+Route::get('/dosen/input_nilai/{nidn}', [InputNilaiController::class, 'index'])->name('dosen.input_nilai');
 
 Route::middleware(['auth', 'role:kaprodi'])->group(function(){
     Route::get('/kaprodi/menu', function() {
