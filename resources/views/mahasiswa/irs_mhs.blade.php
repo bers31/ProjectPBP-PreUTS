@@ -28,42 +28,94 @@
                     <p class="font-bold">IPK : </p>
                     <p>{{ Auth::user()->mahasiswa->ipk }}</p>
                 </div>
-                <!-- Search Box -->
+
+                <!-- Menampilkan Mata Kuliah Wajib -->
                 <div class="p-5 border-2 border-[#80747475] rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
-                    <h2 class="text-lg font-bold mb-4">Mata kuliah ditampilkan</h2>
-                    <div class="flex items-center">
-                        <div id="search_mk" class=" mt-2 rounded-md  bg-white p-1 space-y-1">
-                            <div class="relative group">
-                                <!-- Search input -->
-                                <input id="search-input" class=" w-full px-4 py-2 text-gray-800 border rounded-md border-gray-300 " type="text" placeholder="Cari mata kuliah ..." autocomplete="off">
-                                <!-- Dropdown -->
-                                <div id="dropdown" class="hidden absolute bg-white border border-gray-300  w-full z-10 max-h-40 overflow-y-auto">
-                                    @foreach ($jadwals as $jadwal)
-                                        <a  href="#" 
-                                            class="block px-4 py-2 text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md">
-                                            {{ $jadwal->mataKuliah->nama_mk }}
-                                        </a>
-                                    @endforeach
-                                </div>                                
-                            </div>
-                        </div>
-                    </div>
+                    <h2 class="text-lg font-bold mb-4">Mata kuliah wajib semester ini</h2>
                     <div class="flex flex-col my-3">
                         <div class="flex flex-col overflow-y-auto max-h-60 gap-3">
-                            @foreach ($jadwalsAmbil as $jadwal)
-                            <div class="rounded p-2 border-l-2 border-purple-600 bg-purple-50">
-                                <div class="flex justify-between items-center">
-                                    <p class="text-sm font-normal text-gray-900 mb-px max-w-24">{{ $jadwal->mataKuliah->nama_mk }}</p>
-                                    <div class="flex flex-col text-right">
-                                        <p class="text-sm font-normal text-gray-600 mb-px">Semester: {{ $jadwal->mataKuliah->semester }}</p>
-                                        <p class="text-sm font-normal text-gray-600 mb-px">SKS: {{ $jadwal->mataKuliah->sks }}</p>
+                            @foreach ($mataKuliah as $mkwajib)
+                                <div class="rounded p-2 border-l-2 border-purple-600 bg-purple-50">
+                                    <div class="flex justify-between items-center">
+                                        <p class="text-sm font-normal text-gray-900 mb-px max-w-24">{{ $mkwajib->nama_mk }}</p>
+                                        <div class="flex flex-col text-right">
+                                            <p class="text-sm font-normal text-gray-600 mb-px">Semester: {{ $mkwajib->semester }}</p>
+                                            <p class="text-sm font-normal text-gray-600 mb-px">SKS: {{ $mkwajib->sks }}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             @endforeach
                         </div>
                     </div>
                 </div>
+                
+            <!-- Mata Kuliah Tambahan -->
+            <div class="p-5 border-2 border-[#80747475] rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)] min-h-80">
+                <h2 class="text-lg font-bold mb-4">Tambah Mata kuliah</h2>
+                <div class="flex items-center">
+                    <div id="search_mk" class="mt-2 rounded-md bg-white w-full">
+                        <div class="relative group">
+                            <!-- Search input -->
+                            <input 
+                                id="search-input" 
+                                class="w-full px-4 py-2 text-gray-800 border rounded-md border-gray-300" 
+                                type="text" 
+                                placeholder="Cari mata kuliah ..."
+                                autocomplete="off"
+                            >
+                            <!-- Dropdown -->
+                            <div 
+                                id="dropdown" 
+                                class="hidden absolute bg-white border border-gray-300 w-full z-10 max-h-40 overflow-y-auto rounded-md shadow-md">
+                                @foreach ($mkTambahan as $mk)
+                                    <a  
+                                        href="#" 
+                                        data-id="{{ $mk->kode_mk }}" 
+                                        class="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer add-mk">
+                                        {{ $mk->nama_mk }} - Semester {{ $mk->semester }}
+                                    </a>
+                                @endforeach
+                            </div>                                
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol Simpan Jadwal -->
+                <div class="mt-4">
+                    <button 
+                        id="save-button" 
+                        class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
+                    >
+                        Tambah mata kuliah
+                    </button>
+                </div>
+
+                <!-- Mata kuliah yang ditambahkan -->
+                <div class="flex flex-col my-3">
+                    <div class="flex flex-col overflow-y-auto max-h-60 gap-3">
+                        @foreach ($selectedMKs as $mk)
+                        <div class="rounded p-2 border-l-2 border-purple-600 bg-purple-50">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="text-sm font-normal text-gray-900 mb-px max-w-40">{{ $mk->nama_mk }}</p>
+                                </div>
+                                <div class="flex gap-3">
+                                    <div class="flex flex-col text-right">
+                                        <p class="text-sm font-normal text-gray-600 mb-px">Semester: {{ $mk->semester }}</p>
+                                        <p class="text-sm font-normal text-gray-600 mb-px">SKS: {{ $mk->sks }}</p>
+                                    </div>                                
+                                    <button class="remove-mk text-red-500 hover:text-red-700" data-id="{{ $mk->kode_mk }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
             </div>
 
 
@@ -1358,34 +1410,89 @@
 </script>
 
 <script>
-// JavaScript to toggle the dropdown
-    const dropdownMenu = document.getElementById('dropdown');
-    const searchInput = document.getElementById('search-input');
-    let isOpen = false; // Set to true to open the dropdown by default
-    
-    // Function to toggle the dropdown state
-    function toggleDropdown() {
-        isOpen = !isOpen;
-        dropdownMenu.classList.toggle('hidden', !isOpen);
-    }
-    
-    searchInput.addEventListener('click', () => {
-        toggleDropdown();
+document.addEventListener("DOMContentLoaded", () => {
+    let selectedMKId = null;
+    const searchInput = document.getElementById("search-input");
+    const dropdown = document.getElementById("dropdown");
+    const saveButton = document.getElementById("save-button");
+
+    // Tampilkan dropdown saat input difokuskan
+    searchInput.addEventListener("focus", () => {
+        dropdown.classList.remove("hidden");
     });
-    
-    // Add event listener to filter items based on input
-    searchInput.addEventListener('input', () => {
-        const searchTerm = searchInput.value.toLowerCase();
-        const items = dropdownMenu.querySelectorAll('a');
-    
-        items.forEach((item) => {
-            const text = item.textContent.toLowerCase();
-            if (text.includes(searchTerm)) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
+
+    // Sembunyikan dropdown saat klik di luar
+    document.addEventListener("click", (event) => {
+        if (!dropdown.contains(event.target) && event.target.id !== "search-input") {
+            dropdown.classList.add("hidden");
+        }
+    });
+
+    // Saat klik item di dropdown
+    document.querySelectorAll(".add-mk").forEach((item) => {
+        item.addEventListener("click", (event) => {
+            event.preventDefault();
+            selectedMKId = item.getAttribute("data-id");
+            const name = item.textContent.trim();
+            // Masukkan teks ke input
+            searchInput.value = name;
         });
     });
+
+    // Saat tombol simpan ditekan, kirim data ke server
+    saveButton.addEventListener("click", () => {
+        if (!selectedMKId) {
+            alert("Pilih mata kuliah terlebih dahulu.");
+            return;
+        }
+        
+        fetch("{{ route('irs.update') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+            },
+            body: JSON.stringify({ 
+                action: 'add',
+                selectedMK: [{ id: selectedMKId }] 
+            }),
+        })
+        .then((response) => {
+            // Redirect akan dilakukan di server
+            window.location.href = "{{ route('mahasiswa.irs_mhs') }}";
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+    });
+
+    // Tambahkan event listener untuk tombol hapus
+    document.querySelectorAll('.remove-mk').forEach(button => {
+        button.addEventListener('click', () => {
+            const kode_mk = button.getAttribute('data-id');
+            
+            fetch("{{ route('irs.update') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                },
+                body: JSON.stringify({ 
+                    action: 'remove',
+                    selectedMK: [{ id: kode_mk }] 
+                }),
+            })
+            .then((response) => {
+                // Redirect akan dilakukan di server
+                window.location.href = "{{ route('mahasiswa.irs_mhs') }}";
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        });
+    });
+});
 </script>
+
+
 

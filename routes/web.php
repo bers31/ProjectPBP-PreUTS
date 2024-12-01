@@ -184,6 +184,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 });
 
+
+
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     // Registrasi Mahasiswa
     Route::post('/get-registrasi-data', [RegistrasiController::class, 'getRegistrasiData'])->name('getRegistrasiData');
@@ -193,6 +195,5 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('/mahasiswa/irs_mhs', [IRSController::class, 'index'])->name('mahasiswa.irs_mhs');
     Route::post('/mahasiswa/irs_mhs', [IRSController::class, 'add'])->name('irs.add');
     Route::delete('/mahasiswa/irs_mhs', [IRSController::class, 'delete'])->name('irs.delete');
-
-
+    Route::post('/mahasiswa/irs_mhs/update', [IRSController::class, 'updateMK'])->name('irs.update');
 });
