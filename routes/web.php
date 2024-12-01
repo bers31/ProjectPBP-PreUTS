@@ -70,6 +70,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/dekan/dashboard/set-ruang', [DekanController::class, 'setRuang'])->name('dekan.setRuang');
     }); // Check for 'dekan' role
 
+    Route::middleware(['auth'])->group(function () {
+        // Rute untuk setujui semua jadwal
+        Route::post('/dekan/set-all-jadwal', [DekanController::class, 'setAllJadwal'])->name('dekan.setAllJadwal');
+        // Rute untuk tetapkan semua status ruang
+        Route::post('/dekan/set-all-ruang', [DekanController::class, 'setAllRuang'])->name('dekan.setAllRuang');
+    });
+
     Route::middleware(['auth', 'role:akademik'])->group(function () {
         Route::get('/akademik/dashboard', [AkademikController::class, 'index'])->name('akademik.dashboard');
         Route::post('/akademik/set-ruang', [AkademikController::class, 'setRuang'])->name('akademik.setRuang');
