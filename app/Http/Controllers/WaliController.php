@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DetailIRS;
 use App\Models\Dosen;
 use App\Models\IRS;
+use App\Models\KHS;
 use App\Models\Mahasiswa;
 use App\Models\Prodi;
 use App\Models\Tahun;
@@ -181,12 +182,12 @@ class WaliController extends Controller
     {
         $tahunAjaranAktif = Tahun::where('status', 'aktif')->value('kode_tahun');
         $nim = $request->nim;
-    
+        
         // Retrieve the IRS record for the active academic year
         $irs = IRS::where('nim_mahasiswa', $nim)
             ->where('kode_tahun', $tahunAjaranAktif)
             ->first(['id_irs', 'status']); // Use `first()` to get a single record
-    
+            
         // Handle the case where no IRS record is found
         if (!$irs) {
             return response()->json(['message' => 'IRS record not found for the given NIM and active academic year.'], 404);
@@ -196,6 +197,30 @@ class WaliController extends Controller
         $ListJadwal = DetailIRS::where('id_irs', $irs->id_irs)
             ->with(['jadwal.mataKuliah'])
             ->get();
+
+        $khsList = KHS::where('nim', $nim)->get();
+
+        // Cek status mata kuliah di IRS berdasarkan data KHS
+        $ListJadwal = $ListJadwal->map(function ($detail) use ($khsList) {
+            $kodeMK = $detail->jadwal->mataKuliah->kode_mk;
+    
+            // Cari KHS dengan kode mata kuliah
+            $khs = $khsList->firstWhere('kode_mk', $kodeMK);
+    
+            // Tentukan status
+            if (!$khs) {
+                $status = 'baru'; // Belum ada di KHS
+            } elseif ($khs->nilai < 60) {
+                $status = 'mengulang'; // Nilai di bawah 60
+            } elseif ($khs->nilai < 80) {
+                $status = 'perbaikan'; // Nilai di antara 60 dan 80
+            } else {
+                $status = 'lulus'; // Nilai 80 ke atas
+            }
+    
+            $detail->status = $status; // Tambahkan atribut 'status'
+            return $detail;
+        });
     
         return response()->json([
             'aju_irs' => $ListJadwal,
@@ -207,31 +232,53 @@ class WaliController extends Controller
     public function fetchHistoryIRS(Request $request)
     {
         $nim = $request->nim;
-
+    
         // Fetch all IRS records for the student, sorted by semester
         $historyIRS = IRS::where('nim_mahasiswa', $nim)
             ->orderBy('semester', 'asc')
             ->with(['detailIRS.jadwal.mataKuliah', 'tahun'])
             ->get();
-
+    
+        // Fetch KHS records for the student
+        $khsList = KHS::where('nim', $nim)->get();
+    
         // Transform data for frontend
-        $formattedHistory = $historyIRS->map(function($irs) {
+        $formattedHistory = $historyIRS->map(function($irs) use ($khsList) {
             $totalSKS = 0;
-            $jadwalList = $irs->detailIRS->map(function($detail) use (&$totalSKS) {
-                $totalSKS += $detail->jadwal->mataKuliah->sks;
+            $jadwalList = $irs->detailIRS->map(function($detail) use (&$totalSKS, $khsList) {
+                $mataKuliah = $detail->jadwal->mataKuliah;
+    
+                // Accumulate total SKS
+                $totalSKS += $mataKuliah->sks;
+    
+                // Check the status of the course based on KHS data
+                $kodeMK = $mataKuliah->kode_mk;
+                $khs = $khsList->firstWhere('kode_mk', $kodeMK);
+    
+                if (!$khs) {
+                    $status = 'baru'; // Course not found in KHS
+                } elseif ($khs->nilai < 60) {
+                    $status = 'mengulang'; // Grade below 60
+                } elseif ($khs->nilai < 80) {
+                    $status = 'perbaikan'; // Grade between 60 and 80
+                } else {
+                    $status = 'lulus'; // Grade 80 and above
+                }
+    
                 return [
-                    'kode_mk' => $detail->jadwal->kode_mk,
-                    'nama_mk' => $detail->jadwal->mataKuliah->nama_mk,
-                    'sks' => $detail->jadwal->mataKuliah->sks,
+                    'kode_mk' => $mataKuliah->kode_mk,
+                    'nama_mk' => $mataKuliah->nama_mk,
+                    'sks' => $mataKuliah->sks,
                     'kode_kelas' => $detail->jadwal->kode_kelas,
                     'hari' => $detail->jadwal->hari,
                     'jam_mulai' => $detail->jadwal->jam_mulai,
                     'jam_selesai' => $detail->jadwal->jam_selesai,
                     'ruang' => $detail->jadwal->ruang,
-                    'dosen' => $detail->jadwal->dosen ?? 'Tidak Tersedia'
+                    'dosen' => $detail->jadwal->dosen ?? 'Tidak Tersedia',
+                    'status' => $status
                 ];
             });
-
+    
             return [
                 'semester' => $irs->semester,
                 'tahun_akademik' => $irs->tahun->tahun_akademik ?? 'Tidak Tersedia',
@@ -239,7 +286,7 @@ class WaliController extends Controller
                 'jadwal' => $jadwalList
             ];
         });
-
+    
         return response()->json(['history_irs' => $formattedHistory]);
     }
 

@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Dosen extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
     protected $table = 'dosen';
     protected $primaryKey = 'nidn';
     public $incrementing = false; // Non-incrementing jika primary key bukan integer

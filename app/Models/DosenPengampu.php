@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KHS extends Model
+class DosenPengampu extends Model
 {
-    use HasFactory;
-    protected $table = 'khs';
+    //
+    protected $table = 'dosen_pengampu';
+    protected $primaryKey = ['nidn_dosen','id_jadwal'];
     public $incrementing = false;
-    protected $primaryKey = ['nim','kode_mk','semester'];
-    protected $fillable = ['id_irs', 'id_jadwal'];
+    protected $fillable = ['nidn_dosen','id_jadwal'];
 
     protected function setKeysForSaveQuery($query)
     {
@@ -27,13 +26,13 @@ class KHS extends Model
         return $query;
     }
 
-    public function mahasiswa()
+    public function dosen()
     {
-        return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
+        return $this->hasMany(Dosen::class, 'nidn', 'nidn_dosen');
     }
 
-    public function matakuliah()
+    public function jadwal()
     {
-        return $this->belongsTo(MataKuliah::class, 'kode_mk', 'kode_mk');
+        return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id_jadwal');
     }
 }
