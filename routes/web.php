@@ -7,6 +7,7 @@ use App\Http\Controllers\DosenController;
 use App\Http\Controllers\DekanController;
 use App\Http\Controllers\FakultasController;
 use App\Http\Controllers\AkademikController;
+use App\Http\Controllers\historyIRSController;
 use App\Http\Controllers\IRSController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProdiController;
@@ -196,4 +197,8 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::post('/mahasiswa/irs_mhs', [IRSController::class, 'add'])->name('irs.add');
     Route::delete('/mahasiswa/irs_mhs', [IRSController::class, 'delete'])->name('irs.delete');
     Route::post('/mahasiswa/irs_mhs/update', [IRSController::class, 'updateMK'])->name('irs.update');
+
+    // History IRS
+    Route::get('/mahasiswa/history_irs', [historyIRSController::class, 'index'])->name('mahasiswa.history_irs');
+    Route::post('/mahasiswa/history_irs/showIRS', [historyIRSController::class, 'showIRS'])->name('mahasiswa.showIRS');
 });
