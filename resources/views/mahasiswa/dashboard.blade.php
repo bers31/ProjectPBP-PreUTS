@@ -117,11 +117,9 @@
                         <div class="text-center text-sm lg:text-lg">
                             <p>Tahun Akademik</p>
                             <p class="font-normal">
-                                {{ Auth::user()->mahasiswa->historyRegistrasi()->latest('created_at')->first()->tahun_akademik ?? 'Data not available' }}
-                                ({{ Auth::user()->mahasiswa->semester % 2 != 0 ? 'Ganjil' : 'Genap' }})
-                            </p>
-                            {{-- Optional display for semester --}}
-                            {{-- <p class="font-normal">({{ Auth::user()->mahasiswa->semester % 2 != 0 ? 'Ganjil' : 'Genap' }})</p> --}}
+                                {{ Auth::user()->mahasiswa->irs()->latest()->first()->tahun->tahun_akademik }}
+                                ({{Auth::user()->mahasiswa->semester % 2 != 0 ? 'Ganjil' : 'Genap'}})
+                            </p> 
                         </div>
                         
                         <div class="text-center text-sm lg:text-lg">
