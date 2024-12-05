@@ -28,4 +28,10 @@ class Departemen extends Model
     {
         return $this->hasMany(Dosen::class, 'kode_departemen', 'kode_departemen');
     }
+
+    public function ruang()
+    {
+        return $this->hasMany(Ruang::class, 'kode_departemen', 'kode_departemen');
+    }
+
 }

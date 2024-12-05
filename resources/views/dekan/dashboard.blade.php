@@ -49,44 +49,56 @@
         <!-- Penetapan Jadwal Kuliah Section -->
         <div class="border p-6 rounded-lg mb-6 shadow-md">
             <h2 class="font-semibold text-xl mb-4">Penetapan Jadwal Kuliah</h2>
-            <table id="jadwalTable" class="table-auto w-full">
-                <thead>
-                    <tr>
-                        <th class="px-4 py-2">Mata Kuliah</th>
-                        <th class="px-4 py-2">Hari</th>
-                        <th class="px-4 py-2">Jam</th>
-                        <th class="px-4 py-2">Status</th>
-                        <th class="px-4 py-2">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($jadwals as $jadwal)
+            <form id="jadwalForm" action="{{ route('dekan.setAllJadwal') }}" method="POST">
+                @csrf
+                <table id="jadwalTable" class="table-auto w-full">
+                    <thead>
                         <tr>
-                            <td class="border px-4 py-2">{{ $jadwal->mataKuliah->nama_mk }}</td>
-                            <td class="border px-4 py-2">{{ $jadwal->hari }}</td>
-                            <td class="border px-4 py-2">{{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}</td>
-                            <td class="border px-4 py-2">{{ $jadwal->status }}</td>
-                            <td class="border px-4 py-2">
-                                <form action="{{ route('dekan.setJadwal') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
-                                    <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded">Setujui</button>
-                                </form>
-                            </td>
+                            <th class="px-4 py-2">Mata Kuliah</th>
+                            <th class="px-4 py-2">Hari</th>
+                            <th class="px-4 py-2">Jam</th>
+                            <th class="px-4 py-2">Status</th>
+                            <th class="px-4 py-2">Aksi</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach($jadwals as $jadwal)
+                            <tr>
+                                <td class="border px-4 py-2">{{ $jadwal->mataKuliah->nama_mk }}</td>
+                                <td class="border px-4 py-2">{{ $jadwal->hari }}</td>
+                                <td class="border px-4 py-2">{{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}</td>
+                                <td class="border px-4 py-2">{{ $jadwal->status }}</td>
+                                <td class="border px-4 py-2">
+                                    <form action="{{ route('dekan.setJadwal') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
+                                        <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded">Setujui</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div class="mt-4">
+                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">
+                        Setujui Semua
+                    </button>
+                </div>
+            </form>
+
         </div>
 
         <!-- Penetapan Ketersediaan Ruang Kelas Section -->
         <div class="border p-6 rounded-lg shadow-md">
-            <h2 class="font-semibold text-xl mb-4">Penetapan Ketersediaan Ruang Kelas</h2>
+        <h2 class="font-semibold text-xl mb-4">Penetapan Ketersediaan Ruang Kelas</h2>
+        <form id="ruangForm" action="{{ route('dekan.setAllRuang') }}" method="POST">
+            @csrf
             <table id="ruangTable" class="table-auto w-full">
                 <thead>
                     <tr>
                         <th class="px-4 py-2">Nama/Kode Ruang</th>
                         <th class="px-4 py-2">Kapasitas</th>
+                        <th class="px-4 py-2">Departemen</th>
                         <th class="px-4 py-2">Status</th>
                         <th class="px-4 py-2">Aksi</th>
                     </tr>
@@ -96,25 +108,33 @@
                         <tr>
                             <td class="border px-4 py-2">{{ $ruang->kode_ruang }}</td>
                             <td class="border px-4 py-2">{{ $ruang->kapasitas }}</td>
-                            <td class="border px-4 py-2">{{ $ruang->status_ketersediaan }}</td>
+
+                            <td class="border px-4 py-2">{{ $ruang->kode_departemen }}</td>
+
                             <td class="border px-4 py-2">
                                 <form action="{{ route('dekan.setRuang') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="kode_ruang" value="{{ $ruang->kode_ruang }}">
-                                    <select name="status_ketersediaan" class="border rounded p-1">
+                                    <select name="status_ketersediaan[{{ $ruang->kode_ruang }}]" class="border rounded p-1">
                                         <option value="Tersedia" {{ $ruang->status_ketersediaan == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
                                         <option value="Penuh" {{ $ruang->status_ketersediaan == 'Penuh' ? 'selected' : '' }}>Penuh</option>
                                     </select>
-                                    <button type="submit" class="bg-green-500 text-white px-3 py-1 rounded">Tetapkan</button>
+                            </td>
+                            <td class="border px-4 py-2">
+                                    <button type="submit" class="bg-blue-500 text-white px-3 py-1">Tetapkan</button>
                                 </form>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-        </div>
+            <div class="mt-4">
+                <button type="submit" class="bg-green-500 text-white px-4 py-2">
+                    Tetapkan Semua
+                </button>
+            </div>
+        </form>
     </div>
-
     @include('footer')
 </div>
 
@@ -127,12 +147,20 @@
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/Indonesian.json"
             }
+            "autoWidth": false, // Mencegah DataTables mengatur lebar kolom secara otomatis
+            "columnDefs": [
+                { "orderable": false, "targets": [2, 3] } // Kolom Status dan Aksi tidak dapat diurutkan
+            ]
         });
 
         $('#ruangTable').DataTable({
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/Indonesian.json"
-            }
+            },
+            "autoWidth": false, // Mencegah DataTables mengatur lebar kolom secara otomatis
+            "columnDefs": [
+                { "orderable": false, "targets": [2, 3] } // Kolom Status dan Aksi tidak dapat diurutkan
+            ]
         });
     });
 </script>

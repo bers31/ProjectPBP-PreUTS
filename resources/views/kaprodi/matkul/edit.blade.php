@@ -7,7 +7,8 @@
         <div class="max-w-lg mx-auto bg-white border border-gray-200 rounded-lg shadow-md p-8">
             <h1 class="text-3xl font-semibold mb-6 text-gray-800">Update Matakuliah</h1>
             
-            <form action="{{ route('matkul.update', $matkul) }}" method="POST">
+            <form action="{{ route('matkul.update', $matkul->kode_mk) }}" method="POST">
+
                 @csrf
                 @method('PUT') <!-- Tambahkan ini untuk method PUT -->
                 
@@ -20,7 +21,7 @@
                         id="kodemk" 
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         value="{{ $matkul->kode_mk }}">
-                    @error('nim')
+                    @error('kode_mk')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
                 </div>
@@ -34,7 +35,7 @@
                         id="nama" 
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         value="{{ ( $matkul->nama_mk ) }}">
-                    @error('nama')
+                    @error('nama_mk')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
                 </div>

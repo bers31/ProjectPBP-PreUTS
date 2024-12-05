@@ -24,18 +24,18 @@
                         @enderror
                     </div>
                     
-                    <!-- Fakultas Input -->
+                    <!-- departemen Input -->
                     <div class="mb-4">
-                        <label for="fakultas" class="block mb-2 text-sm font-medium text-gray-900">Fakultas</label>
-                        <select name="kode_fakultas" 
-                                id="fakultas" 
+                        <label for="departemen" class="block mb-2 text-sm font-medium text-gray-900">departemen</label>
+                        <select name="kode_departemen" 
+                                id="departemen" 
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            <option selected disabled>PILIH FAKULTAS</option>
-                            @foreach ($fakultas as $data)
-                                <option value="{{ $data->kode_fakultas }}" {{ old('fakultas') == $data->kode_fakultas ? 'selected' : ' ' }}>Fakultas {{ $data->nama_fakultas }}</option>
+                            <option selected disabled>PILIH departemen</option>
+                            @foreach ($departemen as $data)
+                                <option value="{{ $data->kode_departemen }}" {{ old('departemen') == $data->kode_departemen ? 'selected' : ' ' }}>{{ $data->kode_departemen }}</option>
                             @endforeach
                         </select>
-                        @error('fakultas')
+                        @error('departemen')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                         @enderror
                     </div>
@@ -45,6 +45,7 @@
                         <label for="kapasitas" class="block text-sm font-medium text-gray-700">Kapasitas</label>
                         <input type="number" name="kapasitas" id="kapasitas" 
                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                            value="{{ old('kapasitas', $data->kapasitas) }}"
                             required>
                     </div>
 
@@ -64,17 +65,17 @@
     <script type="text/javascript">
     $(document).ready(function () {
         // Load saved selections from localStorage if they exist
-        const savedFakultas = localStorage.getItem('oldFakultas');
+        const saveddepartemen = localStorage.getItem('olddepartemen');
 
 
-        if (savedFakultas) {
-            $('#fakultas').val(savedFakultas);
+        if (saveddepartemen) {
+            $('#departemen').val(saveddepartemen);
         }
 
-        // Event listener for fakultas dropdown change
-        $('#fakultas').on('change', function () {
-            var idFakultas = this.value;
-            localStorage.setItem('oldFakultas', idFakultas);
+        // Event listener for departemen dropdown change
+        $('#departemen').on('change', function () {
+            var iddepartemen = this.value;
+            localStorage.setItem('olddepartemen', iddepartemen);
         });
     });
     </script>

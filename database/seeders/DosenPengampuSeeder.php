@@ -2,15 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\DosenPengampu;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\DosenPengampu;
+use Illuminate\Support\Facades\Hash;
 
 class DosenPengampuSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         DosenPengampu::create([
@@ -54,4 +51,10 @@ class DosenPengampuSeeder extends Seeder
             'id_jadwal' => 10,
         ]);
     }
+
 }
+
+
+}
+
+

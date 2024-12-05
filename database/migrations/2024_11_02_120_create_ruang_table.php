@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('ruang', function (Blueprint $table) {
             $table->string('kode_ruang')->primary();
-            $table->string('kode_fakultas');
+            $table->string('kode_departemen');
             $table->integer('kapasitas');
             $table->enum('status_ketersediaan', ['Tersedia', 'Penuh'])->default('Tersedia');
-            $table->foreign('kode_fakultas')->references('kode_fakultas')->on('fakultas')->onDelete('cascade');;
+            $table->foreign('kode_departemen')->references('kode_departemen')->on('departemen')->onDelete('cascade');;
             $table->timestamps();
         });
 

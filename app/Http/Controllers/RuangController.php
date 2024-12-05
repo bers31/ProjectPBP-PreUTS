@@ -19,7 +19,7 @@ class RuangController extends Controller
     public function index()
     {
         //
-        $ruang = Ruang::with('fakultas')->get();
+        $ruang = Ruang::with('departemen')->get();
         return view('admin.ruang.index', compact('ruang'));
     }
 
@@ -30,9 +30,9 @@ class RuangController extends Controller
     public function create()
     {
         //
-        $fakultas = Fakultas::get(['nama_fakultas','kode_fakultas']);
+        // $fakultas = Fakultas::get(['nama_fakultas','kode_fakultas']);
         $departemen = Departemen::all(); // Get all departemen records
-        return view('admin.ruang.create', compact('departemen', 'fakultas')); // Pass to the view 
+        return view('admin.ruang.create', compact('departemen')); // Pass to the view 
     }
 
         /**
@@ -52,9 +52,9 @@ class RuangController extends Controller
      */
     public function edit(Ruang $ruang)
     {
-        $fakultas = Fakultas::get(['nama_fakultas','kode_fakultas']);
+        // $fakultas = Fakultas::get(['nama_fakultas','kode_fakultas']);
         $departemen = Departemen::all(); // Get all departemen records
-        return view('admin.ruang.edit', compact('ruang','departemen', 'fakultas')); // Pass to the view 
+        return view('admin.ruang.edit', compact('ruang','departemen')); // Pass to the view 
     }
 
     /**
