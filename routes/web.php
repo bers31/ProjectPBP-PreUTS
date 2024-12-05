@@ -17,6 +17,7 @@ use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\RuangController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\PDFController;
+use App\Http\Controllers\JadwalController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -70,6 +71,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/dekan/dashboard/set-jadwal', [DekanController::class, 'setJadwal'])->name('dekan.setJadwal');
         Route::post('/dekan/dashboard/set-ruang', [DekanController::class, 'setRuang'])->name('dekan.setRuang');
     }); // Check for 'dekan' role
+
+    Route::middleware(['auth'])->group(function () {
+        // Rute untuk setujui semua jadwal
+        Route::post('/dekan/set-all-jadwal', [DekanController::class, 'setAllJadwal'])->name('dekan.setAllJadwal');
+        // Rute untuk tetapkan semua status ruang
+        Route::post('/dekan/set-all-ruang', [DekanController::class, 'setAllRuang'])->name('dekan.setAllRuang');
+    });
 
     Route::middleware(['auth', 'role:akademik'])->group(function () {
         Route::get('/akademik/dashboard', [AkademikController::class, 'index'])->name('akademik.dashboard');
@@ -146,17 +154,21 @@ Route::middleware(['auth', 'role:kaprodi'])->group(function(){
         return view('kaprodi.menu');
     })->name('kaprodi.menu')
       ->middleware('role:kaprodi');
-    Route::resource('/kaprodi/matkul', MataKuliahController::class)
-    ->names([
-        'index' => 'matkul.index',
-        'edit' => 'matkul.edit',
-        'create' => 'matkul.create',
-        'update' => 'matkul.update',
-        'store' => 'matkul.store',
-        'destroy' => 'matkul.destroy',
-        'show' => 'matkul.show',
-    ]);
+      
+    Route::resource('/kaprodi/matkul', MataKuliahController::class)->name('index','matkul.index')
+                                                           ->name('edit','matkul.edit')
+                                                           ->name('create','matkul.create')
+                                                           ->name('update','matkul.update');
+                                                
+    Route::resource('/kaprodi/jadwal', JadwalController::class)->name('index','jadwal.index')
+                                                           ->name('edit','jadwal.edit')
+                                                           ->name('create','jadwal.create')
+                                                           ->name('update','jadwal.update');
+    Route::post('/kaprodi/jadwal/save', [JadwalController::class, 'saveChanges'])->name('jadwal.saveChanges');
+
 });
+
+Route::post('/api/fetch-dosen', [JadwalController::class, 'fetchDosen'])->name('fetch.dosen');
 
 // // Admin-specific routes with authentication and 'admin' middleware
 Route::middleware(['auth', 'role:admin'])->group(function () {

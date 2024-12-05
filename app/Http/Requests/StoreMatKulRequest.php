@@ -23,14 +23,22 @@ class StoreMatKulRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'kode_mk' => 'required|string|unique:mata_kuliah',
+        $rules = [
+            'kode_mk' => 'required|string', // If it's an update, skip unique validation
             'nama_mk' => 'required|string|max:255',
-            'semester' => 'required|int',
-            'sks' => 'required|int',
+            'semester' => 'required|int|min:1', // Ensure semester is a positive integer
+            'sks' => 'required|int|min:1', // Ensure SKS is a positive integer
             'kurikulum' => 'required|string|max:255',
             'kode_prodi' => 'required|string|max:255|exists:prodi,kode_prodi',
-            'sifat' => 'required|string|in:wajib,pilihan'
+            'sifat' => 'required|string|in:wajib,pilihan',
         ];
+
+        // For the store case, ensure 'kode_mk' is unique
+        if ($this->isMethod('post')) {  // POST request (create)
+            $rules['kode_mk'] = 'required|string|unique:mata_kuliah';
+        }
+
+        return $rules;
     }
+
 }

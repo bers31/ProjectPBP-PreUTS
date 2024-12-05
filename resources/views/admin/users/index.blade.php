@@ -1,47 +1,54 @@
-{{-- @extends('layouts.app') --}}
 @include('../header')
 <x-navbar/>
 
-{{-- @section('content') --}}
 <div class="flex flex-col flex-grow">
     <!-- Header -->
     <div class="flex items-center justify-between py-3 p-8">
         <div class="font-bold text-lg md:text-xl pl-4 py-1">
             Manage Users
         </div>
+        <!-- Create New User Button -->
+        <form action="{{ route('users.create') }}" method="GET">
+            <button class="bg-blue-500 text-white font-semibold px-3 py-1 rounded hover:bg-blue-600 ml-12">
+                Tambah User
+            </button>
+        </form>
     </div>
 
-    <form action="{{ route('users.create') }}" method="GET">
-        <button class="font-semibold border-2 border-[#80747475] rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.1)] my-2 px-3 py-1 bg-green-500 hover:bg-[#f0f0f0] ml-12">
-            Create New Users
-        </button>
-    </form>
-
-    <div class="flex ml-7 mr-7">
-        <div class="flex flex-col m-5 border-2 p-5 w-full border-gray-300 rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
-            <table class="table-auto w-full border-collapse border border-gray-400">
-                <thead class="bg-gray-200">
+    <div class="flex mx-7">
+        <div class="flex flex-col w-full border-2 p-5 border-gray-300 rounded-lg shadow-md bg-white">
+            <table id="usersTable" class="table-auto w-full bg-white divide-y divide-gray-200">
+                <thead class="bg-gray-100">
                     <tr>
-                        <th class="border border-gray-400 px-4 py-2">ID</th>
-                        <th class="border border-gray-400 px-4 py-2">Email</th>
-                        <th class="border border-gray-400 px-4 py-2">Role</th>
-                        <th class="border border-gray-400 px-4 py-2">Actions</th>
+                        <th class="px-4 py-2">ID</th>
+                        <th class="px-4 py-2">Email</th>
+                        <th class="px-4 py-2">Role</th>
+                        <th class="px-4 py-2">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($users as $user)
-                        <tr class="text-center">
-                            <td class="border border-gray-400 px-4 py-2">{{ $user->id }}</td>
-                            <td class="border border-gray-400 px-4 py-2">{{ $user->email }}</td>
-                            <td class="border border-gray-400 px-4 py-2">{{ $user->role }}</td>
-                            <td class="border border-gray-400 px-4 py-2">
-                                <a href="{{ route('users.edit', $user->id) }}" class="font-semibold border-2 border-[#80747475] rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.1)] my-4 px-3 py-1 bg-green-500 hover:bg-[#f0f0f0]">Edit</a>
+                        <tr class="hover:bg-gray-50 text-center">
+                            <td class="border px-4 py-2">{{ $user->id }}</td>
+                            <td class="border px-4 py-2">{{ $user->email }}</td>
+                            <td class="border px-4 py-2">{{ $user->role }}</td>
+                            <td class="border px-4 py-2">
+                                <div class="flex flex-col items-center gap-2">
+                                    <!-- Edit Button -->
+                                    <a href="{{ route('users.edit', $user->id) }}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+                                        Edit
+                                    </a>
+                                    <!-- Delete Button -->
+                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 alert-delete">
+                                            Delete
+                                        </button>
+                                    </form>
 
-                                <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="alert-delete font-semibold border-2 border-[#80747475] rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.1)] my-4 px-3 py-1 bg-green-500 hover:bg-[#f0f0f0]">Delete</button>
-                                </form>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -50,33 +57,71 @@
         </div>
     </div>
 </div>
-@include('../footer')
-{{-- @endsection --}}
 
-<!-- SWEETALERT -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@include('../footer')
+
+<!-- Include DataTables and SweetAlert -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script type="text/javascript">
-    $(function(){
-        $(document).on('click', '.alert-delete', function(e){
+
+<!-- Initialize DataTable -->
+<style>
+    .dataTables_length select {
+        width: 3rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 6px;
+        margin: 0 4px;
+    }
+    .dataTables_filter input {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px 10px;
+        margin-left: 8px;
+        margin-bottom: 5px;
+    }
+    .top {
+        padding: 8px 0;
+        margin-bottom: 8px;
+    }
+</style>
+
+<!-- Initialize DataTable -->
+<script>
+$('#usersTable').DataTable({
+    "dom": '<"top"<"flex items-center justify-between gap-4"<"flex items-center"f><"flex items-center gap-2"B><"ml-auto"l>>>rt<"bottom"p><"clear">',
+    "paging": true,
+    "info": false, // Set to false if table info is not needed
+    "searching": true,
+    "ordering": true,
+    language: {
+        search: "_INPUT_", // Remove the 'Search' label
+        searchPlaceholder: "CARI USER", // Add placeholder for search
+        lengthMenu: "Tampilkan _MENU_ data" // Customize length menu text
+    }
+});
+</script>
+
+<script>
+        // SweetAlert for Delete Confirmation
+        $(document).on('click', '.alert-delete', function (e) {
             e.preventDefault();
-            
-            // Confirm the delete action
             Swal.fire({
                 title: "Hapus user?",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Ya"
+                confirmButtonText: "Ya",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Submit the form if confirmed
                     $(this).closest("form").submit();
                 }
             });
         });
-    });
+    
 </script>
 
 @if (session('success'))

@@ -19,7 +19,7 @@
             </a>
         </div>
         <div class="flex items-center justify-center p-8 md:p-4 lg:p-8 border-2 border-[#80747475] hover:bg-[#f0f0f0] rounded-xl gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
-            <a href="{{ route('matkul.index') }}">
+            <a href="{{ route('jadwal.index') }}">
                 <p class="font-semibold text-lg md:text-sm lg:text-lg">
                     Susun Jadwal
                 </p>
