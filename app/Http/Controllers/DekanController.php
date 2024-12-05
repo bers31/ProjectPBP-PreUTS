@@ -1,23 +1,35 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use App\Models\Jadwal;
 use App\Models\Ruang;
+use App\Models\Prodi;
 
 class DekanController extends Controller
 {
     public function index()
     {
-        // Ambil data jadwal dan ruang kelas dari database
-        $jadwals = Jadwal::all();      // Pastikan tabel dan data Jadwal ada
-        $ruangs = Ruang::all();   // Pastikan tabel dan data RuangKelas ada
+        // Ambil kode departemen dekan yang sedang login
+        $kodeDepartemen = Auth::user()->dosen->departemen->kode_departemen;
 
-        // Kirim data jadwal dan ruang ke view dashboard dekan
-        return view('dekan.dashboard',[
+        // Cari kode prodi yang terkait dengan departemen dekan
+        $prodis = Prodi::where('kode_departemen', $kodeDepartemen)->pluck('kode_prodi');
+
+        // Ambil jadwal yang hanya terkait dengan prodi tersebut
+        $jadwals = Jadwal::whereHas('mataKuliah', function ($query) use ($prodis) {
+            $query->whereIn('kode_prodi', $prodis);
+        })->get();
+
+        // Data ruang tetap diambil semuanya
+        $ruangs = Ruang::all();
+
+        // Kirim data ke view
+        return view('dekan.dashboard', [
+            'jadwals' => $jadwals,
             'ruangs' => $ruangs,
-            'jadwals' => $jadwals
         ]);
     }
 
