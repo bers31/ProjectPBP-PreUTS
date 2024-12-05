@@ -54,3 +54,7 @@ class DosenPengampuSeeder extends Seeder
 
 }
 
+
+}
+
+

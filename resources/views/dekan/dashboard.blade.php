@@ -108,7 +108,9 @@
                         <tr>
                             <td class="border px-4 py-2">{{ $ruang->kode_ruang }}</td>
                             <td class="border px-4 py-2">{{ $ruang->kapasitas }}</td>
+
                             <td class="border px-4 py-2">{{ $ruang->kode_departemen }}</td>
+
                             <td class="border px-4 py-2">
                                 <form action="{{ route('dekan.setRuang') }}" method="POST">
                                     @csrf
@@ -145,6 +147,10 @@
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/Indonesian.json"
             }
+            "autoWidth": false, // Mencegah DataTables mengatur lebar kolom secara otomatis
+            "columnDefs": [
+                { "orderable": false, "targets": [2, 3] } // Kolom Status dan Aksi tidak dapat diurutkan
+            ]
         });
 
         $('#ruangTable').DataTable({

@@ -18,6 +18,19 @@ class JadwalController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     public function jadwalMahasiswa()
+     {
+        $jadwal = Jadwal::with('mataKuliah')
+        ->whereHas('mataKuliah', function ($query) {
+            $query->where('status', 'disetujui'); 
+        })
+        ->orderBy('hari')
+        ->orderBy('jam_mulai')
+        ->get();    
+         return view('mahasiswa.jadwal_mhs', compact('jadwal'));
+     }
+     
     public function index()
     {
         $jadwals = Jadwal::with(['mataKuliah', 'dosen_pengampu.dosen', 'ruangan'])

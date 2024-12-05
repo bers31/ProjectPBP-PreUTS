@@ -1493,6 +1493,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 </script>
-
-
-

@@ -10,6 +10,7 @@ use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\historyIRSController;
 use App\Http\Controllers\IRSController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliController;
@@ -75,6 +76,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['auth'])->group(function () {
         // Rute untuk setujui semua jadwal
         Route::post('/dekan/set-all-jadwal', [DekanController::class, 'setAllJadwal'])->name('dekan.setAllJadwal');
+
         // Rute untuk tetapkan semua status ruang
         Route::post('/dekan/set-all-ruang', [DekanController::class, 'setAllRuang'])->name('dekan.setAllRuang');
     });
@@ -94,11 +96,17 @@ Route::middleware(['auth'])->group(function () {
         return view('mahasiswa.registrasi_mhs');
     })->name('mahasiswa.registrasi_mhs')
     ->middleware('role:mahasiswa');
+    
 
     Route::get('mahasiswa/irs_mhs', function(){
         return view('mahasiswa.irs_mhs');
     })->name('mahasiswa.irs_mhs')
     ->middleware('role:mahasiswa');
+
+    Route::get('mahasiswa/jadwal_mhs', [JadwalController::class, 'jadwalMahasiswa'])
+    ->name('mahasiswa.jadwal_mhs')
+    ->middleware('role:mahasiswa');
+
 
     Route::get('mahasiswa/history_irs', function(){
         return view('mahasiswa.history_irs');
