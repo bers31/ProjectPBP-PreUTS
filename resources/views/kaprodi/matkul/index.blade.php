@@ -33,7 +33,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($mk as $no=>$row)
+                    @foreach($matkul as $no=>$row)
                         <tr class="text-center">
                             <td class="border border-gray-400 px-4 py-2">{{ $no+1 }}</td>
                             <td class="border border-gray-400 px-4 py-2">{{ $row->kode_mk }}</td>
@@ -104,24 +104,4 @@
     });
 </script>
 
-<script>
-    $(document).on('click', '#edit-btn', function (e) {
-        e.preventDefault();
-        let url = $(this).data('url'); // Get the URL
-        console.log(url); // Debug if undefined
-        Swal.fire({
-            title: 'Edit Matakuliah',
-            text: "Yakin ingin melakukan perubahan pada mata kuliah?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = url;
-            }
-        });
-    });
-</script>
 @include('../footer')

@@ -119,10 +119,6 @@ Route::middleware(['auth','role:dosen'])->group(function(){
     })->name('dosen.perwalian')
     ->middleware('role:dosen');
 
-    Route::get('/dosen/input_nilai', function(){
-        return view('dosen.input_nilai');
-    })->name('dosen.input_nilai')
-    ->middleware('role:dosen');
     // Route::get('/dosen/input_nilai', function(){
     //     return view('dosen.input_nilai');
     // })->name('dosen.input_nilai')

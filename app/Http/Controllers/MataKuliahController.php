@@ -15,8 +15,8 @@ class MataKuliahController extends Controller
      */
     public function index()
     {
-        $mk = MataKuliah::all();
-        return view('kaprodi.matkul.index', compact('mk'));
+        $matkul = MataKuliah::all();
+        return view('kaprodi.matkul.index', compact('matkul'));
     }
 
     /**
@@ -50,21 +50,21 @@ class MataKuliahController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MataKuliah $matakuliah)
+    public function edit(MataKuliah $matkul)
     {   
-        
+        // dd($matakuliah);
         // $mataKuliah = MataKuliah::where('kode_mk', $matakuliah)->first();
-        return view('kaprodi.matkul.edit', compact('matakuliah'));        
+        return view('kaprodi.matkul.edit', compact('matkul'));        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMatKulRequest $request, MataKuliah $matakuliah)
+    public function update(UpdateMatKulRequest $request, MataKuliah $matkul)
     {
         $validated = $request->validated();
         // Update data mahasiswa
-        $matakuliah->update($validated);
+        $matkul->update($validated);
 
         // Aktifkan kembali foreign key checks
         return redirect()->route('matkul.index')

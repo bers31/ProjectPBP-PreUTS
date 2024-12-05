@@ -7,7 +7,7 @@
         <div class="max-w-lg mx-auto bg-white border border-gray-200 rounded-lg shadow-md p-8">
             <h1 class="text-3xl font-semibold mb-6 text-gray-800">Update Matakuliah</h1>
             
-            <form action="{{ route('matkul.update', $matakuliah) }}" method="POST">
+            <form action="{{ route('matkul.update', $matkul) }}" method="POST">
                 @csrf
                 @method('PUT') <!-- Tambahkan ini untuk method PUT -->
                 
@@ -19,7 +19,7 @@
                         name="kode_mk" 
                         id="kodemk" 
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        value="{{ $matakuliah->kode_mk }}">
+                        value="{{ $matkul->kode_mk }}">
                     @error('nim')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
@@ -33,7 +33,7 @@
                         name="nama_mk" 
                         id="nama" 
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        value="{{ ( $matakuliah->nama_mk ) }}">
+                        value="{{ ( $matkul->nama_mk ) }}">
                     @error('nama')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
@@ -47,7 +47,7 @@
                         name="semester" 
                         id="semester" 
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        value="{{ ( $matakuliah->semester ) }}">
+                        value="{{ ( $matkul->semester ) }}">
                     @error('semester')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
@@ -60,7 +60,7 @@
                         name="sks" 
                         id="sks" 
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        value="{{ ( $matakuliah -> sks ) }}">
+                        value="{{ ( $matkul -> sks ) }}">
                     @error('sks')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
@@ -73,7 +73,7 @@
                         name="kurikulum" 
                         id="kurikulum" 
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        value="{{ ($matakuliah->kurikulum) }}">
+                        value="{{ ($matkul->kurikulum) }}">
                     @error('kurikulum')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
@@ -86,7 +86,7 @@
                         name="kode_prodi" 
                         id="kode_prodi" 
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        value="{{ ($matakuliah->kode_prodi) }}">
+                        value="{{ ($matkul->kode_prodi) }}">
                     @error('kode_prodi')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
@@ -99,7 +99,7 @@
                         name="sifat" 
                         id="sifat" 
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        value="{{ ($matakuliah->sifat) }}">
+                        value="{{ ($matkul->sifat) }}">
                     @error('sifat')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
