@@ -31,8 +31,4 @@ class DosenPengampu extends Model
         return $this->hasMany(Dosen::class, 'nidn', 'nidn_dosen');
     }
 
-    public function jadwal()
-    {
-        return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id_jadwal');
-    }
 }

@@ -3000,4 +3000,3 @@ class UserSeeder extends Seeder
         
     }
 }
-

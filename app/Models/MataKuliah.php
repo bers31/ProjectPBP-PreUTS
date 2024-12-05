@@ -16,10 +16,6 @@ class MataKuliah extends Model
     public $incrementing = false;
 
     protected $keyType = 'string';
-    public function getRouteKeyName()
-    {
-        return 'kode_mk'; // Use kode_mk for route model binding
-    }
 
     protected $fillable = [
         'kode_mk',

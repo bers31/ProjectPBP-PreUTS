@@ -65,7 +65,6 @@ class DekanController extends Controller
         return back()->with('success', 'Semua jadwal berhasil disetujui.');
     }
 
-
     public function setAllRuang(Request $request)
     {
         $ruangs = Ruang::all(); // Ambil semua ruang dari database

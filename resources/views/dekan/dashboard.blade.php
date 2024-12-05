@@ -98,6 +98,7 @@
                     <tr>
                         <th class="px-4 py-2">Nama/Kode Ruang</th>
                         <th class="px-4 py-2">Kapasitas</th>
+                        <th class="px-4 py-2">Departemen</th>
                         <th class="px-4 py-2">Status</th>
                         <th class="px-4 py-2">Aksi</th>
                     </tr>
@@ -107,11 +108,14 @@
                         <tr>
                             <td class="border px-4 py-2">{{ $ruang->kode_ruang }}</td>
                             <td class="border px-4 py-2">{{ $ruang->kapasitas }}</td>
+
+                            <td class="border px-4 py-2">{{ $ruang->kode_departemen }}</td>
+
                             <td class="border px-4 py-2">
                                 <form action="{{ route('dekan.setRuang') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="kode_ruang" value="{{ $ruang->kode_ruang }}">
-                                    <select name="status_ketersediaan" class="border rounded p-1">
+                                    <select name="status_ketersediaan[{{ $ruang->kode_ruang }}]" class="border rounded p-1">
                                         <option value="Tersedia" {{ $ruang->status_ketersediaan == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
                                         <option value="Penuh" {{ $ruang->status_ketersediaan == 'Penuh' ? 'selected' : '' }}>Penuh</option>
                                     </select>
