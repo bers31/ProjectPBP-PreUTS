@@ -74,24 +74,24 @@
                 <div class="grid grid-cols-1 grid-rows-2 col-span-1 gap-5">
                     <!-- Jadwal Kuliah -->
                     <div class="flex items-center justify-center p-8 md:p-4 lg:p-8 border-2 border-[#80747475] hover:bg-[#f0f0f0] rounded-xl gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
-                        <div class="flex items-center gap-5 p-1 text-center">  
+                        <a href="{{ route('mahasiswa.jadwal_mhs') }}" class="flex items-center gap-5 text-center md:flex-col lg:flex-row no-underline">
                             <img src="\img\jadwalkuliah-logo.svg" alt="jadwal_kuliah" class="w-10 md:w-8 lg:w-10">
                             <p class="font-semibold text-lg md:text-sm lg:text-lg">
                                 Jadwal Kuliah
                             </p>
-                        </div>
-                    </div>
-                    <!-- Registrasi -->
-                    <div class="flex items-center justify-center p-8 md:p-4 lg:p-8 border-2 border-[#80747475] hover:bg-[#f0f0f0] rounded-xl gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
-                        <a href="{{ route('mahasiswa.registrasi_mhs') }}">
-                            <div class="flex items-center gap-5 p-1 text-center md:flex-co lg:flex-row">
-                                <img src="\img\registrasi.svg" alt="registrasi" class="w-10 md:w-8 lg:w-10">
-                                <p class="font-semibold text-lg md:text-sm lg:text-lg">
-                                    Registrasi
-                                </p>
-                            </div>
                         </a>
                     </div>
+
+                    <!-- Registrasi -->
+                    <div class="flex items-center justify-center p-8 md:p-4 lg:p-8 border-2 border-[#80747475] hover:bg-[#f0f0f0] rounded-xl gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
+                        <a href="{{ route('mahasiswa.registrasi_mhs') }}" class="flex items-center gap-5 text-center md:flex-col lg:flex-row no-underline">
+                            <img src="\img\registrasi.svg" alt="registrasi" class="w-10 md:w-8 lg:w-10">
+                            <p class="font-semibold text-lg md:text-sm lg:text-lg">
+                                Registrasi
+                            </p>
+                        </a>
+                    </div>
+
                 </div>
             
                 <!-- Informasi Akademik Section -->

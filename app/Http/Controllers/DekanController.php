@@ -40,4 +40,34 @@ class DekanController extends Controller
 
         return redirect()->route('dekan.dashboard')->with('success', 'Ketersediaan ruang berhasil diperbarui.');
     }
+
+    public function setAllJadwal(Request $request)
+    {
+        $jadwals = Jadwal::all(); // Ambil semua jadwal dari database
+        foreach ($jadwals as $jadwal) {
+            // Logika untuk menyetujui jadwal
+            $jadwal->status = 'Disetujui';
+            $jadwal->save();
+        }
+
+        return back()->with('success', 'Semua jadwal berhasil disetujui.');
+    }
+
+
+    public function setAllRuang(Request $request)
+    {
+        $ruangs = Ruang::all(); // Ambil semua ruang dari database
+        $status_ketersediaan = $request->input('status_ketersediaan'); // Ambil array status_ketersediaan
+
+        foreach ($ruangs as $ruang) {
+            // Pastikan nilai status ada sebelum menyimpannya
+            if (isset($status_ketersediaan[$ruang->kode_ruang])) {
+                $ruang->status_ketersediaan = $status_ketersediaan[$ruang->kode_ruang];
+                $ruang->save();
+            }
+        }
+
+        return back()->with('success', 'Semua status ruang berhasil diperbarui.');
+    }
+
 }
