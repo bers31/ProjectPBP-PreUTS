@@ -26,6 +26,7 @@ class Jadwal extends Model
         'ruang',
         'hari',
         'kuota',
+        'kode_tahun',
     ];
 
     /**

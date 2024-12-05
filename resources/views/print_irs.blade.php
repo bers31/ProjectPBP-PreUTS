@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laravel 11 Generate PDF Example - ItSolutionStuff.com</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
+    <title>PRINT IRS {{Str::upper($mahasiswa->nama)}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    {{-- <h1>{{ $title }}</h1>
-    <p>{{ $date }}</p> --}}
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua.</p>
-    <div>
-        <table class="table table-bordered">
+<body style="font-family: 'Times New Roman', Times, serif;" class="h-full flex flex-col ">
+    <div class="grid grid-flow-row-dense grid-cols-10 grid-rows-2 gap-0 justify-center text-center py-6">
+        <div class="col-span-9 ">
+            <h1 class="">KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI</h1>
+            <h1 class="">FAKULTAS {{ Str::upper($mahasiswa->prodi->departemen->fakultas->nama_fakultas) }}</h1>
+            <h1 class="">UNIVERSITAS DIPONEGORO</h1>
+        </div>
+        <div class="">
+            <img class=" w-24 h-36 object-cover" src="\img\Pasfoto.png" alt="pasfoto">
+        </div>
+
+        <div class="col-span-9 row-span-1">
+            <H2 class="font-bold">ISIAN RENCANA STUDI</H2>
+            <h2 class="font-bold">Semester {{$tahunAjaranAktif->bag_semester}} TA {{$tahunAjaranAktif->tahun_akademik}}</h2>
+        </div>
+    </div>
+
+    <div class="mx-196">
+        <p>Nama: {{$mahasiswa->nama}}</p>
+        <p>NIM: {{$mahasiswa->nim}}</p>
+        <p>Program Studi: {{$mahasiswa->prodi->nama }} {{$mahasiswa->prodi->strata}}</p>
+        <p>Dosen Wali: {{$mahasiswa->dosen->nama}}</p>
+
+        <table class="table table-bordered my-6">
             <thead>
                 <tr>
                     <th>No</th>
@@ -19,6 +36,7 @@
                     <th>SKS</th>
                     <th>Kelas</th>
                     <th>Ruangan</th>
+                    <th>Dosen</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,15 +48,28 @@
                 <td class="px-4 py-3 text-center border">{{$detail->jadwal->matakuliah->sks}}</td>
                 <td class="px-4 py-3 text-center border">{{$detail->jadwal->kode_kelas}}</td>
                 <td class="px-4 py-3 text-center border">{{$detail->jadwal->ruang}}</td>
-                <td class="px-4 py-3 border">{{$detail->jadwal->dosen}}</td>
+                <td class="px-4 py-3 border">
+                       dosne
+                </td>   
             </tr>
             <tr>
-                <td class="px-4 py-3  border" colspan='5'>{{$detail->jadwal->hari}} pukul {{$detail->jadwal->jam_mulai}} - {{$detail->jadwal->jam_selesai}}</td>
+                <td class="px-4 py-3 border" colspan='5'>{{$detail->jadwal->hari}} pukul {{$detail->jadwal->jam_mulai}} - {{$detail->jadwal->jam_selesai}}</td>
             </tr>
             @endforeach
             </tbody>
         </table>
     </div>
-    
+
+    <div>
+        <p class="mb-16">Pembimbing Akademik (Dosen Wali)</p>
+        <p>{{$mahasiswa->dosen->nama}}</p>
+        <p>NIDN. {{$mahasiswa->dosen->nidn}}</p>
+    </div>
+
+    <div>
+        <p class="mb-16">Semarang, {{$date}}<p>
+        <p>{{Str::upper($mahasiswa->nama)}}</p>
+        <p>NIM. {{$mahasiswa->nim}}</p>
+    </div>
 </body>
 </html>

@@ -117,6 +117,7 @@
                 <th class="px-4 py-3 text-center border">Hari</th>
                 <th class="px-4 py-3 text-center border">Waktu</th>
                 <th class="px-4 py-3 text-center border">Ruang</th>
+                <th class="px-4 py-3 text-center border">Status</th>
                 <th class="px-4 py-3 text-center border">Dosen</th>
               </tr>
             </thead>
@@ -197,6 +198,7 @@
                                   <td class="px-4 py-3 text-center border">${jadwals.jadwal.hari}</td>
                                   <td class="px-4 py-3 text-center border">${jadwals.jadwal.jam_mulai} - ${jadwals.jadwal.jam_selesai}</td>
                                   <td class="px-4 py-3 text-center border">${jadwals.jadwal.ruang}</td>
+                                  <td class="px-4 py-3 text-center border">${jadwals.status.toUpperCase()}</td>
                                   <td class="px-4 py-3 border"></td> 
                               </tr>`;
                       totalSKS += jadwals.jadwal.mata_kuliah.sks; // Accumulate SKS
@@ -346,6 +348,7 @@
                                         <th class="px-4 py-3 text-center border">Hari</th>
                                         <th class="px-4 py-3 text-center border">Waktu</th>
                                         <th class="px-4 py-3 text-center border">Ruang</th>
+                                        <th class="px-4 py-3 text-center border">Status</th>
                                         <th class="px-4 py-3 text-left border">Dosen</th>
                                     </tr>
                                 </thead>
@@ -389,6 +392,7 @@
               <td class="px-4 py-3 text-center border">${item.hari}</td>
               <td class="px-4 py-3 text-center border">${item.jam_mulai} - ${item.jam_selesai}</td>
               <td class="px-4 py-3 text-center border">${item.ruang}</td>
+              <td class="px-4 py-3 text-center border">${item.status.toUpperCase()}</td>
               <td class="px-4 py-3 border">${item.dosen}</td>
           </tr>
       `).join('');

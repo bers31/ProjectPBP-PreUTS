@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('khs_details', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_irs');
-            $table->unsignedBigInteger('id_jadwal');
+        Schema::create('khs', function (Blueprint $table) {
+            $table->string('nim');
+            $table->string('kode_mk');
             $table->unsignedInteger('nilai',false,3);
-            $table->foreign('id_irs')->references('id_irs')->on('irs')->onDelete('cascade');
-            $table->foreign('id_jadwal')->references('id_jadwal')->on('jadwal')->onDelete('cascade');
-            $table->primary(['id_irs','id_jadwal']);
+            $table->unsignedInteger('semester',false,3);
+            $table->foreign('nim')->references('nim')->on('mahasiswa')->onDelete('cascade');
+            $table->foreign('kode_mk')->references('kode_mk')->on('mata_kuliah')->onDelete('cascade');
+            $table->primary(['nim','kode_mk','semester']);
             $table->timestamps();
         });
     }

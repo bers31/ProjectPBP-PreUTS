@@ -8,11 +8,6 @@ use Illuminate\Support\Facades\Hash;
 
 class DosenPengampuSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run(): void
     {
         DosenPengampu::create([
@@ -56,4 +51,6 @@ class DosenPengampuSeeder extends Seeder
             'id_jadwal' => 10,
         ]);
     }
+
 }
+

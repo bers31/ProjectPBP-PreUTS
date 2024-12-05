@@ -3,23 +3,32 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DosenPengampu extends Model
 {
+    //
     protected $table = 'dosen_pengampu';
-    protected $primaryKey = null; // No single primary key
-    public $incrementing = false; // No auto-increment
-    protected $fillable = ['nidn_dosen', 'id_jadwal'];
+    protected $primaryKey = ['nidn_dosen','id_jadwal'];
+    public $incrementing = false;
+    protected $fillable = ['nidn_dosen','id_jadwal'];
 
-    public function dosen(): BelongsTo
+    protected function setKeysForSaveQuery($query)
     {
-        return $this->belongsTo(Dosen::class,  'nidn_dosen', 'nidn');
+        $keys = $this->getKeyName();
+        if(!is_array($keys)){
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach($keys as $keyName){
+            $query->where($keyName, '=', $this->getAttribute($keyName));
+        }
+
+        return $query;
     }
 
-    public function jadwal(): BelongsTo
+    public function dosen()
     {
-        return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id_jadwal');
+        return $this->hasMany(Dosen::class, 'nidn', 'nidn_dosen');
     }
+
 }

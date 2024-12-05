@@ -27,6 +27,28 @@ class MataKuliah extends Model
         'sifat',
     ];
 
+    private function getStatusPengambilan($nim, $idMataKuliah)
+    {
+        // Ambil data KHS mahasiswa
+        $khs = KHS::where('nim', $nim)
+            ->where('kode_mk', $idMataKuliah)
+            ->orderBy('semester_ambil', 'desc') // Prioritaskan semester terbaru
+            ->first();
+
+        if (!$khs) {
+            return 'Baru'; // Default jika tidak ada data KHS
+        }
+
+        // Logika status pengambilan
+        if ($khs->nilai < 60) {
+            return 'Mengulang';
+        } elseif ($khs->nilai >= 60 && $khs->nilai < 80) {
+            return 'Perbaikan';
+        } else {
+            return 'Baru';
+        }
+    }
+
     /**
      * Relationship with Jadwal model.
      */
