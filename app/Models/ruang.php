@@ -15,7 +15,7 @@ class Ruang extends Model
     protected $keyType = 'string'; // Set primary key type to string
     protected $fillable = [
         'kode_ruang',
-        'kode_fakultas', 
+        'kode_departemen', 
         'kapasitas', 
         'status_ketersediaan'
     ];
@@ -23,9 +23,9 @@ class Ruang extends Model
     /**
      * Relasi Ruang terhadap fakultas
      */
-    public function fakultas()
+    public function departemen()
     {
-        return $this->belongsTo(Fakultas::class, 'kode_fakultas', 'kode_fakultas');
+        return $this->belongsTo(Departemen::class, 'kode_departemen', 'kode_departemen');
     }
 
     public function jadwal()

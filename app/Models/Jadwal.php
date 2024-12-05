@@ -55,4 +55,9 @@ class Jadwal extends Model
     {
         return $this->hasMany(DetailIRS::class, 'id_jadwal', 'id_jadwal');
     }
+
+    public function dosen_pengampu()
+    {
+        return $this->hasMany(DosenPengampu::class, 'id_jadwal', 'id_jadwal');
+    }
 }

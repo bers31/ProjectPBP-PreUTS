@@ -11,6 +11,7 @@ use App\Models\MataKuliah;
 use App\Models\Dosen;
 use App\Models\Ruang;
 use App\Models\DosenPengampu;
+use Illuminate\Support\Facades\Auth;
 
 class JadwalController extends Controller
 {
@@ -36,35 +37,40 @@ class JadwalController extends Controller
      */
     public function create()
     {
+        $user = Auth::user();
+        $dosun = $user->dosen; // Assuming User has a relationship with Dosen
+    
+        if (!$dosun || !$dosun->kode_departemen) {
+            abort(403, 'User does not have a valid kode_departemen.');
+        }
+    
         $matkul = MataKuliah::all();
         $dosen = Dosen::all();
-        $ruang = Ruang::all();
+        $ruang = Ruang::where('kode_departemen', $dosun->kode_departemen)
+                ->where('status_ketersediaan', 'Tersedia')
+                ->get(['kode_ruang', 'kapasitas']);
     
-        // Fetch existing schedules with related dosen_pengampu and dosen details
-        $jadwals = Jadwal::with(['dosen_pengampu.dosen']) // Load dosen details through dosen_pengampu
+    
+        $jadwals = Jadwal::with(['dosen_pengampu.dosen'])
             ->select('id_jadwal', 'kode_mk', 'kode_kelas', 'hari', 'ruang', 'jam_mulai', 'jam_selesai')
             ->get();
     
-        // Prepare data for scheduling logic
-        $schedules = Jadwal::with(['dosen_pengampu.dosen']) // Ensure relationships are loaded
-            ->get()
-            ->map(function ($jadwal) {
-                return [
-                    'id_jadwal' => $jadwal->id_jadwal,
-                    'kode_mk' => $jadwal->kode_mk,
-                    'kode_kelas' => $jadwal->kode_kelas,
-                    'hari' => $jadwal->hari,
-                    'ruang' => $jadwal->ruang,
-                    'jam_mulai' => $jadwal->jam_mulai,
-                    'jam_selesai' => $jadwal->jam_selesai,
-                    'dosen_pengampu' => $jadwal->dosen_pengampu->map(function ($dp) {
-                        return $dp->dosen->nidn ?? null; // Safely retrieve nidn of each dosen
-                    })->filter(), // Remove null values
-                ];
-            });
+        $schedules = $jadwals->map(function ($jadwal) {
+            return [
+                'id_jadwal' => $jadwal->id_jadwal,
+                'kode_mk' => $jadwal->kode_mk,
+                'kode_kelas' => $jadwal->kode_kelas,
+                'hari' => $jadwal->hari,
+                'ruang' => $jadwal->ruang,
+                'jam_mulai' => $jadwal->jam_mulai,
+                'jam_selesai' => $jadwal->jam_selesai,
+                'dosen_pengampu' => $jadwal->dosen_pengampu->map(fn($dp) => $dp->dosen->nidn)->filter(),
+            ];
+        });
     
         return view('kaprodi.jadwal.create', compact('matkul', 'dosen', 'ruang', 'jadwals', 'schedules'));
     }
+    
     
     
     
@@ -125,9 +131,18 @@ class JadwalController extends Controller
      */
     public function edit(Jadwal $jadwal)
     {
+        $user = Auth::user();
+        $dosun = $user->dosen; // Assuming User has a relationship with Dosen
+    
+        if (!$dosun || !$dosun->kode_departemen) {
+            abort(403, 'User does not have a valid kode_departemen.');
+        }
+    
         $matkul = MataKuliah::all();
         $dosen = Dosen::all();
-        $ruang = Ruang::all();
+        $ruang = Ruang::where('kode_departemen', $dosun->kode_departemen)
+            ->get(['kode_ruang', 'kapasitas']); // Include kapasitas in the query
+            
         $jadwul = Jadwal::all();
 
     
@@ -165,13 +180,12 @@ class JadwalController extends Controller
      */
     public function update(UpdateJadwalRequest $request, Jadwal $jadwal)
     {
-        // Step 1: Validate the incoming data
 
+        
         $validated = $request->validated();
-        // dd($request->all());
-        // dd($request->all());
-    
-        // Step 2: Update the existing Jadwal record
+        // dd($request);
+
+        // Step 1: Update the `jadwal` record
         $jadwal->update([
             'kode_mk' => $validated['kode_mk'],
             'kode_kelas' => $validated['kode_kelas'],
@@ -182,13 +196,13 @@ class JadwalController extends Controller
             'kuota' => $validated['kuota'],
         ]);
     
-        // Step 3: Update related DosenPengampu records
-        $existingDosenPengampu = $jadwal->dosen_pengampu()->pluck('nidn_dosen')->toArray();
-        $newDosenPengampu = json_decode($validated['dosen_pengampu'], true);
+        // Step 2: Synchronize `dosen_pengampu` records
+        $newDosenPengampu = json_decode($validated['dosen_pengampu'], true); // New set of NIDNs
     
-        // dd($existingDosenPengampu);
-
         if (is_array($newDosenPengampu)) {
+            // Get current `dosen_pengampu` for this `jadwal`
+            $existingDosenPengampu = $jadwal->dosen_pengampu()->pluck('nidn_dosen')->toArray();
+    
             // Find dosen_pengampu records to delete
             $toDelete = array_diff($existingDosenPengampu, $newDosenPengampu);
             if (!empty($toDelete)) {
@@ -210,9 +224,9 @@ class JadwalController extends Controller
             return redirect()->back()->withErrors(['dosen_pengampu' => 'Invalid data format for dosen_pengampu.']);
         }
     
-        // Step 4: Redirect or return a response
-        return redirect()->route('jadwal.index')->with('success', 'Jadwal updated successfully!');
+        return redirect()->route('jadwal.index')->with('success', 'Jadwal and associated Dosen Pengampu updated successfully!');
     }
+    
     
 
     /**
@@ -220,8 +234,20 @@ class JadwalController extends Controller
      */
     public function destroy(Jadwal $jadwal)
     {
-        //
+        try {
+            // Step 1: Delete related DosenPengampu records
+            $jadwal->dosen_pengampu()->delete(); // Assumes the relationship is defined in the Jadwal model
+    
+            // Step 2: Delete the Jadwal record itself
+            $jadwal->delete();
+    
+            return redirect()->route('jadwal.index')->with('success', 'Jadwal and related records deleted successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('jadwal.index')->with('error', 'Failed to delete Jadwal: ' . $e->getMessage());
+        }
     }
+    
+    
 
     public function storeTemp(Request $request)
     {

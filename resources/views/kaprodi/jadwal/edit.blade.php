@@ -61,7 +61,7 @@
                 <!-- Other Inputs -->
                 <div class="mb-4">
                     <label for="kode_kelas" class="block mb-2 text-sm font-medium text-gray-900">Kode Kelas</label>
-                    <input type="text" id="kode_kelas" name="kode_kelas" value="{{ $jadwal->kode_kelas }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
+                    <input type="text" id="kode_kelas" name="kode_kelas" value="{{ $jadwal->kode_kelas }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" readonly>
                 </div>
                 <div class="mb-4">
                     <label for="jam_mulai" class="block mb-2 text-sm font-medium text-gray-900">Jam Mulai</label>
@@ -99,10 +99,15 @@
                     <label for="ruang" class="block mb-2 text-sm font-medium text-gray-900">Ruang</label>
                     <select id="ruang" name="ruang" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
                         @foreach ($ruang as $r)
-                            <option value="{{ $r->kode_ruang }}" @if ($jadwal->ruang === $r->kode_ruang) selected @endif>{{ $r->kode_ruang }}</option>
+                            <option value="{{ $r->kode_ruang }}" 
+                                @if ($jadwal->ruang === $r->kode_ruang) selected @endif 
+                                data-kapasitas="{{ $r->kapasitas }}">
+                                {{ $r->kode_ruang }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
+
                 <div class="mb-4">
                     <label for="kuota" class="block mb-2 text-sm font-medium text-gray-900">Kuota</label>
                     <input type="number" id="kuota" name="kuota" value="{{ $jadwal->kuota }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
@@ -194,11 +199,16 @@ document.addEventListener('DOMContentLoaded', function () {
         // Assuming `existingSchedules` is available in your script
 
     // Find related schedules with the selected `kode_mk`
-    const relatedSchedules = existingSchedules.filter(schedule => schedule.kode_mk === kodeMK);
-    console.log(relatedSchedules)
+    //Kalau mau populate berdasar semua mk yang sama, maka
+    // const relatedSchedules = existingSchedules.filter(schedule => schedule.id_jadwal === kodeMK); 
+    // sama perubahan populateDosenSelection harusnya automateDosenSelection
+
+    // console.log(currentScheduleId);
+    const relatedSchedules = existingSchedules.filter(schedule => String(schedule.id_jadwal) === String(currentScheduleId));
+    // console.log(relatedSchedules);
 
     if (relatedSchedules.length > 0) {
-        automateDosenSelection(relatedSchedules);
+        populateDosenSelection(relatedSchedules[0]); // Pass only the current schedule
     } else {
         clearDosenSelection();
         kodeKelasInput.value = '';
@@ -324,22 +334,44 @@ document.addEventListener('DOMContentLoaded', function () {
         return !!selectedDosenDisplay.querySelector(`li[data-nidn="${nidn}"]`);
     }
 
+    //     function automateDosenSelection(relatedSchedules) {
+        //     clearDosenSelection();
+
+        //     // Collect unique dosen NIDNs from related schedules
+        //     const uniqueDosenNidn = [
+        //         ...new Set(
+        //             relatedSchedules.flatMap(schedule =>
+        //                 schedule.dosen_pengampu.map(dp => dp.dosen.nidn)
+        //             )
+        //         ),
+        //     ];
+
+        //     // Loop through the unique NIDNs and add them to the selected list
+        //     uniqueDosenNidn.forEach(nidn => {
+        //         const dosen = @json($dosen).find(d => d.nidn === nidn);
+        //         if (dosen) {
+        //             // Add the dosen to the selected list
+        //             addSelectedDosen(dosen.nidn, dosen.nama);
+
+        //             // Check if the dosen is already in the selected list and automatically check the checkbox
+        //             const checkbox = dosenList.querySelector(input[value="${nidn}"]);
+
+        //             if (checkbox) {
+        //                 checkbox.checked = true; // Check the box automatically
+        //             }
+        //         }
+        //     });
+        // }
 
     // Automate Dosen Selection
-    function automateDosenSelection(relatedSchedules) {
+    function populateDosenSelection(currentSchedule) {
         clearDosenSelection();
 
-        // Collect unique dosen NIDNs from related schedules
-        const uniqueDosenNidn = [
-            ...new Set(
-                relatedSchedules.flatMap(schedule =>
-                    schedule.dosen_pengampu.map(dp => dp.dosen.nidn)
-                )
-            ),
-        ];
+        // Collect dosen NIDNs from the current schedule
+        const dosenNidnList = currentSchedule.dosen_pengampu.map(dp => dp.dosen.nidn);
 
-        // Loop through the unique NIDNs and add them to the selected list
-        uniqueDosenNidn.forEach(nidn => {
+        // Loop through the NIDNs and add them to the selected list
+        dosenNidnList.forEach(nidn => {
             const dosen = @json($dosen).find(d => d.nidn === nidn);
             if (dosen) {
                 // Add the dosen to the selected list
@@ -403,6 +435,22 @@ document.addEventListener('DOMContentLoaded', function () {
         const hariValue = hari.value;
         const jamMulaiValue = jamMulai.value;
         const jamSelesaiValue = jamSelesai.value;
+        const kuotaValue = kuota.value; // Get the kuota value
+        const selectedRuangOption = ruang.options[ruang.selectedIndex];
+        const kapasitas = selectedRuangOption ? parseInt(selectedRuangOption.getAttribute('data-kapasitas'), 10) : 0;
+
+        console.log(selectedRuangOption);
+        console.log(kapasitas);
+
+
+        // Validate the schedule
+
+        if (parseInt(kuotaValue, 10) > kapasitas) {
+            event.preventDefault();
+            alert("Kuota tidak boleh melebihi kapasitas ruang.");
+            return; // Stop form submission
+        }
+
 
         console.log("Checking conflict for:", jamMulaiValue, jamSelesaiValue);
 

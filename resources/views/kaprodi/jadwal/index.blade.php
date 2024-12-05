@@ -1,20 +1,22 @@
-@include('header')
-<div class="flex flex-col min-h-screen">
-    <!-- NavBar -->
-    <x-navbar />
-    <div class="flex flex-col flex-grow p-8">
-        <!-- Header -->
-        <div class="flex items-center justify-between py-3">
-            <div class="font-bold text-lg md:text-xl pl-4 py-1">
-                Daftar Jadwal
-            </div>
-            <!-- Add Button -->
-            <a href="{{ route('jadwal.create') }}" class="btn btn-warning btn-sm">Create</a>
-        </div>
+@include('../header')
+<x-navbar/>
 
-        <!-- Content Section -->
-        <div class="flex flex-row justify-between mt-5">
-            <!-- Schedule Table -->
+<div class="flex flex-col flex-grow">
+    <!-- Header -->
+    <div class="flex items-center justify-between py-3 p-8">
+        <div class="font-bold text-lg md:text-xl pl-4 py-1">
+            Daftar Jadwal
+        </div>
+        <!-- Add Button -->
+        <form action="{{ route('jadwal.create') }}" method="GET">
+            <button class="bg-blue-500 text-white font-semibold px-3 py-1 rounded hover:bg-blue-600 ml-12">
+                Tambah Jadwal
+            </button>
+        </form>
+    </div>
+
+    <div class="flex mx-7">
+        <div class="flex flex-col w-full border-2 p-5 border-gray-300 rounded-lg shadow-md bg-white">
             <table id="jadwalTable" class="table-auto w-full bg-white divide-y divide-gray-200">
                 <thead class="bg-gray-100">
                     <tr>
@@ -28,12 +30,12 @@
                         <th class="px-4 py-2">Hari</th>
                         <th class="px-4 py-2">Kode Ruang</th>
                         <th class="px-4 py-2">Kuota</th>
-                        <th class="px-4 py-2">Action</th> <!-- New Action Column -->
+                        <th class="px-4 py-2">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($jadwals as $index => $jadwal)
-                        <tr class="hover:bg-gray-50">
+                        <tr class="hover:bg-gray-50 text-center">
                             <td class="border px-4 py-2">{{ $jadwal->id_jadwal ?? '-' }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->mataKuliah->nama_mk ?? '-' }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->mataKuliah->kode_mk ?? '-' }}</td>
@@ -49,22 +51,30 @@
                             <td class="border px-4 py-2">{{ $jadwal->ruangan->kode_ruang ?? '-' }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->kuota }}</td>
                             <td class="border px-4 py-2">
-                            <a href="{{ route('jadwal.edit', $jadwal) }}" class="btn-edit bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
-                                Edit                                
-                            </a>
-                                <div class="flex space-x-2">
-
-                                    <button class="btn-delete bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Delete</button>
+                                <div class="flex flex-col items-center gap-2">
+                                    <!-- Edit Button -->
+                                    <a href="{{ route('jadwal.edit', $jadwal) }}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+                                        Edit
+                                    </a>
+                                    <!-- Delete Button -->
+                                    <form action="{{ route('jadwal.destroy', $jadwal) }}" method="POST" class="w-full">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" onclick="return confirm('Are you sure you want to delete this schedule?')" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 w-full">
+                                            Delete
+                                        </button>
+                                    </form>
                                 </div>
-                            </td> <!-- Action Buttons -->
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
-</div>
-@include('footer')
+
+
+
 
 <style>
     .dataTables_length select {
@@ -126,3 +136,4 @@
     });
 </script>
 
+@include('../footer')

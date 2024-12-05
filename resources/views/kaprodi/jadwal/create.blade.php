@@ -46,7 +46,7 @@
                 <!-- Other Inputs -->
                 <div class="mb-4">
                     <label for="kode_kelas" class="block mb-2 text-sm font-medium text-gray-900">Kode Kelas</label>
-                    <input type="text" id="kode_kelas" name="kode_kelas" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
+                    <input type="text" id="kode_kelas" name="kode_kelas" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" readonly>
                 </div>
                 <div class="mb-4">
                     <label for="jam_mulai" class="block mb-2 text-sm font-medium text-gray-900">Jam Mulai</label>
@@ -70,7 +70,7 @@
                     <label for="ruang" class="block mb-2 text-sm font-medium text-gray-900">Ruang</label>
                     <select id="ruang" name="ruang" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
                         @foreach ($ruang as $r)
-                            <option value="{{ $r->kode_ruang }}">{{ $r->kode_ruang }}</option>
+                            <option value="{{ $r->kode_ruang }}" data-kapasitas="{{ $r->kapasitas }}">{{ $r->kode_ruang }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
             suggestKodeKelas(relatedSchedules); // Suggest next `kode_kelas`
         } else {
             clearDosenSelection();
-            kodeKelasInput.value = '';
+            kodeKelasInput.value = 'A';
         }
     });
 
@@ -199,6 +199,7 @@ document.addEventListener('DOMContentLoaded', function () {
         kodeKelasInput.value = nextKodeKelas;
     }
 
+    // Generate the next `kode_kelas` not in use
     function getNextKodeKelas(existingKelas) {
         const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         for (let char of alphabet) {
@@ -379,13 +380,28 @@ document.addEventListener('DOMContentLoaded', function () {
     // Tentang Cek Tidak Tabrakan
     // ==========================
 
+
     form.addEventListener('submit', function (event) {
         const ruangValue = ruang.value;
         const hariValue = hari.value;
         const jamMulaiValue = jamMulai.value;
         const jamSelesaiValue = jamSelesai.value;
+        const kuotaValue = kuota.value; // Get the kuota value
+        const selectedRuangOption = ruang.options[ruang.selectedIndex];
+        const kapasitas = selectedRuangOption ? parseInt(selectedRuangOption.getAttribute('data-kapasitas'), 10) : 0;
+
+        console.log(selectedRuangOption);
+        console.log(kapasitas);
+
 
         // Validate the schedule
+
+        if (parseInt(kuotaValue, 10) > kapasitas) {
+            event.preventDefault();
+            alert("Kuota tidak boleh melebihi kapasitas ruang.");
+            return; // Stop form submission
+        }
+
         const conflict = existingSchedules.some(schedule => {
             return (
                 schedule.ruang === ruangValue && // Check same room

@@ -98,6 +98,7 @@
                     <tr>
                         <th class="px-4 py-2">Nama/Kode Ruang</th>
                         <th class="px-4 py-2">Kapasitas</th>
+                        <th class="px-4 py-2">Departemen</th>
                         <th class="px-4 py-2">Status</th>
                         <th class="px-4 py-2">Aksi</th>
                     </tr>
@@ -107,6 +108,7 @@
                         <tr>
                             <td class="border px-4 py-2">{{ $ruang->kode_ruang }}</td>
                             <td class="border px-4 py-2">{{ $ruang->kapasitas }}</td>
+                            <td class="border px-4 py-2">{{ $ruang->kode_departemen }}</td>
                             <td class="border px-4 py-2">
                                 <form action="{{ route('dekan.setRuang') }}" method="POST">
                                     @csrf

@@ -24,7 +24,7 @@ class StoreRuangRequest extends FormRequest
     {
         return [
             'kode_ruang' => 'required|string|unique:ruang,kode_ruang',
-            'kode_fakultas' => 'required|string|exists:fakultas,kode_fakultas', 
+            'kode_departemen' => 'required|string|exists:departemen,kode_departemen', 
             'kapasitas' => 'required|integer|min:1', // Added kapasitas field validation
         ];
     }
