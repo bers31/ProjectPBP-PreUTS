@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Jadwal;
 use App\Models\Ruang;
 use App\Models\Prodi;
+use App\Models\Departemen;
 
 class DekanController extends Controller
 {
@@ -18,13 +19,18 @@ class DekanController extends Controller
         // Cari kode prodi yang terkait dengan departemen dekan
         $prodis = Prodi::where('kode_departemen', $kodeDepartemen)->pluck('kode_prodi');
 
+        // Cari kode fakultas dari departemen tersebut
+        $kodeFakultas = Departemen::where('kode_departemen', $kodeDepartemen)
+        ->pluck('kode_fakultas')
+        ->first();
+
         // Ambil jadwal yang hanya terkait dengan prodi tersebut
         $jadwals = Jadwal::whereHas('mataKuliah', function ($query) use ($prodis) {
             $query->whereIn('kode_prodi', $prodis);
         })->get();
 
-        // Data ruang tetap diambil semuanya
-        $ruangs = Ruang::all();
+        // Ambil ruang yang hanya terkait dengan fakultas tersebut
+        $ruangs = Ruang::where('kode_fakultas', $kodeFakultas)->get();
 
         // Kirim data ke view
         return view('dekan.dashboard', [
@@ -64,6 +70,7 @@ class DekanController extends Controller
 
         return back()->with('success', 'Semua jadwal berhasil disetujui.');
     }
+
 
     public function setAllRuang(Request $request)
     {
