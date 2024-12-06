@@ -9,7 +9,6 @@ use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\historyIRSController;
 use App\Http\Controllers\IRSController;
 use App\Http\Controllers\MahasiswaController;
-use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliController;
