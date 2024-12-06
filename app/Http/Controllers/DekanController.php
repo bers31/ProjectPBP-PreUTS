@@ -1,41 +1,46 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Jadwal;
 use App\Models\Ruang;
 use App\Models\Prodi;
-use App\Models\Departemen;
 
 class DekanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Ambil kode departemen dekan yang sedang login
         $kodeDepartemen = Auth::user()->dosen->departemen->kode_departemen;
 
-        // Cari kode prodi yang terkait dengan departemen dekan
-        $prodis = Prodi::where('kode_departemen', $kodeDepartemen)->pluck('kode_prodi');
+        // Cari semua prodi yang terkait dengan departemen dekan
+        $prodis = Prodi::all();
 
-        // Cari kode fakultas dari departemen tersebut
-        $kodeFakultas = Departemen::where('kode_departemen', $kodeDepartemen)
-        ->pluck('kode_fakultas')
-        ->first();
+        // Ambil prodi yang dipilih dari request, jika ada
+        $selectedProdi = $request->input('prodi');
 
-        // Ambil jadwal yang hanya terkait dengan prodi tersebut
-        $jadwals = Jadwal::whereHas('mataKuliah', function ($query) use ($prodis) {
-            $query->whereIn('kode_prodi', $prodis);
+        // Ambil jadwal berdasarkan prodi yang dipilih
+        $jadwals = Jadwal::when($selectedProdi, function ($query, $selectedProdi) {
+            $query->whereHas('mataKuliah', function ($query) use ($selectedProdi) {
+                $query->where('kode_prodi', $selectedProdi);
+            });
         })->get();
 
-        // Ambil ruang yang hanya terkait dengan fakultas tersebut
-        $ruangs = Ruang::where('kode_fakultas', $kodeFakultas)->get();
+        // Ambil ruang yang hanya terkait dengan jadwal yang sudah difilter
+        $ruangs = Ruang::whereHas('jadwal', function ($query) use ($selectedProdi) {
+            $query->whereHas('mataKuliah', function ($query) use ($selectedProdi) {
+                $query->where('kode_prodi', $selectedProdi);
+            });
+        })->get();
 
         // Kirim data ke view
         return view('dekan.dashboard', [
             'jadwals' => $jadwals,
             'ruangs' => $ruangs,
+            'prodis' => $prodis,
+            'selectedProdi' => $selectedProdi,
         ]);
     }
 
@@ -43,7 +48,7 @@ class DekanController extends Controller
     {
         // Proses untuk menetapkan jadwal
         $jadwal = Jadwal::findOrFail($request->input('id_jadwal'));
-        $jadwal->status = 'disetujui';
+        $jadwal->status = 'Disetujui';
         $jadwal->save();
 
         return redirect()->route('dekan.dashboard')->with('success', 'Jadwal berhasil ditetapkan.');
@@ -61,31 +66,42 @@ class DekanController extends Controller
 
     public function setAllJadwal(Request $request)
     {
-        $jadwals = Jadwal::all(); // Ambil semua jadwal dari database
+        $selectedProdi = $request->input('prodi');
+
+        // Ambil hanya jadwal berdasarkan prodi yang dipilih
+        $jadwals = Jadwal::whereHas('mataKuliah', function ($query) use ($selectedProdi) {
+            $query->where('kode_prodi', $selectedProdi);
+        })->get();
+
+        // Perbarui status hanya untuk jadwal yang difilter
         foreach ($jadwals as $jadwal) {
-            // Logika untuk menyetujui jadwal
             $jadwal->status = 'Disetujui';
             $jadwal->save();
         }
 
-        return back()->with('success', 'Semua jadwal berhasil disetujui.');
+        return back()->with('success', 'Semua jadwal untuk prodi yang dipilih berhasil disetujui.');
     }
-
 
     public function setAllRuang(Request $request)
     {
-        $ruangs = Ruang::all(); // Ambil semua ruang dari database
-        $status_ketersediaan = $request->input('status_ketersediaan'); // Ambil array status_ketersediaan
+        $selectedProdi = $request->input('prodi');
+        $status_ketersediaan = $request->input('status_ketersediaan');
 
+        // Ambil hanya ruang yang terkait dengan jadwal prodi yang dipilih
+        $ruangs = Ruang::whereHas('jadwal', function ($query) use ($selectedProdi) {
+            $query->whereHas('mataKuliah', function ($query) use ($selectedProdi) {
+                $query->where('kode_prodi', $selectedProdi);
+            });
+        })->get();
+
+        // Perbarui status ketersediaan untuk ruang yang relevan
         foreach ($ruangs as $ruang) {
-            // Pastikan nilai status ada sebelum menyimpannya
             if (isset($status_ketersediaan[$ruang->kode_ruang])) {
                 $ruang->status_ketersediaan = $status_ketersediaan[$ruang->kode_ruang];
                 $ruang->save();
             }
         }
 
-        return back()->with('success', 'Semua status ruang berhasil diperbarui.');
+        return back()->with('success', 'Semua status ruang untuk prodi yang dipilih berhasil diperbarui.');
     }
-
 }
