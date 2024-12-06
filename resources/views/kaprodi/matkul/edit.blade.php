@@ -8,6 +8,7 @@
             <h1 class="text-3xl font-semibold mb-6 text-gray-800">Update Matakuliah</h1>
             
             <form action="{{ route('matkul.update', $matkul->kode_mk) }}" method="POST">
+
                 @csrf
                 @method('PUT') <!-- Tambahkan ini untuk method PUT -->
                 
