@@ -32,9 +32,9 @@ class JadwalSeeder extends Seeder
             ['kode_mk' => 'PAIK6201', 'hari' => 'Jumat',   'kode_kelas' => 'A', 'jam_mulai' => '08:00:00', 'jam_selesai' => '10:00:00', 'ruang' => 'K101', 'kuota' => 60, 'kode_tahun' => '24/25GA'],
             ['kode_mk' => 'PAIK6202', 'hari' => 'Jumat',   'kode_kelas' => 'B', 'jam_mulai' => '10:00:00', 'jam_selesai' => '12:00:00', 'ruang' => 'K102', 'kuota' => 50, 'kode_tahun' => '24/25GA'],
             ['kode_mk' => 'PAIK6501', 'hari' => 'Kamis',   'kode_kelas' => 'B', 'jam_mulai' => '11:00:00', 'jam_selesai' => '12:00:00', 'ruang' => 'K102', 'kuota' => 50, 'kode_tahun' => '24/25GA'],
-            ['kode_mk' => 'PAIK6502', 'hari' => 'Rabu',   'kode_kelas' => 'B', 'jam_mulai' => '11:00:00', 'jam_selesai' => '12:00:00', 'ruang' => 'K102', 'kuota' => 50, 'kode_tahun' => '24/25GA'],
-            ['kode_mk' => 'PAIK6502', 'hari' => 'Rabu',   'kode_kelas' => 'C', 'jam_mulai' => '11:00:00', 'jam_selesai' => '12:00:00', 'ruang' => 'K101', 'kuota' => 50, 'kode_tahun' => '24/25GA'],
-            ['kode_mk' => 'PAIK6101', 'hari' => 'Selasa',   'kode_kelas' => 'D', 'jam_mulai' => '08:00:00', 'jam_selesai' => '10:00:00', 'ruang' => 'K102', 'kuota' => 50, 'kode_tahun' => '24/25GA'],
+            // ['kode_mk' => 'PAIK6502', 'hari' => 'Rabu',   'kode_kelas' => 'B', 'jam_mulai' => '11:00:00', 'jam_selesai' => '12:00:00', 'ruang' => 'K102', 'kuota' => 50, 'kode_tahun' => '24/25GA'],
+            // ['kode_mk' => 'PAIK6502', 'hari' => 'Rabu',   'kode_kelas' => 'C', 'jam_mulai' => '11:00:00', 'jam_selesai' => '12:00:00', 'ruang' => 'K101', 'kuota' => 50, 'kode_tahun' => '24/25GA'],
+            // ['kode_mk' => 'PAIK6101', 'hari' => 'Selasa',   'kode_kelas' => 'D', 'jam_mulai' => '08:00:00', 'jam_selesai' => '10:00:00', 'ruang' => 'K102', 'kuota' => 50, 'kode_tahun' => '24/25GA'],
         ];
 
         foreach ($jadwals as $jadwal) {

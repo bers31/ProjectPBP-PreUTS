@@ -19,6 +19,23 @@ class JadwalController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function jadwalMengajar()
+    {
+        // Get authenticated user's NIDN (assuming the user is a Dosen)
+        $user = Auth::user();
+        $nidn = $user->dosen->nidn;
+
+        // Get teaching schedules for the authenticated lecturer
+        $jadwalMengajar = Jadwal::with(['mataKuliah', 'ruangan'])
+            ->whereHas('dosen_pengampu', function($query) use ($nidn) {
+                $query->where('nidn_dosen', $nidn);
+            })
+            ->orderBy('hari')
+            ->orderBy('jam_mulai')
+            ->get();
+
+        return view('dosen.jadwal', compact('jadwalMengajar'));
+    }
 
      public function jadwalMahasiswa()
      {
@@ -313,13 +330,7 @@ class JadwalController extends Controller
     {
         $kodeProdi = $request->kode_prodi;
     
-        // Debugging
-        if (!$kodeProdi) {
-            \Log::error('kode_prodi is missing.');
-            return response()->json(['error' => 'kode_prodi is required'], 400);
-        }
-    
-        \Log::info('kode_prodi received:', ['kode_prodi' => $kodeProdi]);
+
     
         $dosen = Dosen::whereHas('departemen', function ($query) use ($kodeProdi) {
             $query->whereHas('prodi', function ($subQuery) use ($kodeProdi) {
@@ -327,11 +338,6 @@ class JadwalController extends Controller
             });
         })->get();
     
-        \Log::info('Fetched dosen:', ['dosen' => $dosen]);
-    
         return response()->json(['dosen' => $dosen]);
     }
-    
-    
-    
 }
