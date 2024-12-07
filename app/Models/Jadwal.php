@@ -40,7 +40,6 @@ class Jadwal extends Model
 
     /**
      * Relationship with Ruang model.
-     * Assumes that `ruang` in `jadwal` refers to `kode_ruang` in `ruang`.
      */
 
      public function detail_irs(){

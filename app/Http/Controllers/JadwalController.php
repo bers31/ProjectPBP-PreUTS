@@ -11,6 +11,7 @@ use App\Models\MataKuliah;
 use App\Models\Dosen;
 use App\Models\Ruang;
 use App\Models\DosenPengampu;
+use App\Models\Tahun;
 use Illuminate\Support\Facades\Auth;
 
 class JadwalController extends Controller
@@ -63,6 +64,8 @@ class JadwalController extends Controller
                 ->where('status_ketersediaan', 'Tersedia')
                 ->get(['kode_ruang', 'kapasitas']);
     
+
+        $kodeTahun = Tahun::where('status', 'aktif')->get();
     
         $jadwals = Jadwal::with(['dosen_pengampu.dosen'])
             ->select('id_jadwal', 'kode_mk', 'kode_kelas', 'hari', 'ruang', 'jam_mulai', 'jam_selesai')
@@ -81,7 +84,7 @@ class JadwalController extends Controller
             ];
         });
     
-        return view('kaprodi.jadwal.create', compact('matkul', 'dosen', 'ruang', 'jadwals', 'schedules'));
+        return view('kaprodi.jadwal.create', compact('matkul', 'dosen', 'ruang', 'jadwals', 'schedules', 'kodeTahun'));
     }
     
     
@@ -94,10 +97,13 @@ class JadwalController extends Controller
      */
     public function store(StoreJadwalRequest $request)
     {
+        
+        // dd($request->all());
+
         // Step 1: Validate the incoming data
         $validated = $request->validated();
 
-        // dd($request->all());
+
 
         // Step 2: Create a new Jadwal record
         $jadwal = Jadwal::create([
@@ -107,6 +113,7 @@ class JadwalController extends Controller
             'ruang' => $validated['ruang'],
             'jam_mulai' => $validated['jam_mulai'],
             'jam_selesai' => $validated['jam_selesai'],
+            'kode_tahun' => $validated['kode_tahun'],
             'kuota' => $validated['kuota'],
         ]);
 
@@ -206,6 +213,7 @@ class JadwalController extends Controller
             'ruang' => $validated['ruang'],
             'jam_mulai' => $validated['jam_mulai'],
             'jam_selesai' => $validated['jam_selesai'],
+            'kode_tahun' => $validated['kode_tahun'],
             'kuota' => $validated['kuota'],
         ]);
     
