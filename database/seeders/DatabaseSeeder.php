@@ -23,9 +23,11 @@ class DatabaseSeeder extends Seeder
             RuangSeeder::class,
             AkademikSeeder::class,
             JadwalSeeder::class,
+            KaprodiSeeder::class,
             // IRSSeeder::class,
             // IRSDetailSeeder::class,
-            DosenPengampuSeeder::class
+            DosenPengampuSeeder::class,
+            TestSeeder::class
         ]);
     }
 }

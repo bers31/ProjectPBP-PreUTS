@@ -305,21 +305,13 @@ class JadwalController extends Controller
     {
         $kodeProdi = $request->kode_prodi;
     
-        // Debugging
-        if (!$kodeProdi) {
-            \Log::error('kode_prodi is missing.');
-            return response()->json(['error' => 'kode_prodi is required'], 400);
-        }
-    
-        \Log::info('kode_prodi received:', ['kode_prodi' => $kodeProdi]);
+
     
         $dosen = Dosen::whereHas('departemen', function ($query) use ($kodeProdi) {
             $query->whereHas('prodi', function ($subQuery) use ($kodeProdi) {
                 $subQuery->where('kode_prodi', $kodeProdi);
             });
         })->get();
-    
-        \Log::info('Fetched dosen:', ['dosen' => $dosen]);
     
         return response()->json(['dosen' => $dosen]);
     }
