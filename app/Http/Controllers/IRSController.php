@@ -37,17 +37,7 @@ class IRSController extends Controller
         $mkTambahan = MataKuliah::whereRaw('semester % 2 = ?', [$isGanjil ? 1 : 0])
                                 ->where('semester', '!=', $semesterMHS)
                                 ->get();
-
-        // // Tambahkan mk yang sudah dipilih
-        // $selectedMKs = session()->get('selectedMKs', collect());
-
-        // // Tambahkan jadwal berdasarkan mk yg dipilih
-        // $selectedJadwals = Jadwal::whereIn('kode_mk', collect($selectedMKs)->pluck('kode_mk'))->get();
-        
-        // // Tambahkan jadwal tambahan dari session
-        // // $selectedJadwals = session()->get('selectedJadwals', collect());
-        // $jadwals = $jadwals->merge($selectedJadwals);
-        
+    
         // Ambil mata kuliah yang sudah dipilih dari cookie
         $selectedMKs = collect(json_decode(Cookie::get("selectedMKs_user_{$nim}", '[]'), true));
 
@@ -76,43 +66,75 @@ class IRSController extends Controller
     public function add(Request $request)
     {
         $request->validate([
-            'id_irs' => 'required|exists:irs,id_irs', // Ensure the IRS ID exists in the IRS table
-            'id_jadwal' => 'required|exists:jadwal,id_jadwal', // Ensure the Jadwal ID exists in the Jadwal table
+            'id_irs' => 'required|exists:irs,id_irs',
+            'id_jadwal' => 'required|exists:jadwal,id_jadwal',
         ]);
-
+    
         $id_jadwal = $request->id_jadwal;
         $id_irs = $request->id_irs;
-
-        // get mk
-        $kode_mk = Jadwal::where('id_jadwal', $id_jadwal)->value('kode_mk');
-
-        // check mk
+    
+        // Dapatkan informasi jadwal yang baru akan ditambahkan
+        $newJadwal = Jadwal::findOrFail($id_jadwal);
+        
+        // Ambil jadwal yang sudah ada di IRS dengan relasi ke tabel jadwal
+        $existingJadwals = DetailIrs::where('id_irs', $id_irs)
+            ->with('jadwal')
+            ->get();
+    
+        // Cek tabrakan jadwal
+        $jadwalBentrok = $existingJadwals->first(function ($detailIrs) use ($newJadwal) {
+            $existingJadwal = $detailIrs->jadwal;
+            
+            // Periksa apakah hari sama
+            if ($existingJadwal->hari === $newJadwal->hari) {
+                // Kondisi tabrakan yang lebih detail
+                $isOverlapping = 
+                    // Jadwal baru dimulai sebelum jadwal existing selesai dan berakhir setelah jadwal existing mulai
+                    (($newJadwal->jam_mulai < $existingJadwal->jam_selesai) && 
+                    ($newJadwal->jam_selesai > $existingJadwal->jam_mulai));
+                
+                return $isOverlapping;
+            }
+            
+            return false;
+        });
+    
+        // Cek apakah mata kuliah sudah diambil
         $existsMK = DetailIrs::where('id_irs', $id_irs)
-            ->whereHas('jadwal', function ($query) use ($kode_mk, $id_jadwal) {
-                $query->where('kode_mk', $kode_mk)
-                    ->where('id_jadwal', '!=', $id_jadwal); // Pastikan id_jadwal berbeda
+            ->whereHas('jadwal', function ($query) use ($newJadwal) {
+                $query->where('kode_mk', $newJadwal->kode_mk)
+                    ->where('id_jadwal', '!=', $newJadwal->id_jadwal);
             })
             ->exists();
-
+    
         if ($existsMK) {
             return redirect()->back()->with('error', 'Mata kuliah sudah diambil di jadwal lain!');
         }
-
-        // check jadwal
+    
+        // Cek jadwal yang sama persis sudah ada
         $existsJadwal = DetailIrs::where('id_irs', $id_irs)
             ->where('id_jadwal', $id_jadwal)
             ->exists();
-
+    
         if ($existsJadwal) {
             return redirect()->back()->with('error', 'Jadwal sudah ada!');
         }
-
-        // Add jadwal to detail_irs
+    
+        // Jika ada jadwal bentrok, kembalikan error
+        if ($jadwalBentrok) {
+            $existingMatkul = MataKuliah::where('kode_mk', $jadwalBentrok->jadwal->kode_mk)->first();
+            
+            return redirect()->back()->with('error', 
+                "Jadwal bentrok dengan mata kuliah {$existingMatkul->nama_mk} pada hari {$jadwalBentrok->jadwal->hari}! "
+            );
+        }
+    
+        // Tambahkan jadwal ke detail_irs
         DetailIrs::create([
             'id_irs' => $id_irs,
             'id_jadwal' => $id_jadwal,
         ]);
-
+    
         return redirect()->route('mahasiswa.irs_mhs')->with('success', 'Jadwal berhasil ditambahkan!');
     }
 

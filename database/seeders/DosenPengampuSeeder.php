@@ -53,8 +53,3 @@ class DosenPengampuSeeder extends Seeder
     }
 
 }
-
-
-}
-
-

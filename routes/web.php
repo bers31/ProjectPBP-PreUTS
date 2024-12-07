@@ -5,12 +5,10 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\DekanController;
-use App\Http\Controllers\FakultasController;
 use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\historyIRSController;
 use App\Http\Controllers\IRSController;
 use App\Http\Controllers\MahasiswaController;
-use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliController;
@@ -67,7 +65,7 @@ Route::middleware(['auth'])->group(function () {
       ->middleware('role:dosen'); // Check for 'dosen' role
 
     Route::middleware(['auth', 'role:dekan'])->group(function () {
-        Route::get('/dekan/dashboard', [DekanController::class, 'index'])->name('dekan.dashboard');
+        Route::get('/dashboard-dekan', [DekanController::class, 'index'])->name('dekan.dashboard');
         Route::post('/dekan/dashboard/set-jadwal', [DekanController::class, 'setJadwal'])->name('dekan.setJadwal');
         Route::post('/dekan/dashboard/set-ruang', [DekanController::class, 'setRuang'])->name('dekan.setRuang');
     }); // Check for 'dekan' role
@@ -81,8 +79,9 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware(['auth', 'role:akademik'])->group(function () {
-        Route::get('/akademik/dashboard', [AkademikController::class, 'index'])->name('akademik.dashboard');
+        Route::get('/akademik/dashboard', [AkademikController::class, 'dashboard'])->name('akademik.dashboard');
         Route::post('/akademik/set-ruang', [AkademikController::class, 'setRuang'])->name('akademik.setRuang');
+        Route::post('/set-all-ruang', [AkademikController::class, 'setAllRuang'])->name('akademik.setAllRuang');
     });
 
     // Student status_akademik route
