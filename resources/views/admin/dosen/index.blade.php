@@ -43,7 +43,7 @@
                                         Edit
                                     </a>
                                     <!-- Delete Button -->
-                                    <form action="{{ route('dosen.destroy', $row) }}" method="POST" class="w-full">
+                                    <form action="{{ route('dosen.destroy', $row) }}" method="POST" class="inline-block">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" onclick="return confirm('Are you sure?')" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 w-full">

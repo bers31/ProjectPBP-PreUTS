@@ -11,7 +11,7 @@ class AkademikController extends Controller
     /**
      * Menampilkan Dashboard Akademik.
      */
-    public function dashboard(Request $request)
+    public function index(Request $request)
     {
         $selectedProdi = $request->input('prodi');
     
@@ -48,6 +48,7 @@ class AkademikController extends Controller
 
         return redirect()->route('akademik.dashboard')->with('success', 'Status ruang berhasil diperbarui.');
     }
+    
     public function setAllRuang(Request $request)
     {
         // Validasi input

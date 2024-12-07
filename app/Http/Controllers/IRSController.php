@@ -8,6 +8,7 @@ use App\Models\IRS;
 use App\Models\Jadwal;
 use App\Models\Mahasiswa;
 use App\Models\MataKuliah;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -61,7 +62,6 @@ class IRSController extends Controller
         return view('mahasiswa.irs_mhs', compact('irs', 'jadwals', 'selectedMKs', 'mataKuliah', 'mkTambahan', 'detailIrs', 'latestIrs', 'totalSKS'));
     }
 
-
     // Add jadwal to detail IRS
     public function add(Request $request)
     {
@@ -72,7 +72,138 @@ class IRSController extends Controller
     
         $id_jadwal = $request->id_jadwal;
         $id_irs = $request->id_irs;
-    
+
+        $irs = IRS::where('id_irs', $id_irs)->first();
+
+        if ($irs->status === 'belum_irs') {
+            $irs->status = 'belum_disetujui';
+            $irs->save();
+        }
+
+        // Mendapatkan kode_mk dari tabel jadwal
+        $kode_mk = Jadwal::where('id_jadwal', $id_jadwal)->value('kode_mk');
+
+        // Mendapatkan semester dari kode_mk
+        $semester = MataKuliah::where('kode_mk', $kode_mk)->value('semester');
+
+        // Hitung Mahasiswa yang wajib
+        $totalMHSWajib = Mahasiswa::where('semester', $semester)->count();
+
+        // Mendapatkan kode_tahun
+        $getTahun = IRS::where('id_irs', $id_irs)->value('kode_tahun');
+
+        // Hitung Kelas pada MK
+        $totalKelasMK = Jadwal::where('kode_mk', $kode_mk)->
+                                where('kode_tahun', $getTahun)
+                                ->count();
+
+        // Ambil kode_kelas dan kuota langsung tanpa grup
+        $kuotaPerKelas = Jadwal::where('kode_mk', $kode_mk)
+                        ->where('kode_tahun', $getTahun)
+                        ->select('kode_kelas', 'kuota')
+                        ->orderBy('kuota', 'DESC')
+                        ->get();
+
+        // Hitung total kuota
+        $totalKuota = $kuotaPerKelas->sum('kuota');
+
+        // Tambahkan persentase ke setiap kelas
+        $kuotaPerKelasWithPercentage = $kuotaPerKelas->map(function ($kelas) use ($totalKuota) {
+            $kelas->percentage = ($totalKuota > 0) 
+                ? round(($kelas->kuota / $totalKuota) * 100, 2) // Hitung persentase, bulatkan 2 desimal
+                : 0; // Jika totalKuota adalah 0, persentase 0
+            return $kelas;
+        });
+
+        // Tambahkan kuotaSisa ke setiap kelas berdasarkan persentase dan kuota asli
+        $kuotaPerKelasWithKuotaSisa = $kuotaPerKelasWithPercentage->map(function ($kelas) {
+            $kelas->kuotaSisa = (int) (($kelas->percentage / 100) * $kelas->kuota); // Hitung kuota sisa sebagai integer
+            return $kelas;
+        });
+
+        // dd($kuotaPerKelasWithKuotaSisa);
+
+        
+        $jadwal = Jadwal::where('id_jadwal', $id_jadwal)->first();
+
+        $semesterAktor = IRS::where('id_irs', $id_irs)->value('semester');
+
+        if ($semesterAktor < $semester) {
+            $kuotaTerambil = DetailIRS::join('irs', 'detail_irs.id_irs', '=', 'irs.id_irs')
+                                ->join('jadwal', 'detail_irs.id_jadwal', '=', 'jadwal.id_jadwal')
+                                ->join('mata_kuliah', 'jadwal.kode_mk', '=', 'mata_kuliah.kode_mk')
+                                ->where('detail_irs.id_jadwal', $id_jadwal)
+                                ->whereColumn('irs.semester', '<', 'mata_kuliah.semester')
+                                ->count();
+            
+            $kodeKelas = $jadwal->kode_kelas;
+            
+            
+            foreach ($kuotaPerKelasWithKuotaSisa as $kelas) {
+                // dd($kelas->kuotaSisa);
+                if ($kelas->kode_kelas === $kodeKelas && $kuotaTerambil + 1 >= $kelas->kuotaSisa){
+                    return redirect()->back()->with('error', 'Jatah Tambahan kelas ini sudah penuh!');
+                }
+                // dd($kelas->kode_kelas);
+            }
+
+            
+        }
+
+
+        // $kuotaSisa = 
+
+        // dd($kuotaPerKelasWithPercentage);
+        
+        // $kuotaWajib = (int) ($totalMHSWajib / $totalKelasMK);
+
+        // $kuotaSisa = (int) ($kuotaWajib - $kuotaKelas);
+
+
+
+        // //  ambil data jadwal dari detail_irs
+        // $getJadwal = DetailIRS::where('id_jadwal', $id_jadwal)->value('id_jadwal');
+
+        // // ambil MK dari jadwal
+        // $getKodeMK = Jadwal::where('id_jadwal', $getJadwal)->value('kode_mk');
+
+        // // Dapatkan semester dari kode_mk
+        // $getSemester = MataKuliah::where('kode_mk', $getKodeMK)->value('semester');
+
+        // // Menghitung berapa mahasiswa semester 1 yang wajib mendapatkan mk tsbt
+        // $countMahasiswa = Mahasiswa::where('semester', $getSemester)->count();
+
+        // // Dapatkan kode_tahun dari irs
+        // $getTahun = IRS::where('id_irs', $id_irs)->value('kode_tahun');
+
+        // // Dapatkan banyaknya kelas pada mk tersebut pada jadwal
+        // $countKelas = Jadwal::where('kode_mk', $getKodeMK)
+        //                     ->where('kode_tahun', $getTahun)
+        //                     ->count();
+
+        // dd($countKelas);
+
+        // // Membagi Mahasiswa wajib ambil matkul pada tiap kelas
+        // // $totalMHSWajib = $countMahasiswa / $countKelas;
+        // // dd($totalMHSWajib);
+
+        // // Dapatkan semester mahasiswa
+        // // $getNIM = IRS::where('id_irs', $id_irs)->value('nim_mahasiswa');
+
+        // // Kuota kelas untuk Mahasiswa tidak wajib
+        
+        // Handle kuota pengambilan kelas
+        // Hitung jumlah id_jadwal di DetailIRS
+        $jumlahPengguna = DetailIRS::where('id_jadwal', $id_jadwal)->count();
+
+        // Ambil kuota dari tabel jadwal
+        $kuota = Jadwal::where('id_jadwal', $id_jadwal)->value('kuota');
+
+        // Periksa apakah kuota masih tersedia
+        if ($jumlahPengguna >= $kuota) {
+            return redirect()->back()->with('error', 'Jadwal sudah penuh!');
+        }
+
         // Dapatkan informasi jadwal yang baru akan ditambahkan
         $newJadwal = Jadwal::findOrFail($id_jadwal);
         
