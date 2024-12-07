@@ -141,7 +141,7 @@
                             </div>
                                 <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '06:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Senin')->whereBetween('jam_mulai', ['06:00:00', '06:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -158,7 +158,7 @@
                                 </div>
                                 <!-- Selasa -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Selasa')->where('jam_mulai', '06:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Selasa')->whereBetween('jam_mulai', ['06:00:00', '06:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -175,7 +175,7 @@
                                 </div>
                                 <!-- Rabu -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '06:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Rabu')->whereBetween('jam_mulai', ['06:00:00', '06:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -192,7 +192,7 @@
                                 </div>
                                 <!-- Kamis -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '06:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Kamis')->whereBetween('jam_mulai', ['06:00:00', '06:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -209,7 +209,7 @@
                                 </div>
                                 <!-- Jumat -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '06:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Jumat')->whereBetween('jam_mulai', ['06:00:00', '06:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -231,7 +231,7 @@
                             </div>
                                     <!-- Senin -->
                                     <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                        @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '07:00:00') as $jadwal)
+                                        @foreach ($jadwals->where('hari', 'Senin')->whereBetween('jam_mulai', ['07:00:00', '07:59:59']) as $jadwal)
                                         <form action="{{ route('irs.add') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -248,7 +248,7 @@
                                     </div>
                                     <!-- Selasa -->
                                     <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                        @foreach ($jadwals->where('hari', 'Selasa')->where('jam_mulai', '07:00:00') as $jadwal)
+                                        @foreach ($jadwals->where('hari', 'Selasa')->whereBetween('jam_mulai', ['07:00:00', '07:59:59']) as $jadwal)
                                         <form action="{{ route('irs.add') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -265,7 +265,7 @@
                                     </div>
                                     <!-- Rabu -->
                                     <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                        @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '07:00:00') as $jadwal)
+                                        @foreach ($jadwals->where('hari', 'Rabu')->whereBetween('jam_mulai', ['07:00:00', '07:59:59']) as $jadwal)
                                         <form action="{{ route('irs.add') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -282,7 +282,7 @@
                                     </div>
                                     <!-- Kamis -->
                                     <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                        @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '07:00:00') as $jadwal)
+                                        @foreach ($jadwals->where('hari', 'Kamis')->whereBetween('jam_mulai', ['07:00:00', '07:59:59']) as $jadwal)
                                         <form action="{{ route('irs.add') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -299,7 +299,7 @@
                                     </div>
                                     <!-- Jumat -->
                                     <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
-                                        @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '07:00:00') as $jadwal)
+                                        @foreach ($jadwals->where('hari', 'Jumat')->whereBetween('jam_mulai', ['07:00:00', '07:59:59']) as $jadwal)
                                         <form action="{{ route('irs.add') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -322,7 +322,7 @@
                             </div>
                                 <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '08:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Senin')->whereBetween('jam_mulai', ['08:00:00', '08:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -339,7 +339,7 @@
                                 </div>
                                 <!-- Selasa -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Selasa')->where('jam_mulai', '08:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Selasa')->whereBetween('jam_mulai', ['08:00:00', '08:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -356,7 +356,7 @@
                                 </div>
                                 <!-- Rabu -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '08:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Rabu')->whereBetween('jam_mulai', ['08:00:00', '08:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -373,7 +373,7 @@
                                 </div>
                                 <!-- Kamis -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '08:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Kamis')->whereBetween('jam_mulai', ['08:00:00', '08:59:59'])  as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -390,7 +390,7 @@
                                 </div>
                                 <!-- Jumat -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '08:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Jumat')->whereBetween('jam_mulai', ['08:00:00', '08:59:59'])  as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -412,7 +412,7 @@
                             </div>
                                     <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '09:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Senin')->whereBetween('jam_mulai', ['09:00:00', '09:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -429,7 +429,7 @@
                                 </div>
                                 <!-- Selasa -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Selasa')->where('jam_mulai', '09:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Selasa')->whereBetween('jam_mulai', ['09:00:00', '09:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -446,7 +446,7 @@
                                 </div>
                                 <!-- Rabu -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '09:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Rabu')->whereBetween('jam_mulai', ['09:00:00', '09:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -463,7 +463,7 @@
                                 </div>
                                 <!-- Kamis -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '09:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Kamis')->whereBetween('jam_mulai', ['09:00:00', '09:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -480,7 +480,7 @@
                                 </div>
                                 <!-- Jumat -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '09:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Jumat')->whereBetween('jam_mulai', ['09:00:00', '09:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -503,7 +503,7 @@
                             </div>
                                 <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '10:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Senin')->whereBetween('jam_mulai', ['10:00:00', '10:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -520,7 +520,7 @@
                                 </div>
                                 <!-- Selasa -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Selasa')->where('jam_mulai', '10:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Selasa')->whereBetween('jam_mulai', ['10:00:00', '10:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -537,7 +537,7 @@
                                 </div>
                                 <!-- Rabu -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '10:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Rabu')->whereBetween('jam_mulai', ['10:00:00', '10:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -554,7 +554,7 @@
                                 </div>
                                 <!-- Kamis -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '10:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Kamis')->whereBetween('jam_mulai', ['10:00:00', '10:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -571,7 +571,7 @@
                                 </div>
                                 <!-- Jumat -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '10:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Jumat')->whereBetween('jam_mulai', ['10:00:00', '10:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -593,7 +593,7 @@
                             </div>
                                 <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '11:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Senin')->whereBetween('jam_mulai', ['11:00:00', '11:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -610,7 +610,7 @@
                                 </div>
                                 <!-- Selasa -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Selasa')->where('jam_mulai', '11:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Selasa')->whereBetween('jam_mulai', ['11:00:00', '11:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -627,7 +627,7 @@
                                 </div>
                                 <!-- Rabu -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '11:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Rabu')->whereBetween('jam_mulai', ['11:00:00', '11:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -644,7 +644,7 @@
                                 </div>
                                 <!-- Kamis -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '11:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Kamis')->whereBetween('jam_mulai', ['11:00:00', '11:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -661,7 +661,7 @@
                                 </div>
                                 <!-- Jumat -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '11:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Jumat')->whereBetween('jam_mulai', ['11:00:00', '11:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -677,14 +677,13 @@
                                     @endforeach
                                 </div>
                                 
-                            
                             <!-- Row Jam 12.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
                                 <span class="text-xs font-semibold text-gray-400">12:00 pm</span>
                             </div>
                                 <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '12:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Senin')->whereBetween('jam_mulai', ['12:00:00', '12:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -701,7 +700,7 @@
                                 </div>
                                 <!-- Selasa -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Selasa')->where('jam_mulai', '12:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Selasa')->whereBetween('jam_mulai', ['12:00:00', '12:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -718,7 +717,7 @@
                                 </div>
                                 <!-- Rabu -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '12:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Rabu')->whereBetween('jam_mulai', ['12:00:00', '12:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -735,7 +734,7 @@
                                 </div>
                                 <!-- Kamis -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '12:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Kamis')->whereBetween('jam_mulai', ['12:00:00', '12:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -752,7 +751,7 @@
                                 </div>
                                 <!-- Jumat -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '12:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Jumat')->whereBetween('jam_mulai', ['12:00:00', '12:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -774,7 +773,7 @@
                             </div>
                                 <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '13:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Senin')->whereBetween('jam_mulai', ['13:00:00', '13:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -791,7 +790,7 @@
                                 </div>
                                 <!-- Selasa -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Selasa')->where('jam_mulai', '13:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Selasa')->whereBetween('jam_mulai', ['13:00:00', '13:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -808,7 +807,7 @@
                                 </div>
                                 <!-- Rabu -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '13:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Rabu')->whereBetween('jam_mulai', ['13:00:00', '13:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -825,7 +824,7 @@
                                 </div>
                                 <!-- Kamis -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '13:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Kamis')->whereBetween('jam_mulai', ['13:00:00', '13:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -842,7 +841,7 @@
                                 </div>
                                 <!-- Jumat -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '13:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Jumat')->whereBetween('jam_mulai', ['13:00:00', '13:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -864,7 +863,7 @@
                             </div>
                                 <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '14:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Senin')->whereBetween('jam_mulai', ['14:00:00', '14:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -881,7 +880,7 @@
                                 </div>
                                 <!-- Selasa -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Selasa')->where('jam_mulai', '14:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Selasa')->whereBetween('jam_mulai', ['14:00:00', '14:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -898,7 +897,7 @@
                                 </div>
                                 <!-- Rabu -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '14:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Rabu')->whereBetween('jam_mulai', ['14:00:00', '14:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -915,7 +914,7 @@
                                 </div>
                                 <!-- Kamis -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '14:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Kamis')->whereBetween('jam_mulai', ['14:00:00', '14:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -932,7 +931,7 @@
                                 </div>
                                 <!-- Jumat -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '14:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Jumat')->whereBetween('jam_mulai', ['14:00:00', '14:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -947,13 +946,15 @@
                                     </form> 
                                     @endforeach
                                 </div>
+
+
                             <!-- Row Jam 15.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
                                 <span class="text-xs font-semibold text-gray-400">15:00 pm</span>
                             </div>
                                 <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '15:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Senin')->whereBetween('jam_mulai', ['15:00:00', '15:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -970,7 +971,7 @@
                                 </div>
                                 <!-- Selasa -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Selasa')->where('jam_mulai', '15:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Selasa')->whereBetween('jam_mulai', ['15:00:00', '15:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -987,7 +988,7 @@
                                 </div>
                                 <!-- Rabu -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '15:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Rabu')->whereBetween('jam_mulai', ['15:00:00', '15:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1004,7 +1005,7 @@
                                 </div>
                                 <!-- Kamis -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '15:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Kamis')->whereBetween('jam_mulai', ['15:00:00', '15:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1021,7 +1022,7 @@
                                 </div>
                                 <!-- Jumat -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '15:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Jumat')->whereBetween('jam_mulai', ['15:00:00', '15:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1043,7 +1044,7 @@
                             </div>
                                 <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '16:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Senin')->whereBetween('jam_mulai', ['16:00:00', '16:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1060,7 +1061,7 @@
                                 </div>
                                 <!-- Selasa -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Selasa')->where('jam_mulai', '16:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Selasa')->whereBetween('jam_mulai', ['16:00:00', '16:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1077,7 +1078,7 @@
                                 </div>
                                 <!-- Rabu -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '16:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Rabu')->whereBetween('jam_mulai', ['16:00:00', '16:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1094,7 +1095,7 @@
                                 </div>
                                 <!-- Kamis -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '16:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Kamis')->whereBetween('jam_mulai', ['16:00:00', '16:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1111,7 +1112,7 @@
                                 </div>
                                 <!-- Jumat -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '16:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Jumat')->whereBetween('jam_mulai', ['16:00:00', '16:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1126,13 +1127,14 @@
                                     </form> 
                                     @endforeach
                                 </div>
+
                             <!-- Row Jam 17.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
                                 <span class="text-xs font-semibold text-gray-400">17:00 pm</span>
                             </div>
                                 <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '17:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Senin')->whereBetween('jam_mulai', ['17:00:00', '17:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1149,7 +1151,7 @@
                                 </div>
                                 <!-- Selasa -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Selasa')->where('jam_mulai', '17:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Selasa')->whereBetween('jam_mulai', ['17:00:00', '17:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1166,7 +1168,7 @@
                                 </div>
                                 <!-- Rabu -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '17:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Rabu')->whereBetween('jam_mulai', ['17:00:00', '17:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1183,7 +1185,7 @@
                                 </div>
                                 <!-- Kamis -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '17:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Kamis')->whereBetween('jam_mulai', ['17:00:00', '17:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1200,7 +1202,7 @@
                                 </div>
                                 <!-- Jumat -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '17:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Jumat')->whereBetween('jam_mulai', ['17:00:00', '17:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1215,13 +1217,14 @@
                                     </form> 
                                     @endforeach
                                 </div>
+                                
                             <!-- Row Jam 18.00 -->
                             <div class="h-auto min-h-32 p-0.5 md:p-3.5 border-t border-r border-gray-200 flex items-center justify-center transition-all ">
                                 <span class="text-xs font-semibold text-gray-400">18:00 pm</span>
                             </div>
                                 <!-- Senin -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Senin')->where('jam_mulai', '18:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Senin')->whereBetween('jam_mulai', ['18:00:00', '18:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1238,7 +1241,7 @@
                                 </div>
                                 <!-- Selasa -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Selasa')->where('jam_mulai', '18:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Selasa')->whereBetween('jam_mulai', ['18:00:00', '18:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1255,7 +1258,7 @@
                                 </div>
                                 <!-- Rabu -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Rabu')->where('jam_mulai', '18:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Rabu')->whereBetween('jam_mulai', ['18:00:00', '18:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1272,7 +1275,7 @@
                                 </div>
                                 <!-- Kamis -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Kamis')->where('jam_mulai', '18:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Kamis')->whereBetween('jam_mulai', ['18:00:00', '18:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
@@ -1289,7 +1292,7 @@
                                 </div>
                                 <!-- Jumat -->
                                 <div class="h-auto min-h-32 p-0.5 md:p-3.5   border-t border-r border-gray-200 flex items-center justify-center transition-all ">
-                                    @foreach ($jadwals->where('hari', 'Jumat')->where('jam_mulai', '18:00:00') as $jadwal)
+                                    @foreach ($jadwals->where('hari', 'Jumat')->whereBetween('jam_mulai', ['18:00:00', '18:59:59']) as $jadwal)
                                     <form action="{{ route('irs.add') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
