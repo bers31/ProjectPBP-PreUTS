@@ -61,7 +61,6 @@ class IRSController extends Controller
         return view('mahasiswa.irs_mhs', compact('irs', 'jadwals', 'selectedMKs', 'mataKuliah', 'mkTambahan', 'detailIrs', 'latestIrs', 'totalSKS'));
     }
 
-
     // Add jadwal to detail IRS
     public function add(Request $request)
     {
@@ -72,7 +71,18 @@ class IRSController extends Controller
     
         $id_jadwal = $request->id_jadwal;
         $id_irs = $request->id_irs;
-    
+            
+        // Hitung jumlah id_jadwal di DetailIRS
+        $jumlahPengguna = DetailIRS::where('id_jadwal', $id_jadwal)->count();
+
+        // Ambil kuota dari tabel jadwal
+        $kuota = Jadwal::where('id_jadwal', $id_jadwal)->value('kuota');
+
+        // Periksa apakah kuota masih tersedia
+        if ($jumlahPengguna >= $kuota) {
+            return redirect()->back()->with('error', 'Jadwal sudah penuh!');
+        }
+
         // Dapatkan informasi jadwal yang baru akan ditambahkan
         $newJadwal = Jadwal::findOrFail($id_jadwal);
         
