@@ -18,7 +18,6 @@ use App\Http\Controllers\RuangController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\PDFController;
-use App\Http\Controllers\JadwalController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -84,6 +83,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['auth', 'role:akademik'])->group(function () {
         Route::get('/akademik/dashboard', [AkademikController::class, 'index'])->name('akademik.dashboard');
         Route::post('/akademik/set-ruang', [AkademikController::class, 'setRuang'])->name('akademik.setRuang');
+        Route::post('/akademik/set-all-ruang', [AkademikController::class, 'setAllRuang'])->name('akademik.setAllRuang');
     });
 
     // Student status_akademik route
@@ -161,17 +161,17 @@ Route::middleware(['auth', 'role:kaprodi'])->group(function(){
     Route::get('/kaprodi/menu', function() {
         return view('kaprodi.menu');
     })->name('kaprodi.menu')
-      ->middleware('role:kaprodi');
-      
+        ->middleware('role:kaprodi');
+        
     Route::resource('/kaprodi/matkul', MataKuliahController::class)->name('index','matkul.index')
-                                                           ->name('edit','matkul.edit')
-                                                           ->name('create','matkul.create')
-                                                           ->name('update','matkul.update');
+                                                            ->name('edit','matkul.edit')
+                                                            ->name('create','matkul.create')
+                                                            ->name('update','matkul.update');
                                                 
     Route::resource('/kaprodi/jadwal', JadwalController::class)->name('index','jadwal.index')
-                                                           ->name('edit','jadwal.edit')
-                                                           ->name('create','jadwal.create')
-                                                           ->name('update','jadwal.update');
+                                                            ->name('edit','jadwal.edit')
+                                                            ->name('create','jadwal.create')
+                                                            ->name('update','jadwal.update');
     Route::post('/kaprodi/jadwal/save', [JadwalController::class, 'saveChanges'])->name('jadwal.saveChanges');
 
 });
@@ -202,7 +202,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::post('/admin/create-users', [AdminController::class, 'createUsersFromLecturersAndStudents'])->name('admin.createUsers');
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-
 });
 
 
