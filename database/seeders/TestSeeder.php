@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\DetailIRS;
 use App\Models\IRS;
 use App\Models\Jadwal;
 use App\Models\Mahasiswa;
@@ -16,10 +17,7 @@ class TestSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create(
-            ['email'=> 'nashwana@students.undip.ac.id',
-            'password' => '12345',
-            'role' => 'mahasiswa']);
+
 
         Mahasiswa::create(
             ['nim'=>'24060122130084',
@@ -27,36 +25,40 @@ class TestSeeder extends Seeder
             'email'=> 'nashwana@students.undip.ac.id',
             'semester' => 5,
             'kode_prodi' => 'IFS1',
-            'status_akademik' => 'aktif',
+            'status' => 'aktif',
             'doswal'=> '123456789011']);
 
+        User::create(
+            ['email'=> 'nashwana@students.undip.ac.id',
+            'password' => '12345',
+            'role' => 'mahasiswa']);
         // IRS
         IRS::create([
-            'nim' => '24060122130084',
+            'nim_mahasiswa' => '24060122130084',
             'semester' => '1',
             'kode_tahun' => '22/23GA',
             'status' => 'sudah_disetujui'
         ]);
         IRS::create([
-            'nim' => '24060122130084',
+            'nim_mahasiswa' => '24060122130084',
             'semester' => '2',
             'kode_tahun' => '22/23GE',
             'status' => 'sudah_disetujui'
         ]);
         IRS::create([
-            'nim' => '24060122130084',
+            'nim_mahasiswa' => '24060122130084',
             'semester' => '3',
             'kode_tahun' => '23/24GA',
             'status' => 'sudah_disetujui'
         ]);
         IRS::create([
-            'nim' => '24060122130084',
+            'nim_mahasiswa' => '24060122130084',
             'semester' => '4',
             'kode_tahun' => '23/24GE',
             'status' => 'sudah_disetujui'
         ]);
         IRS::create([
-            'nim' => '24060122130084',
+            'nim_mahasiswa' => '24060122130084',
             'semester' => '5',
             'kode_tahun' => '24/25GA',
             'status' => 'sudah_disetujui'
@@ -101,7 +103,7 @@ class TestSeeder extends Seeder
             'jam_mulai' => '09:40',
             'jam_selesai' => '12:10',
             'kode_kelas' => 'A',
-            'ruang' => 'E303',
+            'ruang' => 'E103',
             'hari' => 'Rabu',
             'status' => 'disetujui',
             'kuota' => '50',
@@ -243,16 +245,38 @@ class TestSeeder extends Seeder
         ]);
 
         // Semester 3
-        Jadwal::create([
-            'kode_mk' => 'PAIK6301',
-            'jam_mulai' => '10:40',
-            'jam_selesai' => '12:20',
-            'kode_kelas' => 'A',
-            'ruang' => 'E102',
-            'hari' => 'Kamis',
-            'status' => 'disetujui',
-            'kuota' => '50',
-            'kode_tahun' => '22/23GE'
-        ]);
-    }
+        $jadwals3 = [['kode_mk' => 'PAIK6301', 'hari' => 'Senin', 'jam_mulai' => '07:00:00', 'jam_selesai' => '10:20:00', 'ruang' => 'E103', 'kode_kelas' => 'A', 'kode_tahun' => '23/24GA', 'kuota' => '50'],
+        ['kode_mk' => 'PAIK6302', 'hari' => 'Selasa', 'jam_mulai' => '09:40:00', 'jam_selesai' => '12:10:00', 'ruang' => 'E103', 'kode_kelas' => 'A', 'kode_tahun' => '23/24GA', 'kuota' => '50'],
+        ['kode_mk' => 'PAIK6303', 'hari' => 'Senin', 'jam_mulai' => '13:00:00', 'jam_selesai' => '16:20:00', 'ruang' => 'E103', 'kode_kelas' => 'A', 'kode_tahun' => '23/24GA', 'kuota' => '50'],
+        ['kode_mk' => 'PAIK6304', 'hari' => 'Selasa', 'jam_mulai' => '07:00:00', 'jam_selesai' => '09:30:00', 'ruang' => 'E103', 'kode_kelas' => 'A', 'kode_tahun' => '23/24GA', 'kuota' => '50'],
+        ['kode_mk' => 'PAIK6305', 'hari' => 'Kamis', 'jam_mulai' => '15:40:00', 'jam_selesai' => '18:10:00', 'ruang' => 'K202', 'kode_kelas' => 'A', 'kode_tahun' => '23/24GA', 'kuota' => '50'],
+        ['kode_mk' => 'PAIK6306', 'hari' => 'Senin', 'jam_mulai' => '10:40:00', 'jam_selesai' => '12:20:00', 'ruang' => 'E101', 'kode_kelas' => 'A', 'kode_tahun' => '23/24GA', 'kuota' => '50'],
+        ['kode_mk' => 'UUW00008', 'hari' => 'Jumat', 'jam_mulai' => '13:50:00', 'jam_selesai' => '15:30:00', 'ruang' => 'K102', 'kode_kelas' => 'A', 'kode_tahun' => '23/24GA', 'kuota' => '50'],];
+
+        // Semester 3
+        $jadwals4 = [['kode_mk' => 'PAIK6404', 'hari' => 'Senin', 'jam_mulai' => '07:00:00', 'jam_selesai' => '09:30:00', 'ruang' => 'A303', 'kode_kelas' => 'A', 'kode_tahun' => '23/24GE', 'kuota' => '50'],
+        ['kode_mk' => 'PAIK6401', 'hari' => 'Senin', 'jam_mulai' => '13:00:00', 'jam_selesai' => '15:30:00', 'ruang' => 'E101', 'kode_kelas' => 'A', 'kode_tahun' => '23/24GE', 'kuota' => '50'],
+        ['kode_mk' => 'PAIK6406', 'hari' => 'Selasa', 'jam_mulai' => '07:00:00', 'jam_selesai' => '09:30:00', 'ruang' => 'K102', 'kode_kelas' => 'A', 'kode_tahun' => '23/24GE', 'kuota' => '50'],
+        ['kode_mk' => 'PAIK6601', 'hari' => 'Rabu', 'jam_mulai' => '13:00:00', 'jam_selesai' => '15:30:00', 'ruang' => 'K202', 'kode_kelas' => 'A', 'kode_tahun' => '23/24GE', 'kuota' => '50'],
+        ['kode_mk' => 'PAIK6403', 'hari' => 'Kamis', 'jam_mulai' => '07:00:00', 'jam_selesai' => '09:30:00', 'ruang' => 'A303', 'kode_kelas' => 'A', 'kode_tahun' => '23/24GE', 'kuota' => '50'],
+        ['kode_mk' => 'PAIK6405', 'hari' => 'Kamis', 'jam_mulai' => '13:00:00', 'jam_selesai' => '15:30:00', 'ruang' => 'K102', 'kode_kelas' => 'A', 'kode_tahun' => '23/24GE', 'kuota' => '50'],
+        ['kode_mk' => 'PAIK6402', 'hari' => 'Jumat', 'jam_mulai' => '13:00:00', 'jam_selesai' => '15:30:00', 'ruang' => 'A204', 'kode_kelas' => 'A', 'kode_tahun' => '23/24GE', 'kuota' => '50'],
+        ];
+
+        foreach ($jadwals3 as $row){
+            Jadwal::create($row);
+        } 
+        foreach ($jadwals4 as $row){
+            Jadwal::create($row);
+        } 
+
+        // Detail IRS
+        // $detaill = [
+        
+        // ];
+
+        // foreach($detaill as $row){
+        //     DetailIRS::create($row);
+        // }
+    }   
 }

@@ -29,6 +29,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('khs_details');
+        Schema::dropIfExists('khs');
     }
 };

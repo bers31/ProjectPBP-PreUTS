@@ -21,9 +21,11 @@ return new class extends Migration
             $table->string('ruang');
             $table->foreign('ruang')->references('kode_ruang')->on('ruang')->onDelete('cascade');
             $table->enum('hari',['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu']);
-            $table->unique(['hari','jam_mulai','ruang']);
             $table->enum('status', ['pending', 'disetujui']) // Status jadwal
-                  ->default('pending');
+            ->default('pending');
+            $table->string('kode_tahun');
+            $table->foreign('kode_tahun')->references('kode_tahun')->on('tahun_ajaran')->onDelete('cascade');
+            $table->unique(['hari','jam_mulai','ruang','kode_tahun']);
             $table->integer('kuota');
             $table->timestamps();
         });

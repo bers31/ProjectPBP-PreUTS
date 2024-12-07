@@ -20,3 +20,4 @@ yarn-error.log
 /.vscode
 /.zed
 resources/views/dosen/perwalian/view.blade copy 2.php
+database/seeders/DatabaseSeeder.php
