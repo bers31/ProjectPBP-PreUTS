@@ -1,6 +1,9 @@
 @include('../header')
 <x-navbar/>
 
+
+
+
 <div class="flex flex-col flex-grow">
     <div class="flex items-center justify-center min-h-screen bg-gray-100">
         <div class="max-w-lg mx-auto bg-white border border-gray-200 rounded-lg shadow-md p-8">
@@ -78,6 +81,18 @@
                     <label for="kuota" class="block mb-2 text-sm font-medium text-gray-900">Kuota</label>
                     <input type="number" id="kuota" name="kuota" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
                 </div>
+
+                <div class="mb-4">
+                    <label for="kode_tahun" class="block mb-2 text-sm font-medium text-gray-900">Kode Tahun</label>
+                    <input 
+                        type="text" 
+                        id="kode_tahun" 
+                        name="kode_tahun" 
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" 
+                        value="{{$kodeTahun->first()->kode_tahun}}" 
+                        readonly>
+                </div>
+
 
                 <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white text-sm font-medium px-5 py-2.5 rounded-lg focus:ring-4 focus:ring-blue-300">
                     Simpan

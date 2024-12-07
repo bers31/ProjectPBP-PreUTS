@@ -32,6 +32,7 @@ class UpdateJadwalRequest extends FormRequest
             'jam_mulai' => 'required|date_format:H:i|before:jam_selesai',  // Ensure it's before jam_selesai
             'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',  // Ensure it's after jam_mulai
             'kuota' => 'required|integer|min:1',
+            'kode_tahun' => 'required|string',
             'dosen_pengampu' => [
                 'required',
                 'json',

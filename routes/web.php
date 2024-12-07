@@ -16,6 +16,7 @@ use App\Http\Controllers\WaliController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\RuangController;
 use App\Http\Controllers\MataKuliahController;
+use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\JadwalController;
 use Illuminate\Support\Facades\Route;
