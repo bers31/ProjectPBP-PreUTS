@@ -22,9 +22,9 @@ class IRSController extends Controller
         $nim = $mahasiswa->nim;
     
         // Menampilkan matkul sesuai semester mahasiswa
-        $irs = IRS::where('nim_mahasiswa', $nim)->firstOrFail();
         $semesterMHS = Mahasiswa::where('nim', $nim)->value('semester');
-    
+        $irs = IRS::where('nim_mahasiswa', $nim)->where('semester',$semesterMHS)->first();
+
         // Get all Mata Kuliah for the semester
         $mataKuliah = MataKuliah::where('semester', $semesterMHS)->get();
     
