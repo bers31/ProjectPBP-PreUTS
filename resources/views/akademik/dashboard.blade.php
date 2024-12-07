@@ -1,7 +1,7 @@
 @include('header')
 <div class="flex flex-col h-full">
     <x-navbar/>
-    <div class="main-content flex flex-col flex-grow p-6">
+    <main class="flex-1 p-6">
         <div class="text-lg font-bold mb-4">Dashboard Akademik  
         </div>
         <div class="flex items-center gap-3 ml-auto pr-6">
@@ -77,11 +77,13 @@
                     </select>
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-3">Filter</button>
                 </form>
-                <form action="{{ route('akademik.setAllRuang') }}" method="POST" class="mb-4">
+
+                <!-- Form Penetapan Status Ruang Massal -->
+                <form action="{{ route('akademik.setAllRuang') }}" method="POST">
                     @csrf
                     <input type="hidden" name="prodi" value="{{ request('prodi') }}">
 
-                    <table id="ruangTable" class="table-auto w-full">
+                    <table id="ruangTable" class="table-auto w-full border">
                         <thead>
                             <tr>
                                 <th class="px-4 py-2">Nama/Kode Ruang</th>
@@ -97,26 +99,38 @@
                                     <td class="border px-4 py-2">{{ $ruang->kapasitas }}</td>
                                     <td class="border px-4 py-2">{{ $ruang->status_ketersediaan }}</td>
                                     <td class="border px-4 py-2">
-                                        <select name="status_ketersediaan[{{ $ruang->kode_ruang }}]" class="border rounded p-1">
-                                            <option value="Tersedia" {{ $ruang->status_ketersediaan == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
-                                            <option value="Penuh" {{ $ruang->status_ketersediaan == 'Penuh' ? 'selected' : '' }}>Penuh</option>
-                                        </select>
-                                        <button type="submit" class="bg-green-500 text-white px-3 py-1 rounded">Tetapkan</button>
+                                        <!-- Format Array -->
+                                        <form action="{{ route('akademik.setRuang') }}" method="POST"></form>
+                                            <input type="hidden" name="kode" value="{{ $ruang->kode_ruang }}">
+                                            <select name="status_ketersediaan[{{ $ruang->kode_ruang }}]" class="border rounded p-1">
+                                                <option value="Tersedia" {{ $ruang->status_ketersediaan == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
+                                                <option value="Penuh" {{ $ruang->status_ketersediaan == 'Penuh' ? 'selected' : '' }}>Penuh</option>
+                                            </select>
+                                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">
+                                                Tetapkan
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
 
-                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">
-                        Tetapkan Semua
-                    </button>
+                    <!-- Tombol Massal -->
+                    <div class="mt-4">
+                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">
+                            Tetapkan Semua
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
-    </div>
-    @include('footer')
-</div>
+    </main>
+    <!-- Footer -->
+    <footer class="mt-auto">
+        @include('footer')
+    </footer>
+</main>
 
 <!-- DataTables JS dan Inisialisasi -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
