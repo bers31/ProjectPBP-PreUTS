@@ -71,7 +71,44 @@ class IRSController extends Controller
     
         $id_jadwal = $request->id_jadwal;
         $id_irs = $request->id_irs;
+
+        $irs = IRS::where('id_irs', $id_irs)->first();
+
+        if ($irs->status === 'belum_irs') {
+            $irs->status = 'belum_disetujui';
+            $irs->save();
+        }
         
+        //  ambil data jadwal dari detail_irs
+        $getJadwal = DetailIRS::where('id_jadwal', $id_jadwal)->value('id_jadwal');
+
+        // ambil MK dari jadwal
+        $getKodeMK = Jadwal::where('id_jadwal', $getJadwal)->value('kode_mk');
+
+        // Dapatkan semester dari kode_mk
+        $getSemester = MataKuliah::where('kode_mk', $getKodeMK)->value('semester');
+
+        // Menghitung berapa mahasiswa semester 1 yang wajib mendapatkan mk tsbt
+        $countMahasiswa = Mahasiswa::where('semester', $getSemester)->count();
+
+        // Dapatkan kode_tahun dari irs
+        $getTahun = IRS::where('id_irs', $id_irs)->value('kode_tahun');
+
+        // // Dapatkan banyaknya kelas pada mk tersebut pada jadwal
+        // $countKelas = Jadwal::where('kode_mk', $getKodeMK)
+        //                     ->where('kode_tahun', $getTahun)
+        //                     ->count();
+
+        // // Membagi Mahasiswa wajib ambil matkul pada tiap kelas
+        // $totalMHSWajib = $countMahasiswa / $countKelas;
+
+        // // Dapatkan semester mahasiswa
+        // $getNIM = IRS::where('id_irs', $id_irs)->value('nim_mahasiswa');
+
+        // Kuota kelas untuk Mahasiswa tidak wajib
+        
+
+
         // Handle kuota pengambilan kelas
         // Hitung jumlah id_jadwal di DetailIRS
         $jumlahPengguna = DetailIRS::where('id_jadwal', $id_jadwal)->count();
@@ -84,23 +121,11 @@ class IRSController extends Controller
             return redirect()->back()->with('error', 'Jadwal sudah penuh!');
         }
 
-        // Mengambil data IRS
-        $getMK = DetailIRS::where('id_jadwal', $id_jadwal)->get();
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-        
         // Dapatkan informasi jadwal yang baru akan ditambahkan
         $newJadwal = Jadwal::findOrFail($id_jadwal);
         
