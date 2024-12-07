@@ -43,34 +43,32 @@ class AkademikController extends Controller
 
         // Update status ruang kelas
         $ruang = Ruang::where('kode_ruang', $request->kode)->firstOrFail();
-        $ruang->status_ketersediaan = $request->status_ketersediaan;
+        $ruang->status_ketersediaan = $request->input('status_ketersediaan'); // Perbaikan
         $ruang->save();
 
         return redirect()->route('akademik.dashboard')->with('success', 'Status ruang berhasil diperbarui.');
     }
     public function setAllRuang(Request $request)
     {
-        // Ambil kode prodi dan status ketersediaan dari request
-        $selectedProdi = $request->input('prodi');
-        $status_ketersediaan = $request->input('status_ketersediaan'); // status_ketersediaan berupa array
+        // Validasi input
+        $request->validate([
+            'status_ketersediaan' => 'required|array',
+            'status_ketersediaan.*' => 'required|in:Tersedia,Penuh',
+            'prodi' => 'nullable|string|exists:prodi,kode_prodi',
+        ]);
     
-        // Ambil ruang berdasarkan prodi yang dipilih
-        $ruangs = Ruang::whereHas('jadwal', function ($query) use ($selectedProdi) {
-            $query->whereHas('mataKuliah', function ($query) use ($selectedProdi) {
-                $query->where('kode_prodi', $selectedProdi);
-            });
-        })->get();
+        // Ambil input status_ketersediaan
+        $status_ketersediaan = $request->input('status_ketersediaan');
     
-        // Perbarui status ketersediaan untuk ruang yang sesuai
-        foreach ($ruangs as $ruang) {
-            // Cek apakah status ketersediaan untuk ruang ini ada di array status_ketersediaan
-            if (isset($status_ketersediaan[$ruang->kode_ruang])) {
-                $ruang->status_ketersediaan = $status_ketersediaan[$ruang->kode_ruang];  // Update hanya jika ada status yang dipilih
+        // Perbarui data berdasarkan kode ruang
+        foreach ($status_ketersediaan as $kode_ruang => $status) {
+            $ruang = Ruang::where('kode_ruang', $kode_ruang)->first();
+            if ($ruang) {
+                $ruang->status_ketersediaan = $status;
                 $ruang->save();
             }
         }
     
         return back()->with('success', 'Semua ruang telah berhasil diperbarui sesuai dengan status yang dipilih.');
-    }
-    
+    }    
 }
