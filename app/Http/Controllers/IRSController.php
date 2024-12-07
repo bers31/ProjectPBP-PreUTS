@@ -71,7 +71,8 @@ class IRSController extends Controller
     
         $id_jadwal = $request->id_jadwal;
         $id_irs = $request->id_irs;
-            
+        
+        // Handle kuota pengambilan kelas
         // Hitung jumlah id_jadwal di DetailIRS
         $jumlahPengguna = DetailIRS::where('id_jadwal', $id_jadwal)->count();
 
@@ -83,6 +84,23 @@ class IRSController extends Controller
             return redirect()->back()->with('error', 'Jadwal sudah penuh!');
         }
 
+        // Mengambil data IRS
+        $getMK = DetailIRS::where('id_jadwal', $id_jadwal)->get();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
         // Dapatkan informasi jadwal yang baru akan ditambahkan
         $newJadwal = Jadwal::findOrFail($id_jadwal);
         
