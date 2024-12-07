@@ -28,7 +28,7 @@ class DosenPengampu extends Model
 
     public function dosen()
     {
-        return $this->hasMany(Dosen::class, 'nidn', 'nidn_dosen');
+        return $this->belongsTo(Dosen::class,  'nidn_dosen', 'nidn');
     }
 
 }

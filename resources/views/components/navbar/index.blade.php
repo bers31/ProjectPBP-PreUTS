@@ -49,10 +49,23 @@
       @endisset
       
       @isset(Auth::user()->dosen->kaprodi)
-        @if (Route::is('kaprodi.menu'))
-          <x-navbar.list href="{{ route('dosen.dashboard') }}">Mode Dosen</x-navbar.list>
-        @else<x-navbar.list href="{{ route('kaprodi.menu') }}">Menu Kaprodi</x-navbar.list>
-        @endif  
+        <div class="relative group">
+          <!-- Trigger Dropdown -->
+          <x-navbar.list id="navbar-menkap" href='#' class="cursor-pointer">Kaprodi</x-navbar.list>
+          
+          <!-- Dropdown Menu -->
+          <div id="kaprodi-dropdown" 
+              class="absolute hidden group-hover:block mt-2 bg-white rounded-lg shadow-lg w-48 z-10 border border-gray-200">
+              <a href="{{ route('jadwal.index') }}" 
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                  Susun Jadwal
+              </a>
+              <a href="{{ route('matkul.index') }}" 
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                  Susun Mata Kuliah
+              </a>
+          </div>
+        </div>    
         @endisset
     @endif
 
@@ -115,6 +128,7 @@
   document.addEventListener('DOMContentLoaded', function () {
       const irsMenu = document.getElementById('navbar-irs');
       const irsDropdown = document.getElementById('irs-dropdown');
+      
 
       // Toggle dropdown saat diklik
       irsMenu.addEventListener('click', function (e) {
@@ -131,6 +145,35 @@
           if (!irsMenu.contains(e.target) && !irsDropdown.contains(e.target)) {
               irsDropdown.classList.add('hidden');
           }
-      });
-  });
+        });
+    });
 </script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const menuKaprodi = document.getElementById('navbar-menkap');
+      const kaprodiDropdown = document.getElementById('kaprodi-dropdown');
+        
+      // Toggle dropdown saat diklik
+      menuKaprodi.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation(); // Prevent the click event from bubbling up
+          if (kaprodiDropdown.classList.contains('hidden')) {
+              kaprodiDropdown.classList.remove('hidden');
+          } else {
+              kaprodiDropdown.classList.add('hidden');
+          }
+      });
+
+      // Menutup dropdown jika klik di luar
+      document.addEventListener('click', function (e) {
+          if (!menuKaprodi.contains(e.target) && !kaprodiDropdown.contains(e.target)) {
+              kaprodiDropdown.classList.add('hidden');
+          }
+      });
+
+    });
+</script>
+        
+        
+        
+        

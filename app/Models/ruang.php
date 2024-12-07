@@ -30,7 +30,7 @@ class ruang extends Model
 
     public function jadwal()
     {
-        return $this->hasMany(Jadwal::class, 'kode_ruang', 'ruang');
+        return $this->hasMany(Jadwal::class, 'ruang', 'kode_ruang');
     }
     
 }

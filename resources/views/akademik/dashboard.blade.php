@@ -20,12 +20,6 @@
                     </svg>
                 </button>
             </div>
-        <!-- Notifikasi pesan sukses -->
-        @if(session('success'))
-            <div class="bg-green-200 text-green-800 p-4 rounded mb-4">
-                {{ session('success') }}
-            </div>
-        @endif
 
         <!-- Profile Section -->
         <div class="grid grid-cols-1 lg:grid-cols-4 px-6 md:px-12 gap-5 mb-6">
@@ -45,41 +39,80 @@
                     </button>
                 </div>
             </div>
+            <!-- Tanggal Penting Section -->
+            <div class="col-span-1 flex flex-col border-2 border-[#80747475] rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)] items-center p-5 h-80 overflow-y-auto">
+                <div class="font-bold text-lg text-center">
+                    Tanggal Penting
+                </div>
+                <div class="flex-grow">
+                    <ul class="list-disc space-y-2 text-center">
+                    </ul>
+                </div>
+            </div>  
         </div>
 
+        <!-- Notifikasi Pesan Sukses -->
+        @if(session('success'))
+            <div class="bg-green-200 text-green-800 p-4 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <!-- Penetapan Ketersediaan Ruang Kelas Section -->
-        <div class="border p-6 rounded-lg shadow-md">
+        <div class="border p-6 rounded-lg shadow-md mb-6">
             <h2 class="font-semibold text-xl mb-4">Penetapan Ketersediaan Ruang Kelas</h2>
-            <table id="ruangTable" class="table-auto w-full">
-                <thead>
-                    <tr>
-                        <th class="px-4 py-2">Nama/Kode Ruang</th>
-                        <th class="px-4 py-2">Kapasitas</th>
-                        <th class="px-4 py-2">Status</th>
-                        <th class="px-4 py-2">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($ruangs as $ruang)
-                        <tr>
-                            <td class="border px-4 py-2">{{ $ruang->kode_ruang }}</td>
-                            <td class="border px-4 py-2">{{ $ruang->kapasitas }}</td>
-                            <td class="border px-4 py-2">{{ $ruang->status_ketersediaan }}</td>
-                            <td class="border px-4 py-2">
-                                <form action="{{ route('akademik.setRuang') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="kode" value="{{ $ruang->kode_ruang }}">
-                                    <select name="status_ketersediaan" class="border rounded p-1">
-                                        <option value="Tersedia" {{ $ruang->status_ketersediaan == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
-                                        <option value="Penuh" {{ $ruang->status_ketersediaan == 'Penuh' ? 'selected' : '' }}>Penuh</option>
-                                    </select>
-                                    <button type="submit" class="bg-green-500 text-white px-3 py-1 rounded">Tetapkan</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+
+            <!-- Dropdown Prodi -->
+            <div class="mb-4">
+                <form method="GET" action="{{ route('akademik.dashboard') }}">
+                    @csrf
+                    <label for="prodi" class="mr-2">Pilih Prodi:</label>
+                    <select name="prodi" id="prodi" class="border rounded p-2">
+                        <option value="">-- Pilih Prodi --</option>
+                        @foreach($prodis as $prodi)
+                            <option value="{{ $prodi->kode_prodi }}" {{ request('prodi') == $prodi->kode_prodi ? 'selected' : '' }}>
+                                {{ $prodi->nama }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-3">Filter</button>
+                </form>
+                <form action="{{ route('akademik.setAllRuang') }}" method="POST" class="mb-4">
+                    @csrf
+                    <input type="hidden" name="prodi" value="{{ request('prodi') }}">
+
+                    <table id="ruangTable" class="table-auto w-full">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2">Nama/Kode Ruang</th>
+                                <th class="px-4 py-2">Kapasitas</th>
+                                <th class="px-4 py-2">Status</th>
+                                <th class="px-4 py-2">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($ruangs as $ruang)
+                                <tr>
+                                    <td class="border px-4 py-2">{{ $ruang->kode_ruang }}</td>
+                                    <td class="border px-4 py-2">{{ $ruang->kapasitas }}</td>
+                                    <td class="border px-4 py-2">{{ $ruang->status_ketersediaan }}</td>
+                                    <td class="border px-4 py-2">
+                                        <select name="status_ketersediaan[{{ $ruang->kode_ruang }}]" class="border rounded p-1">
+                                            <option value="Tersedia" {{ $ruang->status_ketersediaan == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
+                                            <option value="Penuh" {{ $ruang->status_ketersediaan == 'Penuh' ? 'selected' : '' }}>Penuh</option>
+                                        </select>
+                                        <button type="submit" class="bg-green-500 text-white px-3 py-1 rounded">Tetapkan</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">
+                        Tetapkan Semua
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
     @include('footer')
