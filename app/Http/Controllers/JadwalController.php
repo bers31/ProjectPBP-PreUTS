@@ -19,6 +19,23 @@ class JadwalController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function jadwalMengajar()
+    {
+        // Get authenticated user's NIDN (assuming the user is a Dosen)
+        $user = Auth::user();
+        $nidn = $user->dosen->nidn;
+
+        // Get teaching schedules for the authenticated lecturer
+        $jadwalMengajar = Jadwal::with(['mataKuliah', 'ruangan'])
+            ->whereHas('dosen_pengampu', function($query) use ($nidn) {
+                $query->where('nidn_dosen', $nidn);
+            })
+            ->orderBy('hari')
+            ->orderBy('jam_mulai')
+            ->get();
+
+        return view('dosen.jadwal', compact('jadwalMengajar'));
+    }
 
      public function jadwalMahasiswa()
      {
@@ -331,7 +348,4 @@ class JadwalController extends Controller
     
         return response()->json(['dosen' => $dosen]);
     }
-    
-    
-    
 }

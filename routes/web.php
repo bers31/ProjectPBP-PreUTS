@@ -7,6 +7,7 @@ use App\Http\Controllers\DosenController;
 use App\Http\Controllers\DekanController;
 use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\historyIRSController;
+use App\Http\Controllers\KuliahOnlineController;
 use App\Http\Controllers\IRSController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProdiController;
@@ -139,7 +140,16 @@ Route::middleware(['auth','role:dosen'])->group(function(){
     })->name('dosen.input_nilai')
     ->middleware('role:dosen');
 
-    
+    Route::get('dosen/jadwal', [JadwalController::class, 'jadwalMengajar'])
+    ->name('dosen.jadwal')
+    ->middleware('role:dosen');
+
+    Route::get('dosen/kuliahonline', [KuliahOnlineController::class, 'index'])
+    ->name('dosen.kuliahonline')
+    ->middleware('role:dosen');
+    Route::post('dosen/kuliahonline/start', [KuliahOnlineController::class, 'startOnlineClass'])
+    ->name('dosen.startOnlineClass')
+    ->middleware('role:dosen');
 });
 
 Route::post('/api/fetch-tahun', [WaliController::class, 'fetchTahun'])->name('fetch.tahun');
