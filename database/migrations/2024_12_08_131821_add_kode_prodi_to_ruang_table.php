@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('ruang', function (Blueprint $table) {
             // Tambah kolom kode_prodi yang bisa null
-            $table->string('kode_prodi')->nullable()->after('kode_fakultas');
+            $table->string('kode_prodi')->nullable()->after('kode_departemen');
             
             // Tambah foreign key ke tabel prodi
             $table->foreign('kode_prodi')
