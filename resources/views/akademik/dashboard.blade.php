@@ -58,89 +58,155 @@
             </div>
         @endif
 
-        <!-- Penetapan Ketersediaan Ruang Kelas Section -->
+        <!-- Penetapan Kapasitas Ruang Kelas Section -->
         <div class="border p-6 rounded-lg shadow-md mb-6">
-            <h2 class="font-semibold text-xl mb-4">Penetapan Ketersediaan Ruang Kelas</h2>
-
-            <!-- Dropdown Prodi -->
+            <h2 class="font-semibold text-xl mb-4">Penetapan Kapasitas Ruang Kelas</h2>
+            <!-- Strata Dropdown -->
             <div class="mb-4">
-                <form method="GET" action="{{ route('akademik.dashboard') }}">
-                    @csrf
-                    <label for="prodi" class="mr-2">Pilih Prodi:</label>
-                    <select name="prodi" id="prodi" class="border rounded p-2">
-                        <option value="">-- Pilih Prodi --</option>
-                        @foreach($prodis as $prodi)
-                            <option value="{{ $prodi->kode_prodi }}" {{ request('prodi') == $prodi->kode_prodi ? 'selected' : '' }}>
-                                {{ $prodi->nama }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-3">Filter</button>
-                </form>
-
-                <!-- Form Penetapan Status Ruang Massal -->
-                <form action="{{ route('akademik.setAllRuang') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="prodi" value="{{ request('prodi') }}">
-
-                    <table id="ruangTable" class="table-auto w-full border">
-                        <thead>
-                            <tr>
-                                <th class="px-4 py-2">Nama/Kode Ruang</th>
-                                <th class="px-4 py-2">Kapasitas</th>
-                                <th class="px-4 py-2">Status</th>
-                                <th class="px-4 py-2">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($ruangs as $ruang)
-                                <tr>
-                                    <td class="border px-4 py-2">{{ $ruang->kode_ruang }}</td>
-                                    <td class="border px-4 py-2">{{ $ruang->kapasitas }}</td>
-                                    <td class="border px-4 py-2">{{ $ruang->status_ketersediaan }}</td>
-                                    <td class="border px-4 py-2">
-                                        <!-- Format Array -->
-                                        <form action="{{ route('akademik.setRuang') }}" method="POST"></form>
-                                            <input type="hidden" name="kode" value="{{ $ruang->kode_ruang }}">
-                                            <select name="status_ketersediaan[{{ $ruang->kode_ruang }}]" class="border rounded p-1">
-                                                <option value="Tersedia" {{ $ruang->status_ketersediaan == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
-                                                <option value="Penuh" {{ $ruang->status_ketersediaan == 'Penuh' ? 'selected' : '' }}>Penuh</option>
-                                            </select>
-                                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">
-                                                Tetapkan
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-
-                    <!-- Tombol Massal -->
-                    <div class="mt-4">
-                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">
-                            Tetapkan Semua
-                        </button>
-                    </div>
-                </form>
+                <label for="strata" class="block text-sm font-medium text-gray-700 mb-2">Pilih Strata:</label>
+                <select id="strataFilter" class="border-2 border-[#80747475] rounded-lg p-2 w-48">
+                    <option value="S1">S1</option>
+                    <option value="S2">S2</option>
+                    <option value="S3">S3</option>
+                </select>
             </div>
+
+            <!-- Form Tetapkan Semua -->
+            <form action="{{ route('akademik.updateAllRuang') }}" method="POST" id="ruangForm">
+                @csrf
+                <table id="ruangTable" class="table-auto w-full border">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2">Nama/Kode Ruang</th>
+                            <th class="px-4 py-2">Kapasitas</th>
+                            <th class="px-4 py-2">Prodi</th>
+                            <th class="px-4 py-2">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($ruangs as $ruang)
+                            <tr>
+                                <td class="border px-4 py-2">{{ $ruang->kode_ruang }}</td>
+                                <td class="border px-4 py-2">
+                                    <input 
+                                        type="number" 
+                                        name="kapasitas[{{ $ruang->kode_ruang }}]" 
+                                        value="{{ $ruang->kapasitas }}" 
+                                        class="border rounded p-2 w-full">
+                                </td>
+                                <td class="border px-4 py-2">
+                                <select 
+                                    name="prodi[{{ $ruang->kode_ruang }}]" 
+                                    class="border rounded p-2 w-full prodi-select"
+                                    data-ruang="{{ $ruang->kode_ruang }}">
+                                    <option value="">Pilih Prodi</option>
+                                    @foreach($fakultas->where('kode_fakultas', $ruang->kode_fakultas)->first()->departemen as $departemen)
+                                        @foreach($departemen->prodi as $prodi)
+                                            <option 
+                                                value="{{ $prodi->kode_prodi }}" 
+                                                data-strata="{{ $prodi->strata }}" 
+                                                class="prodi-option"
+                                                {{ $prodi->kode_prodi == $ruang->kode_prodi ? 'selected' : '' }}>
+                                                {{ $prodi->nama }}
+                                            </option>
+                                        @endforeach
+                                    @endforeach
+                                </select>
+
+                                </td>
+                                <td class="border px-4 py-2">
+                                    <button 
+                                        type="submit" 
+                                        formaction="{{ route('akademik.updateRuang') }}" 
+                                        name="ruang" 
+                                        value="{{ $ruang->kode_ruang }}" 
+                                        class="bg-blue-500 text-white px-4 py-2 rounded tetapkan-btn">
+                                        Tetapkan
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                <!-- Tombol Tetapkan Semua -->
+                <div class="mt-4">
+                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded tetapkan-semua-btn">
+                        Tetapkan Semua
+                    </button>
+                </div>
+            </form>
         </div>
     </main>
     <!-- Footer -->
     <footer class="mt-auto">
         @include('footer')
     </footer>
-</main>
+</div>
 
 <!-- DataTables JS dan Inisialisasi -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<style>
+    .dataTables_length select {
+        width: 3rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 6px;
+        margin: 0 4px;
+    }
+    .dataTables_filter input {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px 10px;
+        margin-left: 8px;
+        margin-bottom: 5px;
+    }
+    .top {
+        padding: 8px 0;
+        margin-bottom: 8px;
+    }
+</style>
+
 <script>
     $(document).ready(function() {
+        // Inisialisasi DataTables untuk tabel ruang
         $('#ruangTable').DataTable({
+            "dom": '<"top"<"flex items-center justify-between"<"flex items-center gap-2"f><"ml-auto"l>>>rt<"bottom"p><"clear">',
+            "paging": true,
+            "info": false, // Sembunyikan informasi jumlah data
+            "searching": true, // Aktifkan pencarian
+            "ordering": true, // Aktifkan pengurutan
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/Indonesian.json"
+                "search": "_INPUT_", // Menghapus label 'Search'
+                "searchPlaceholder": "Cari Ruang", // Placeholder untuk pencarian
+                "lengthMenu": "Tampilkan _MENU_ data", // Ubah teks dropdown
+                "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Berikutnya"
+                }
             }
+        });
+
+        // Filter dropdown Prodi berdasarkan Strata
+        $('#strataFilter').on('change', function() {
+            const selectedStrata = $(this).val(); // Ambil strata yang dipilih
+            $('.prodi-select').each(function() {
+                const $dropdown = $(this);
+                $dropdown.find('.prodi-option').each(function() {
+                    const $option = $(this);
+                    if (selectedStrata === "" || $option.data('strata') === selectedStrata) {
+                        $option.show(); // Tampilkan opsi jika strata cocok
+                    } else {
+                        $option.hide(); // Sembunyikan opsi jika strata tidak cocok
+                    }
+                });
+                // Reset dropdown jika opsi terpilih tidak cocok
+                if ($dropdown.find('.prodi-option:selected').is(':hidden')) {
+                    $dropdown.val(''); // Reset ke default
+                }
+            });
         });
     });
 </script>

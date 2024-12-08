@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Jadwal;
 use App\Models\Ruang;
-use App\Models\Prodi;
 
 class DekanController extends Controller
 {
     public function index(Request $request)
     {
         // Get all study programs related to dean's department
-        $prodis = Prodi::all();
+        $stratas = DB::table('prodi')->distinct()->pluck('strata'); // Ambil strata unik
+        $prodis = DB::table('prodi')->get(); // Semua data prodi
+        // Data prodi berdasarkan strata
+        $prodiByStrata = $prodis->groupBy('strata');
         
         // Get selected prodi from request
         $selectedProdi = $request->input('prodi');
@@ -38,6 +40,8 @@ class DekanController extends Controller
             'jadwals' => $jadwals,
             'ruangs' => $ruangs,
             'prodis' => $prodis,
+            'stratas' => $stratas,
+            'prodiByStrata' => $prodiByStrata,
             'selectedProdi' => $selectedProdi,
         ]);
     }

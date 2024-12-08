@@ -65,19 +65,41 @@
 
         <!-- Shared Prodi Filter -->
         <div class="mb-6 p-4 border rounded-lg shadow-md">
-            <form method="GET" action="{{ route('dekan.dashboard') }}" class="flex items-center">
-                <label for="prodi" class="mr-2 font-semibold">Pilih Program Studi:</label>
-                <select name="prodi" id="prodi" class="border rounded p-2 flex-grow">
-                    <option value="">-- Pilih Program Studi --</option>
-                    @foreach($prodis as $prodi)
-                        <option value="{{ $prodi->kode_prodi }}" {{ request('prodi') == $prodi->kode_prodi ? 'selected' : '' }}>
-                            {{ $prodi->nama }}
-                        </option>
-                    @endforeach
-                </select>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-3">
-                    Terapkan Filter
-                </button>
+            <form method="GET" action="{{ route('dekan.dashboard') }}" class="flex flex-col lg:flex-row gap-4">
+                <!-- Dropdown Strata -->
+                <div class="flex-grow">
+                    <label for="strataFilter" class="block font-semibold mb-2">Pilih Strata:</label>
+                    <select id="strataFilter" name="strata" class="border rounded-lg p-2 w-full">
+                        <option value="">-- Pilih Strata --</option>
+                        @foreach($stratas as $strata)
+                            <option value="{{ $strata }}" {{ request('strata') == $strata ? 'selected' : '' }}>
+                                {{ $strata }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Dropdown Prodi -->
+                <div class="flex-grow">
+                    <label for="prodiFilter" class="block font-semibold mb-2">Pilih Program Studi:</label>
+                    <select id="prodiFilter" name="prodi" class="border rounded-lg p-2 w-full">
+                        <option value="">-- Pilih Program Studi --</option>
+                        @foreach($prodis as $prodi)
+                            @if(!request('strata') || $prodi->strata == request('strata'))
+                                <option value="{{ $prodi->kode_prodi }}" {{ request('prodi') == $prodi->kode_prodi ? 'selected' : '' }}>
+                                    {{ $prodi->nama }}
+                                </option>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Tombol Terapkan Filter -->
+                <div class="flex items-end">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+                        Terapkan Filter
+                    </button>
+                </div>
             </form>
         </div>
 
@@ -182,3 +204,85 @@
         @include('footer')
     </footer>
 </div>
+<!-- DataTables JS dan Inisialisasi -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<style>
+    .dataTables_length select {
+        width: 3rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 6px;
+        margin: 0 4px;
+    }
+    .dataTables_filter input {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px 10px;
+        margin-left: 8px;
+        margin-bottom: 5px;
+    }
+    .top {
+        padding: 8px 0;
+        margin-bottom: 8px;
+    }
+</style>
+
+<script>
+    $(document).ready(function() {
+        // Inisialisasi DataTables untuk tabel ruang
+        $('#ruangTable').DataTable({
+            "dom": '<"top"<"flex items-center justify-between"<"flex items-center gap-2"f><"ml-auto"l>>>rt<"bottom"p><"clear">',
+            "paging": true,
+            "info": false, // Sembunyikan informasi jumlah data
+            "searching": true, // Aktifkan pencarian
+            "ordering": true, // Aktifkan pengurutan
+            "language": {
+                "search": "_INPUT_", // Menghapus label 'Search'
+                "searchPlaceholder": "Cari Ruang", // Placeholder untuk pencarian
+                "lengthMenu": "Tampilkan _MENU_ data", // Ubah teks dropdown
+                "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Berikutnya"
+                }
+            }
+        });
+        $('#jadwalTable').DataTable({
+            "dom": '<"top"<"flex items-center justify-between"<"flex items-center gap-2"f><"ml-auto"l>>>rt<"bottom"p><"clear">',
+            "paging": true,
+            "info": false, // Sembunyikan informasi jumlah data
+            "searching": true, // Aktifkan pencarian
+            "ordering": true, // Aktifkan pengurutan
+            "language": {
+                "search": "_INPUT_", // Menghapus label 'Search'
+                "searchPlaceholder": "Cari Jadwal", // Placeholder untuk pencarian
+                "lengthMenu": "Tampilkan _MENU_ data", // Ubah teks dropdown
+                "paginate": {
+                    "previous": "Sebelumnya",
+                    "next": "Berikutnya"
+                }
+            }
+        });
+
+        // Filter dropdown Prodi berdasarkan Strata
+        $('#strataFilter').on('change', function() {
+            const selectedStrata = $(this).val(); // Ambil strata yang dipilih
+            $('.prodi-select').each(function() {
+                const $dropdown = $(this);
+                $dropdown.find('.prodi-option').each(function() {
+                    const $option = $(this);
+                    if (selectedStrata === "" || $option.data('strata') === selectedStrata) {
+                        $option.show(); // Tampilkan opsi jika strata cocok
+                    } else {
+                        $option.hide(); // Sembunyikan opsi jika strata tidak cocok
+                    }
+                });
+                // Reset dropdown jika opsi terpilih tidak cocok
+                if ($dropdown.find('.prodi-option:selected').is(':hidden')) {
+                    $dropdown.val(''); // Reset ke default
+                }
+            });
+        });
+    });
+</script>

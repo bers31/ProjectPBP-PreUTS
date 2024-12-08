@@ -5,11 +5,9 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\DekanController;
-use App\Http\Controllers\FakultasController;
 use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\historyIRSController;
 use App\Http\Controllers\InputNilaiController;
-use App\Http\Controllers\KuliahOnlineController;
 use App\Http\Controllers\IRSController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\KHSController;
@@ -85,8 +83,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['auth', 'role:akademik'])->group(function () {
         Route::get('/akademik/dashboard', [AkademikController::class, 'index'])->name('akademik.dashboard');
-        Route::post('/akademik/set-ruang', [AkademikController::class, 'setRuang'])->name('akademik.setRuang');
-        Route::post('/akademik/set-all-ruang', [AkademikController::class, 'setAllRuang'])->name('akademik.setAllRuang');
+        // Rute untuk memperbarui ruang secara individu
+        Route::post('/akademik/update-ruang', [AkademikController::class, 'updateRuang'])->name('akademik.updateRuang');
+
+        // Rute untuk memperbarui ruang secara massal
+        Route::post('/akademik/update-all-ruang', [AkademikController::class, 'updateAllRuang'])->name('akademik.updateAllRuang');
     });
 
     // Student status_akademik route
