@@ -15,15 +15,6 @@
         </form>
     </div>
 
-    <!-- Success Message -->
-    @if (session('success'))
-        <div class="flex justify-center my-4">
-            <div class="text-md md:text-xl py-1 text-green-600">
-                {{ session('success') }}
-            </div>
-        </div>
-    @endif
-
     <!-- Content Section -->
     <div class="flex mx-7">
         <div class="flex flex-col w-full border-2 p-5 border-gray-300 rounded-lg shadow-md bg-white">
@@ -58,14 +49,14 @@
                                     <a href="{{ route('matkul.edit', $row->kode_mk) }}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
                                         Edit
                                     </a>
-                                    <!-- Delete Button -->
-                                    <form action="{{ route('matkul.destroy', $row) }}" method="POST" class="w-full">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" onclick="return confirm('Yakin ingin menghapus mata kuliah ini?')" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 w-full">
-                                            Delete
-                                        </button>
-                                    </form>
+                                <!-- Delete Button -->
+                                <form action="{{ route('matkul.destroy', $row) }}" method="POST" class="w-full">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 w-full delete-button">
+                                        Delete
+                                    </button>
+                                </form>
                                 </div>
                             </td>
                         </tr>
@@ -75,13 +66,82 @@
         </div>
     </div>
 
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if(session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Mata Kuliah Berhasil Ditambahkan!',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6' // Change this to your desired color (hex, rgb, etc.)
+                });
+            });
+        </script>
+    @endif
+
+    @if(session('success_update'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Mata Kuliah Berhasil Diubah!',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+            });
+        </script>
+    @endif
+
+    @if(session('success_delete'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Jadwal Berhasil Dihapus!',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+            });
+        </script>
+    @endif
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Attach event listener to all delete buttons
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                const form = this.closest('form'); // Get the parent form of the clicked button
+
+                Swal.fire({
+                    title: 'Hapus Mata Kuliah',
+                    text: 'Yakin Menghapus Mata Kuliah?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33', // Red color for the confirm button
+                    cancelButtonColor: '#3085d6', // Blue color for the cancel button
+                    confirmButtonText: 'Yessir!',
+                    cancelButtonText: 'Naahhh.',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit(); // Submit the form if confirmed
+                    }
+                });
+            });
+        });
+    });
+</script>
 
 <!-- Include DataTables and SweetAlert -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"/>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
     .dataTables_length select {
@@ -120,27 +180,5 @@ $(document).ready(function() {
     });
 });
 
-</script>
-
-
-<script>
-    $(document).on('click', '#edit-btn', function (e) {
-        e.preventDefault();
-        let url = $(this).data('url'); // Get the URL
-        console.log(url); // Debug if undefined
-        Swal.fire({
-            title: 'Edit Matakuliah',
-            text: "Yakin ingin melakukan perubahan pada mata kuliah?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = url;
-            }
-        });
-    });
 </script>
 @include('../footer')

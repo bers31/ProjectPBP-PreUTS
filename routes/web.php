@@ -129,6 +129,19 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/admin/{dashboard?}', [AdminController::class, 'index'])->name('admin.dashboardalt')
     ->middleware('role:admin');  // Check for 'admin' role
+
+    Route::post('/api/fetch-tahun', [WaliController::class, 'fetchTahun'])->name('fetch.tahun');
+    Route::post('/api/fetch-mahasiswa', [WaliController::class, 'fetchMahasiswa']);
+    Route::post('/api/fetch-departemen', [DepartemenController::class, 'fetchDepartemen']);
+    Route::post('/api/fetch-prodi', [ProdiController::class, 'fetchProdi']);
+    Route::post('/api/fetch-doswal', [WaliController::class, 'fetchDoswal']);
+    Route::post('/api/count-status', [WaliController::class, 'fetchDoswal']);
+    Route::get('/api/jadwal', [JadwalController::class, 'apiJadwal']);
+    Route::post('api/fetch-mhs-mk', [InputNilaiController::class, 'fetchMhs']);
+    Route::post('api/fetch-history-khs', [KHSController::class, 'fetchHistoryKHS']);
+    Route::post('api/check-khs', [InputNilaiController::class, 'checkKHS']);
+    Route::post('api/update-khs', [InputNilaiController::class, 'updateKHS']);
+    Route::get('/mhs/print_irs/{nim}', [PDFController::class, 'viewIRS']);
 });
 
 Route::middleware(['auth','role:dosen'])->group(function(){
@@ -146,26 +159,13 @@ Route::middleware(['auth','role:dosen'])->group(function(){
     ->name('dosen.jadwal')
     ->middleware('role:dosen');
 
-
+    Route::get('dosen/perwalian/{nim}', [WaliController::class, 'view'])->name('perwalian.view')->middleware('perwalian');
+    Route::post('api/approve-irs/', [WaliController::class, 'approveIRS']);
+    Route::post('/api/fetch-aju-irs', [WaliController::class, 'fetchAjuanIRS']);
+    Route::post('/api/fetch-history-irs', [WaliController::class, 'fetchHistoryIRS']);
 });
 
-Route::post('/api/fetch-tahun', [WaliController::class, 'fetchTahun'])->name('fetch.tahun');
-Route::post('/api/fetch-mahasiswa', [WaliController::class, 'fetchMahasiswa']);
-Route::post('/api/fetch-departemen', [DepartemenController::class, 'fetchDepartemen']);
-Route::post('/api/fetch-prodi', [ProdiController::class, 'fetchProdi']);
-Route::post('/api/fetch-doswal', [WaliController::class, 'fetchDoswal']);
-Route::post('/api/count-status', [WaliController::class, 'fetchDoswal']);
-Route::get('/api/jadwal', [JadwalController::class, 'apiJadwal']);
-Route::get('dosen/perwalian/{nim}', [WaliController::class, 'view'])->name('perwalian.view')->middleware('perwalian');
-Route::post('api/approve-irs', [WaliController::class, 'approveIRS']);
-Route::post('api/fetch-mhs-mk', [InputNilaiController::class, 'fetchMhs']);
-Route::post('/api/fetch-aju-irs', [WaliController::class, 'fetchAjuanIRS']);
-Route::post('/api/fetch-history-irs', [WaliController::class, 'fetchHistoryIRS']);
-Route::post('api/fetch-history-khs', [KHSController::class, 'fetchHistoryKHS']);
 
-Route::post('api/check-khs', [InputNilaiController::class, 'checkKHS']);
-Route::post('api/update-khs', [InputNilaiController::class, 'updateKHS']);
-Route::get('/mhs/print_irs/{nim}', [PDFController::class, 'viewIRS']);
 
 Route::middleware(['auth', 'role:kaprodi'])->group(function(){
     Route::get('/kaprodi/menu', function() {

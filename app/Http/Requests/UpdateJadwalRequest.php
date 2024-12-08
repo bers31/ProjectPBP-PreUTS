@@ -16,7 +16,7 @@ class UpdateJadwalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'kode_mk' => 'required|string|max:10',
+            'kode_mk' => 'required|string|max:30',
             'kode_kelas' => [
                 'required',
                 'string',
@@ -39,7 +39,7 @@ class UpdateJadwalRequest extends FormRequest
                 function ($attribute, $value, $fail) {
                     $decoded = json_decode($value, true);
                     if (!is_array($decoded) || count($decoded) < 1) {
-                        $fail('The ' . $attribute . ' field must be a JSON array with at least one item.');
+                        $fail('Dosen Pengampu Harus dipilih!');
                     }
                 },
             ],

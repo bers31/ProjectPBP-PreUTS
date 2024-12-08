@@ -138,7 +138,7 @@
       <div x-show="activeTab === 'khs'" class="bg-white p-6 rounded-b-lg border-x border-b">
         <!-- KHS Content -->
         <div id="history-khs-container">
-          <p>KHS content goes here...</p>
+          <p>Loading KHS...</p>
 
         </div>
       </div>
