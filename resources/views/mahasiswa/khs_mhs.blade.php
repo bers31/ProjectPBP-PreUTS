@@ -9,7 +9,7 @@
                 KHS
             </div>
         </div>
-        <div id="history-khs-container">
+        <div id="history-khs-container" class="ml-12 mr-8 mb-16 border border-gray-300 rounded-xl  shadow-md hover:shadow-lg transition-shadow">
             <p>KHS content goes here...</p>
         </div>
         
