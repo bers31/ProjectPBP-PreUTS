@@ -401,33 +401,37 @@ document.addEventListener('DOMContentLoaded', function () {
         const hariValue = hari.value;
         const jamMulaiValue = jamMulai.value;
         const jamSelesaiValue = jamSelesai.value;
-        const kuotaValue = kuota.value; // Get the kuota value
-        const selectedRuangOption = ruang.options[ruang.selectedIndex];
-        const kapasitas = selectedRuangOption ? parseInt(selectedRuangOption.getAttribute('data-kapasitas'), 10) : 0;
+        const kodeMkValue = kodeMkSelect.value; // Get selected mata kuliah
 
-        console.log(selectedRuangOption);
-        console.log(kapasitas);
+        // Get selected dosen NIDNs
+        const selectedDosenNidns = getSelectedDosenNidns(selectedDosenDisplay);
 
-
-        // Validate the schedule
-
-        if (parseInt(kuotaValue, 10) > kapasitas) {
-            event.preventDefault();
-            alert("Kuota tidak boleh melebihi kapasitas ruang.");
-            return; // Stop form submission
-        }
-
+        // Validate against existing schedules
         const conflict = existingSchedules.some(schedule => {
-            return (
-                schedule.ruang === ruangValue && // Check same room
-                schedule.hari === hariValue && // Check same day
-                isTimeOverlap(schedule.jam_mulai, schedule.jam_selesai, jamMulaiValue, jamSelesaiValue) // Check time overlap
-            );
+            // Check if the same day and same mata kuliah
+            if (schedule.hari === hariValue && schedule.kode_mk === kodeMkValue) {
+                // Check if time overlaps
+                const timeOverlap = isTimeOverlap(schedule.jam_mulai, schedule.jam_selesai, jamMulaiValue, jamSelesaiValue);
+
+                if (timeOverlap) {
+                    // Extract dosen NIDNs from the existing schedule
+                    const scheduleDosenNidns = schedule.dosen_pengampu.map(dp => dp.dosen.nidn);
+
+                    // Check if all dosen in the schedule match the selected dosen
+                    const allDosenMatch = scheduleDosenNidns.every(nidn => selectedDosenNidns.includes(nidn)) &&
+                                        selectedDosenNidns.every(nidn => scheduleDosenNidns.includes(nidn));
+
+                    if (allDosenMatch) {
+                        return true; // Conflict found
+                    }
+                }
+            }
+            return false;
         });
 
         if (conflict) {
-            event.preventDefault();
-            alert("Jadwal bentrok! Ruang sudah digunakan pada waktu tersebut.");
+            event.preventDefault(); // Prevent form submission
+            alert("Jadwal bentrok! Dosen tidak boleh memiliki waktu yang sama dalam mata kuliah yang sama pada hari tersebut.");
         }
     });
 
@@ -435,6 +439,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function isTimeOverlap(startA, endA, startB, endB) {
         return (startA < endB && startB < endA);
     }
+
 
     // console.log(getSelectedDosenNidns(selectedDosenDisplay));
 

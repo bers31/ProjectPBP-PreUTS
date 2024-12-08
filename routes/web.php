@@ -17,7 +17,6 @@ use App\Http\Controllers\WaliController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\RuangController;
 use App\Http\Controllers\MataKuliahController;
-use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\PDFController;
 use Illuminate\Support\Facades\Route;
 
@@ -146,6 +145,13 @@ Route::middleware(['auth','role:dosen'])->group(function(){
     ->name('dosen.jadwal')
     ->middleware('role:dosen');
 
+    Route::get('dosen/kuliahonline', [KuliahOnlineController::class, 'index'])
+    ->name('dosen.kuliahonline')
+    ->middleware('role:dosen');
+    Route::post('dosen/kuliahonline/start', [KuliahOnlineController::class, 'startOnlineClass'])
+    ->name('dosen.startOnlineClass')
+    ->middleware('role:dosen');
+    
     Route::get('dosen/kuliahonline', [KuliahOnlineController::class, 'index'])
     ->name('dosen.kuliahonline')
     ->middleware('role:dosen');
