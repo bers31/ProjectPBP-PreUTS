@@ -20,583 +20,583 @@ class UserSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         // Create a default admin user
-        User::create([
-            'email' => 'budi@students.undip.ac.id',
-            'password' => '12345', // Admin password
-            'role' => 'mahasiswa', // Assign the admin role
-        ]);
-        User::create([
-            'email' => 'admin@example.com',
-            'password' => '12345', // Admin password
-            'role' => 'admin', // Assign the admin role
-        ]);
+        // User::create([
+        //     'email' => 'budi@students.undip.ac.id',
+        //     'password' => '12345', // Admin password
+        //     'role' => 'mahasiswa', // Assign the admin role
+        // ]);
+        // User::create([
+        //     'email' => 'admin@example.com',
+        //     'password' => '12345', // Admin password
+        //     'role' => 'admin', // Assign the admin role
+        // ]);
         
-        User::create([
-            'email' => 'bambang@lecturers.undip.ac.id',
-            'password' => '12345', // Admin password
-            'role' => 'dosen', // Assign the admin role
-        ]);
-        User::create([
-            'email' => 'siti@lecturers.undip.ac.id',
-            'password' => '12345', // Admin password
-            'role' => 'dosen', // Assign the admin role
-        ]);
+        // User::create([
+        //     'email' => 'bambang@lecturers.undip.ac.id',
+        //     'password' => '12345', // Admin password
+        //     'role' => 'dosen', // Assign the admin role
+        // ]);
+        // User::create([
+        //     'email' => 'siti@lecturers.undip.ac.id',
+        //     'password' => '12345', // Admin password
+        //     'role' => 'dosen', // Assign the admin role
+        // ]);
 
-        User::create([
-            'email' => 'gibran@students.undip.ac.id',
-            'password' => '12345', // Admin password
-            'role' => 'mahasiswa', // Assign the admin role
-        ]);
-        User::create([
-            'email' => 'faisalrizki@students.undip.ac.id',
-            'password' => '12345', // Admin password
-            'role' => 'mahasiswa', // Assign the admin role
-        ]);
-        User::create([
-            'email' => 'akademik@example.com',
-            'password' => '12345', // Admin password
-            'role' => 'akademik', // Assign the admin role
-        ]);
+        // User::create([
+        //     'email' => 'gibran@students.undip.ac.id',
+        //     'password' => '12345', // Admin password
+        //     'role' => 'mahasiswa', // Assign the admin role
+        // ]);
+        // User::create([
+        //     'email' => 'faisalrizki@students.undip.ac.id',
+        //     'password' => '12345', // Admin password
+        //     'role' => 'mahasiswa', // Assign the admin role
+        // ]);
+        // User::create([
+        //     'email' => 'akademik@example.com',
+        //     'password' => '12345', // Admin password
+        //     'role' => 'akademik', // Assign the admin role
+        // ]);
 
-        User::Create([
-            'email' => 'seenoll@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'alberikcal@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'hazlettdanie@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'bailerich@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'mathecraggie@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'carrreuben@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'jerameyartur@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'hercorlando@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'burtharwilll@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'reillymohammed@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'leonardorene@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'antoneaubert@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'brandonrriocard@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'ludwigjabez@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'michaleewell@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'emmettworth@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'lazarwaverley@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'waiteradler@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'daviezacherie@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'kendelljere@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'hortaluin@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'ashleyisaac@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'gaultierodelmer@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'ulrichmatthew@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'harwelliago@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'fredricgardie@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'sheridancordy@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'melegbert@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'kennanalyosha@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'maximiliangrange@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'raffartygarrett@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'raviconney@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'mauritslay@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'mikkeldavid@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'bruisalexio@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'joshiacos@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'raulantoni@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'adlaibaxter@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'denfelic@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'winnalexandros@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'clercdanny@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'lucasyorke@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'emilethorstein@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'robbybennett@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'stutore@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'ashereldin@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'gideoneddie@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'johannfelice@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'burtiehamlen@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'egondukie@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'sutherlanddarb@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'rawleyurbain@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'bevongiraldo@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'rainerlorne@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'martymalcolm@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'dersimeon@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'arnysammie@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'georasbenedick@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'sashacleveland@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'dukenickolai@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'donavonlutero@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'patriciolon@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'elishapaxton@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'emmerichgardener@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'skippyherbie@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'buironflorian@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'batethan@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'prinzangel@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'lorintuck@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'barrelia@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'skylerroyce@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'ferdiehartwell@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'fitzgeraldthedrick@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'reinhardlester@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'alanohurleigh@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'holmessargent@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'pallbritt@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'reubenulrick@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'freddytracy@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'jaysonchad@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'waldonkimbell@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'marckalil@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'timotheegriffin@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'yulelowrance@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'maurizioandrea@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'culleyneils@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'aubreymikel@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'elmerparker@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'daviddesunny@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
-        
-        User::Create([
-            'email' => 'bolazarus@lecturers.undip.ac.id',
-            'password' => '12345',
-            'role' => 'dosen',
-        ]);
+        // User::Create([
+        //     'email' => 'seenoll@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'alberikcal@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'hazlettdanie@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'bailerich@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'mathecraggie@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'carrreuben@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'jerameyartur@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'hercorlando@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'burtharwilll@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'reillymohammed@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'leonardorene@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'antoneaubert@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'brandonrriocard@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'ludwigjabez@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'michaleewell@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'emmettworth@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'lazarwaverley@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'waiteradler@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'daviezacherie@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'kendelljere@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'hortaluin@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'ashleyisaac@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'gaultierodelmer@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'ulrichmatthew@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'harwelliago@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'fredricgardie@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'sheridancordy@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'melegbert@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'kennanalyosha@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'maximiliangrange@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'raffartygarrett@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'raviconney@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'mauritslay@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'mikkeldavid@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'bruisalexio@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'joshiacos@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'raulantoni@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'adlaibaxter@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'denfelic@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'winnalexandros@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'clercdanny@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'lucasyorke@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'emilethorstein@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'robbybennett@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'stutore@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'ashereldin@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'gideoneddie@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'johannfelice@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'burtiehamlen@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'egondukie@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'sutherlanddarb@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'rawleyurbain@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'bevongiraldo@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'rainerlorne@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'martymalcolm@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'dersimeon@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'arnysammie@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'georasbenedick@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'sashacleveland@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'dukenickolai@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'donavonlutero@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'patriciolon@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'elishapaxton@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'emmerichgardener@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'skippyherbie@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'buironflorian@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'batethan@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'prinzangel@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'lorintuck@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'barrelia@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'skylerroyce@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'ferdiehartwell@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'fitzgeraldthedrick@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'reinhardlester@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'alanohurleigh@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'holmessargent@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'pallbritt@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'reubenulrick@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'freddytracy@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'jaysonchad@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'waldonkimbell@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'marckalil@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'timotheegriffin@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'yulelowrance@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'maurizioandrea@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'culleyneils@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'aubreymikel@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'elmerparker@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'daviddesunny@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
+        
+        // User::Create([
+        //     'email' => 'bolazarus@lecturers.undip.ac.id',
+        //     'password' => '12345',
+        //     'role' => 'dosen',
+        // ]);
 
         User::Create([
             'email' => 'mickeygiorgi@students.undip.ac.id',

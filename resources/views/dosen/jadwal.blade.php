@@ -21,27 +21,27 @@
                         <table class="table-auto w-full border-collapse border border-gray-200 text-left text-sm lg:text-base">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="border border-gray-300 p-3">Nama Dosen</th>
+                                    {{-- <th class="border border-gray-300 p-3">Nama Dosen</th> --}}
                                     <th class="border border-gray-300 p-3">Hari</th>
                                     <th class="border border-gray-300 p-3">Jam Mulai</th>
                                     <th class="border border-gray-300 p-3">Jam Selesai</th>
                                     <th class="border border-gray-300 p-3">Mata Kuliah</th>
                                     <th class="border border-gray-300 p-3">Kode Kelas</th>
                                     <th class="border border-gray-300 p-3">Ruang</th>
-                                    <th class="border border-gray-300 p-3">Status</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($jadwalMengajar as $item)
                                 <tr class="border-b">
-                                    <td class="border border-gray-300 p-3">{{ $item->dosen->nama }}</td>
-                                    <td class="border border-gray-300 p-3">{{ $item->jadwal->hari }}</td>
-                                    <td class="border border-gray-300 p-3">{{ $item->jadwal->jam_mulai }}</td>
-                                    <td class="border border-gray-300 p-3">{{ $item->jadwal->jam_selesai }}</td>
-                                    <td class="border border-gray-300 p-3">{{ $item->jadwal->mataKuliah->nama_mk }}</td>
-                                    <td class="border border-gray-300 p-3">{{ $item->jadwal->kode_kelas }}</td>
-                                    <td class="border border-gray-300 p-3">{{ $item->jadwal->ruang }}</td>
-                                    <td class="border border-gray-300 p-3">{{ ucfirst($item->jadwal->status) }}</td>
+                                    
+                                    <td class="border border-gray-300 p-3">{{ $item->hari }}</td>
+                                    <td class="border border-gray-300 p-3">{{ $item->jam_mulai }}</td>
+                                    <td class="border border-gray-300 p-3">{{ $item->jam_selesai }}</td>
+                                    <td class="border border-gray-300 p-3">{{ $item->mataKuliah->nama_mk }}</td>
+                                    <td class="border border-gray-300 p-3">{{ $item->kode_kelas }}</td>
+                                    <td class="border border-gray-300 p-3">{{ $item->ruang }}</td>
+                                    
                                 </tr>
                                 @endforeach
                             </tbody>

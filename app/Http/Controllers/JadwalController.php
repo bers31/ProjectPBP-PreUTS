@@ -6,11 +6,13 @@ use App\Models\Jadwal;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreJadwalRequest;
 use App\Http\Requests\UpdateJadwalRequest;
+use App\Models\DetailIRS;
 use Illuminate\Http\Request;
 use App\Models\MataKuliah;
 use App\Models\Dosen;
 use App\Models\Ruang;
 use App\Models\DosenPengampu;
+use App\Models\IRS;
 use App\Models\Tahun;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,6 +21,35 @@ class JadwalController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     public function apiJadwal()
+     {
+         $today = now()->dayOfWeek; // Hari saat ini
+         $currentTime = now()->format('H:i:s'); // Jam saat ini
+     
+         $jadwals = Jadwal::with('dosen_pengampu')
+             ->orderByRaw("
+                 CASE 
+                     WHEN hari >= ? THEN 0
+                     ELSE 1
+                 END,
+                 hari ASC, jam_mulai ASC
+             ", [$today])
+             ->get()
+             ->map(function ($jadwal) {
+                 return [
+                     'hari' => $jadwal->hari,
+                     'jam_mulai' => $jadwal->jam_mulai,
+                     'jam_selesai' => $jadwal->jam_selesai,
+                     'kode_kelas' => $jadwal->kode_kelas,
+                     'nama_mk' => $jadwal->mataKuliah->nama_mk ,
+                     'ruang' => $jadwal->ruang
+                 ];
+             });
+        return response()->json($jadwals);
+     }
+     
+     
     public function jadwalMengajar()
     {
         // Get authenticated user's NIDN (assuming the user is a Dosen)
@@ -37,18 +68,30 @@ class JadwalController extends Controller
         return view('dosen.jadwal', compact('jadwalMengajar'));
     }
 
-     public function jadwalMahasiswa()
-     {
-        $jadwal = Jadwal::with('mataKuliah')
-        ->whereHas('mataKuliah', function ($query) {
-            $query->where('status', 'disetujui'); 
-        })
-        ->orderBy('hari')
-        ->orderBy('jam_mulai')
-        ->get();    
-         return view('mahasiswa.jadwal_mhs', compact('jadwal'));
-     }
-     
+    public function jadwalMahasiswa()
+    {   
+        $mahasiswa = Auth::user()->mahasiswa;
+        $nim = $mahasiswa->nim;
+
+        // Ambil tahun ajaran aktif
+        $tahunAjaran = Tahun::where('status', 'aktif')->value('kode_tahun');
+
+        // Ambil id_irs yang sedang aktif
+        $id_irs = IRS::where('nim_mahasiswa', $nim)
+                ->where('kode_tahun', $tahunAjaran)
+                ->value('id_irs');
+
+        // Ambil jadwal jadwal pada detail_irs
+        $detail_irs = DetailIRS::where('id_irs', $id_irs)->get();
+        
+        // Mendapatkan jadwal
+        $jadwal =  $detail_irs->map(function ($detail) {
+            return Jadwal::find($detail->id_jadwal);
+        });
+
+            return view('mahasiswa.jadwal_mhs', compact('jadwal'));
+    }
+    
     public function index()
     {
         $jadwals = Jadwal::with(['mataKuliah', 'dosen_pengampu.dosen', 'ruangan'])
