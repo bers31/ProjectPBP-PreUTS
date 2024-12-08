@@ -457,7 +457,7 @@
                                             if (result.isConfirmed) {
                                                 // Jika pengguna menekan tombol "Ya, lanjutkan!"
                                                 $.ajax({
-                                                    url: "{{ url('api/approve-irs') }}",
+                                                    url: "{{ url('api/approve-irs' ) }}",
                                                     type: "POST",
                                                     data: {
                                                         nim: [nim],
