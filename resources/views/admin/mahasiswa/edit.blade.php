@@ -63,6 +63,34 @@
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
                 </div>
+
+                <!-- ipk Input -->
+                <div class="mb-4">
+                    <label for="ipk" class="block mb-2 text-sm font-medium text-gray-900">IPK</label>
+                    <input 
+                        type="ipk" 
+                        name="ipk" 
+                        id="ipk" 
+                        class="bg-gray-50 border @error('ipk') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        value="{{ old('ipk', $mahasiswa->ipk) }}">
+                    @error('ipk')
+                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- sks Input -->
+                <div class="mb-4">
+                    <label for="sks" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+                    <input 
+                        type="sks" 
+                        name="sks" 
+                        id="sks" 
+                        class="bg-gray-50 border @error('sks') border-red-500 @else border-gray-300 @enderror text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        value="{{ old('sks', $mahasiswa->sks) }}">
+                    @error('sks')
+                        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                    @enderror
+                </div>
     
                 <!-- Prodi Input -->
                 <div class="mb-4">

@@ -12,6 +12,7 @@ use App\Http\Controllers\InputNilaiController;
 use App\Http\Controllers\KuliahOnlineController;
 use App\Http\Controllers\IRSController;
 use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\KHSController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\UserController;
@@ -159,6 +160,8 @@ Route::post('api/approve-irs', [WaliController::class, 'approveIRS']);
 Route::post('api/fetch-mhs-mk', [InputNilaiController::class, 'fetchMhs']);
 Route::post('/api/fetch-aju-irs', [WaliController::class, 'fetchAjuanIRS']);
 Route::post('/api/fetch-history-irs', [WaliController::class, 'fetchHistoryIRS']);
+Route::post('api/fetch-history-khs', [KHSController::class, 'fetchHistoryKHS']);
+
 Route::post('api/check-khs', [InputNilaiController::class, 'checkKHS']);
 Route::post('api/update-khs', [InputNilaiController::class, 'updateKHS']);
 Route::get('/mhs/print_irs/{nim}', [PDFController::class, 'viewIRS']);
@@ -206,7 +209,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
                                                         ->name('create','ruang.create')
                                                         ->name('update','ruang.update'); // CRUD routes for ruang
 
+                            
     Route::post('/admin/create-users', [AdminController::class, 'createUsersFromLecturersAndStudents'])->name('admin.createUsers');
+    Route::post('/admin/update-sks', [MahasiswaController::class, 'updateSksIpk'])->name('mahasiswa.update.sksipk');
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 });
 

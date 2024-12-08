@@ -20,6 +20,8 @@ class Mahasiswa extends Model
         'email',
         'kode_prodi',
         'doswal',
+        'ipk',
+        'sks'
     ];
     
     public function user() 

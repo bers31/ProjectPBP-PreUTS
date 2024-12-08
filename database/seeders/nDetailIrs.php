@@ -13,20 +13,22 @@ class nDetailIrs extends Seeder
      */
     public function run(): void
     {
-        $details = [['id_irs' => '1', 'id_jadwal' => '20'],
-        ['id_irs' => '1', 'id_jadwal' => '21'],
-        ['id_irs' => '1', 'id_jadwal' => '22'],
-        ['id_irs' => '1', 'id_jadwal' => '23'],
-        ['id_irs' => '1', 'id_jadwal' => '24'],
-        ['id_irs' => '1', 'id_jadwal' => '25'],
-        ['id_irs' => '2', 'id_jadwal' => '17'],
-        ['id_irs' => '2', 'id_jadwal' => '12'],
-        ['id_irs' => '2', 'id_jadwal' => '13'],
-        ['id_irs' => '2', 'id_jadwal' => '14'],
-        ['id_irs' => '2', 'id_jadwal' => '15'],
-        ['id_irs' => '2', 'id_jadwal' => '16'],
-        ['id_irs' => '2', 'id_jadwal' => '18'],
-        ['id_irs' => '2', 'id_jadwal' => '19'],
+        $details = [['id_irs' => '1', 'id_jadwal' => '17'],
+        ['id_irs' => '1', 'id_jadwal' => '12'],
+        ['id_irs' => '1', 'id_jadwal' => '13'],
+        ['id_irs' => '1', 'id_jadwal' => '14'],
+        ['id_irs' => '1', 'id_jadwal' => '15'],
+        ['id_irs' => '1', 'id_jadwal' => '16'],
+        ['id_irs' => '1', 'id_jadwal' => '18'],
+        ['id_irs' => '1', 'id_jadwal' => '19'],
+        ['id_irs' => '2', 'id_jadwal' => '20'],
+        ['id_irs' => '2', 'id_jadwal' => '21'],
+        ['id_irs' => '2', 'id_jadwal' => '22'],
+        ['id_irs' => '2', 'id_jadwal' => '23'],
+        ['id_irs' => '2', 'id_jadwal' => '24'],
+        ['id_irs' => '2', 'id_jadwal' => '25'],
+        ['id_irs' => '2', 'id_jadwal' => '26'],
+        ['id_irs' => '2', 'id_jadwal' => '27'],
         ['id_irs' => '3', 'id_jadwal' => '28'],
         ['id_irs' => '3', 'id_jadwal' => '29'],
         ['id_irs' => '3', 'id_jadwal' => '30'],
@@ -40,7 +42,8 @@ class nDetailIrs extends Seeder
         ['id_irs' => '4', 'id_jadwal' => '38'],
         ['id_irs' => '4', 'id_jadwal' => '39'],
         ['id_irs' => '4', 'id_jadwal' => '40'],
-        ['id_irs' => '4', 'id_jadwal' => '41'],];
+        ['id_irs' => '4', 'id_jadwal' => '41'],
+        ];
 
         foreach ($details as $detail){
             DetailIRS::create($detail);

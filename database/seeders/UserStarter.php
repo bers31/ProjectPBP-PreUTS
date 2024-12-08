@@ -10,11 +10,11 @@ class UserStarter extends Seeder
 {
     public function run(): void
     {
-        // User::create([
-        //     'email' => 'admin@example.com',
-        //     'password' => '12345', // Admin password
-        //     'role' => 'admin', // Assign the admin role
-        // ]);
+        User::create([
+            'email' => 'admin@example.com',
+            'password' => '12345', // Admin password
+            'role' => 'admin', // Assign the admin role
+        ]);
         
         User::create([
             'email' => 'bambang@lecturers.undip.ac.id',

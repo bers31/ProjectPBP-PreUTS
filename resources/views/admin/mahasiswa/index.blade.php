@@ -3,16 +3,28 @@
 
 <div class="flex flex-col flex-grow w-full">
     <!-- Header -->
-    <div class="flex items-center justify-between py-3 p-8 w-full">
-        <div class="font-bold text-lg md:text-xl pl-4 py-1">
+    <div class="flex items-center justify-between py-3 px-6 w-full">
+        <!-- Left-aligned Content -->
+        <div class="font-bold text-lg md:text-xl pl-2 py-1">
             Manage Mahasiswa
         </div>
-        <form action="{{ route('mahasiswa.create') }}" method="GET">
-            <button class="bg-blue-500 text-white font-semibold px-3 py-1 rounded hover:bg-blue-600 ml-12">
-                Tambah Mahasiswa
-            </button>
-        </form>
+        
+        <!-- Right-aligned Buttons -->
+        <div class="flex space-x-4">
+            <form action="{{ route('mahasiswa.create') }}" method="GET">
+                <button class="bg-blue-500 text-white font-semibold px-3 py-1 rounded hover:bg-blue-600">
+                    Tambah Mahasiswa
+                </button>
+            </form>
+            <form action="{{ route('mahasiswa.update.sksipk') }}" method="POST">
+                @csrf
+                <button class="bg-red-500 text-white font-semibold px-3 py-1 rounded hover:bg-red-600">
+                    Update SKS & IPK
+                </button>
+            </form>
+        </div>
     </div>
+    
 
     
     <div class="flex mr-7 w-full">
