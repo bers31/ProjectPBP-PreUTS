@@ -305,7 +305,7 @@ class JadwalController extends Controller
             return redirect()->back()->withErrors(['dosen_pengampu' => 'Invalid data format for dosen_pengampu.']);
         }
     
-        return redirect()->route('jadwal.index')->with('success', 'Jadwal and associated Dosen Pengampu updated successfully!');
+        return redirect()->route('jadwal.index')->with('success_update', 'Jadwal and associated Dosen Pengampu updated successfully!');
     }
     
     
@@ -322,7 +322,7 @@ class JadwalController extends Controller
             // Step 2: Delete the Jadwal record itself
             $jadwal->delete();
     
-            return redirect()->route('jadwal.index')->with('success', 'Jadwal and related records deleted successfully!');
+            return redirect()->route('jadwal.index')->with('success_delete', 'Jadwal and related records deleted successfully!');
         } catch (\Exception $e) {
             return redirect()->route('jadwal.index')->with('error', 'Failed to delete Jadwal: ' . $e->getMessage());
         }

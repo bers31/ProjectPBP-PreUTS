@@ -31,6 +31,7 @@
                         <th class="px-4 py-2">Kode Ruang</th>
                         <th class="px-4 py-2">Kuota</th>
                         <th class="px-4 py-2">Kode Tahun</th>
+                        <th class="px-4 py-2">Status</th>
                         <th class="px-4 py-2">Action</th>
                     </tr>
                 </thead>
@@ -52,6 +53,7 @@
                             <td class="border px-4 py-2">{{ $jadwal->ruangan->kode_ruang ?? '-' }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->kuota }}</td>
                             <td class="border px-4 py-2">{{ $jadwal->kode_tahun }} </td>
+                            <td class="border px-4 py-2">{{ $jadwal->status }} </td>
                             <td class="border px-4 py-2">
                                 <div class="flex flex-col items-center gap-2">
                                     <!-- Edit Button -->
@@ -59,10 +61,10 @@
                                         Edit
                                     </a>
                                     <!-- Delete Button -->
-                                    <form action="{{ route('jadwal.destroy', $jadwal) }}" method="POST" class="w-full">
+                                    <form id="deleteForm-{{ $jadwal->id_jadwal }}" action="{{ route('jadwal.destroy', $jadwal) }}" method="POST" class="w-full">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" onclick="return confirm('Are you sure you want to delete this schedule?')" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 w-full">
+                                        <button type="button" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 w-full delete-button">
                                             Delete
                                         </button>
                                     </form>
@@ -76,9 +78,89 @@
     </div>
 
 
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if(session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Jadwal Berhasil Ditambahkan!',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6' // Change this to your desired color (hex, rgb, etc.)
+                });
+            });
+        </script>
+    @endif
 
+    @if(session('success_update'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Jadwal Berhasil Diubah!',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+            });
+        </script>
+    @endif
+
+    @if(session('success_delete'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Jadwal Berhasil Dihapus!',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+            });
+        </script>
+    @endif
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Attach event listener to all delete buttons
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function (e) {
+                const form = this.closest('form'); // Get the parent form of the clicked button
+
+                Swal.fire({
+                    title: 'Hapus Jadwal',
+                    text: 'Yakin Menghapus Jadwal?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33', // Red color for the confirm button
+                    cancelButtonColor: '#3085d6', // Blue color for the cancel button
+                    confirmButtonText: 'Yessir!',
+                    cancelButtonText: 'OSTNIM (On Second Thought, Nahhh Im Good)',
+                    customClass: {
+                        cancelButton: 'custom-cancel-button', // Apply custom class
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit(); // Submit the form if confirmed
+                    }
+                });
+            });
+        });
+    });
+</script>
 
 <style>
+    /* Custom style for cancel button */
+    .custom-cancel-button {
+        white-space: normal; /* Enable wrapping */
+        width: 200px; /* Set a fixed width to trigger wrapping */
+        padding: 0.5em 1em; /* Adjust padding */
+        font-size: 0.9em; /* Adjust font size */
+        text-align: center; /* Center the text */
+    }
     .dataTables_length select {
         width: 3rem;
         border: 1px solid #ddd;

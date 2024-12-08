@@ -74,7 +74,7 @@ class DosenController extends Controller
 
         $dosen->update($validated);
 
-        return redirect()->route('dosen.index')->with('success', 'Dosen berhasil diubah!');
+        return redirect()->route('dosen.index')->with('success_update', 'Dosen berhasil diubah!');
     }
 
     /**
@@ -83,6 +83,6 @@ class DosenController extends Controller
     public function destroy(Dosen $dosen)
     {
         $dosen->delete();
-        return redirect()->route('dosen.index')->with('success', 'Dosen deleted successfully.');
+        return redirect()->route('dosen.index')->with('success_delete', 'Dosen deleted successfully.');
     }
 }
