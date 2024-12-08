@@ -9,7 +9,7 @@
                 KHS
             </div>
         </div>
-        <div id="history-khs-container">
+        <div id="history-khs-container" class="ml-12 mr-8 mb-16 border border-gray-300 rounded-xl  shadow-md hover:shadow-lg transition-shadow">
             <p>KHS content goes here...</p>
         </div>
         
@@ -129,3 +129,30 @@
         }
     </script>
 @include('footer')
+
+<!-- SWEET ALERT -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: "{{ session('success') }}",
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#3085d6'
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: "{{ session('error') }}",
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#3085d6'
+            });
+        @endif
+    });
+</script>

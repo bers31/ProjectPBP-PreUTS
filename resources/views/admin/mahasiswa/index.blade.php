@@ -25,8 +25,6 @@
         </div>
     </div>
     
-
-    
     <div class="flex mr-7 w-full">
         <div class="flex flex-col m-5 border-2 p-5 w-full border-gray-300 rounded-lg gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
             <div class="overflow-x-auto">
