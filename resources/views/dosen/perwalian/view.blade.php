@@ -51,7 +51,7 @@
         </div>
         <div class="flex px-2 gap-x-20">
           <div class="w-40 text-gray-600">SKS</div>
-          <div>2</div>
+          <div>{{$mahasiswa->sks}}</div>
         </div>
       </div>
     </div>

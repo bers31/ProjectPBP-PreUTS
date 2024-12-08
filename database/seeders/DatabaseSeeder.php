@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             // IRSDetailSeeder::class,
             DosenPengampuSeeder::class,
             TestSeeder::class,
+            JadwalNowSeeder::class,
             nDetailIrs::class,
             nKHSSeeder::class,
 
