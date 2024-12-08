@@ -45,7 +45,7 @@ class Dosen extends Model
         return $this->hasMany(DosenPengampu::class, 'nidn_dosen', 'nidn');
     }
 
-    public function jadwal(): HasManyThrough
+    public function jadwal()
     {
         return $this->hasManyThrough(Jadwal::class, DosenPengampu::class, 'nidn', 'id_jadwal', 'nidn', 'id_jadwal');
     }
