@@ -29,6 +29,7 @@
                     </div>
                 </div>
 
+               
                 <!-- Dosen Pengampu Input -->
                 <div id="selectedDosenContainer">
                     <div class="mb-4">
@@ -37,6 +38,9 @@
                         <div id="dosenList" class="max-h-40 overflow-y-auto border border-gray-300 rounded-lg bg-white p-2">
                             <!-- Dynamically populated -->
                         </div>
+                        @error('dosen_pengampu')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="mb-4 bg-gray-100 border border-gray-200 rounded-lg p-4">
@@ -402,12 +406,23 @@ document.addEventListener('DOMContentLoaded', function () {
         const jamMulaiValue = jamMulai.value;
         const jamSelesaiValue = jamSelesai.value;
         const kodeMkValue = kodeMkSelect.value; // Get selected mata kuliah
+        const selectedRuangOption = ruang.options[ruang.selectedIndex];
+        const kuotaValue = kuota.value; // Get the kuota value
+        const kapasitas = selectedRuangOption ? parseInt(selectedRuangOption.getAttribute('data-kapasitas'), 10) : 0;
+
+        console.log(kuotaValue, kapasitas);
 
         // Get selected dosen NIDNs
         const selectedDosenNidns = getSelectedDosenNidns(selectedDosenDisplay);
 
+        if (parseInt(kuotaValue, 10) > kapasitas) {
+            event.preventDefault();
+            alert("Kuota tidak boleh melebihi kapasitas ruang.");
+            return; // Stop form submission
+        }
+
         // Validate against existing schedules
-        const conflict = existingSchedules.some(schedule => {
+        const conflict1 = existingSchedules.some(schedule => {
             // Check if the same day and same mata kuliah
             if (schedule.hari === hariValue && schedule.kode_mk === kodeMkValue) {
                 // Check if time overlaps
@@ -429,9 +444,20 @@ document.addEventListener('DOMContentLoaded', function () {
             return false;
         });
 
-        if (conflict) {
+        const conflict2 = existingSchedules.some(schedule => {
+            return (
+                schedule.ruang === ruangValue && // Check same room
+                schedule.hari === hariValue && // Check same day
+                isTimeOverlap(schedule.jam_mulai, schedule.jam_selesai, jamMulaiValue, jamSelesaiValue) // Check time overlap
+            );
+        });
+
+        if (conflict1) {
             event.preventDefault(); // Prevent form submission
             alert("Jadwal bentrok! Dosen tidak boleh memiliki waktu yang sama dalam mata kuliah yang sama pada hari tersebut.");
+        } else if (conflict2){
+            event.preventDefault();
+            alert("Ruang di waktu yang sama sudah diisi oleh jadwal lain!")
         }
     });
 

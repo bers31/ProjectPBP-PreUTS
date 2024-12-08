@@ -24,7 +24,7 @@ class StoreMatKulRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'kode_mk' => 'required|string', // If it's an update, skip unique validation
+            'kode_mk' => 'required|string|max:30', // If it's an update, skip unique validation
             'nama_mk' => 'required|string|max:255',
             'semester' => 'required|int|min:1', // Ensure semester is a positive integer
             'sks' => 'required|int|min:1', // Ensure SKS is a positive integer
@@ -35,7 +35,7 @@ class StoreMatKulRequest extends FormRequest
 
         // For the store case, ensure 'kode_mk' is unique
         if ($this->isMethod('post')) {  // POST request (create)
-            $rules['kode_mk'] = 'required|string|unique:mata_kuliah';
+            $rules['kode_mk'] = 'required|string|unique:mata_kuliah|max:15';
         }
 
         return $rules;

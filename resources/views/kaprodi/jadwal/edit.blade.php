@@ -4,16 +4,6 @@
 
 <div class="flex flex-col flex-grow">
     <div class="flex items-center justify-center min-h-screen bg-gray-100">
-@if ($errors->any())
-    <div class="mb-4">
-        <ul class="text-red-500">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
         <div class="max-w-lg mx-auto bg-white border border-gray-200 rounded-lg shadow-md p-8">
             <h1 class="text-3xl font-semibold mb-6 text-gray-800">Edit Jadwal</h1>
             
@@ -50,6 +40,9 @@
                         <div id="dosenList" class="max-h-40 overflow-y-auto border border-gray-300 rounded-lg bg-white p-2">
                             <!-- Dynamically populated -->
                         </div>
+                        @error('dosen_pengampu')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="mb-4 bg-gray-100 border border-gray-200 rounded-lg p-4">
@@ -438,6 +431,23 @@ document.addEventListener('DOMContentLoaded', function () {
     // Tentang Cek Tidak Tabrakan
     // ==========================
 
+    function getSelectedDosenNidns(selectedDosenDisplay) {
+
+        const nidnArray = [];
+
+        // Get all list items from selectedDosenDisplay
+        const items = selectedDosenDisplay.querySelectorAll('li[data-nidn]');
+        items.forEach(item => {
+            const nidn = item.getAttribute('data-nidn'); // Get the value of data-nidn
+            // console.log(nidn);
+            if (nidn) {
+                nidnArray.push(nidn); // Add it to the array
+            }
+        });
+
+        return nidnArray; // Return the array of data-nidn values
+    }
+
 // Assuming you have the current schedule ID available in your script
 
 
@@ -446,15 +456,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const hariValue = hari.value;
         const jamMulaiValue = jamMulai.value;
         const jamSelesaiValue = jamSelesai.value;
-        const kuotaValue = kuota.value; // Get the kuota value
+        const kodeMkValue = kodeMK; // Get selected mata kuliah
+        const currentScheduleId = '{{ $jadwal->id_jadwal }}';
         const selectedRuangOption = ruang.options[ruang.selectedIndex];
+        const kuotaValue = kuota.value; // Get the kuota value
         const kapasitas = selectedRuangOption ? parseInt(selectedRuangOption.getAttribute('data-kapasitas'), 10) : 0;
 
-        console.log(selectedRuangOption);
-        console.log(kapasitas);
-
-
-        // Validate the schedule
+        // Get selected dosen NIDNs
+        const selectedDosenNidns = getSelectedDosenNidns(selectedDosenDisplay);
 
         if (parseInt(kuotaValue, 10) > kapasitas) {
             event.preventDefault();
@@ -462,11 +471,35 @@ document.addEventListener('DOMContentLoaded', function () {
             return; // Stop form submission
         }
 
+        // Validate against existing schedules
+        const conflict1 = existingSchedules.some(schedule => {
 
-        console.log("Checking conflict for:", jamMulaiValue, jamSelesaiValue);
+            if (String(schedule.id_jadwal) === String(currentScheduleId)) {
+                return false;
+            }
+            
+            // Check if the same day and same mata kuliah
+            if (schedule.hari === hariValue && schedule.kode_mk === kodeMkValue) {
+                // Check if time overlaps
+                const timeOverlap = isTimeOverlap(schedule.jam_mulai, schedule.jam_selesai, jamMulaiValue, jamSelesaiValue);
 
-        // Validate the schedule, excluding the current schedule
-        const conflict = existingSchedules.some(schedule => {
+                if (timeOverlap) {
+                    // Extract dosen NIDNs from the existing schedule
+                    const scheduleDosenNidns = schedule.dosen_pengampu.map(dp => dp.dosen.nidn);
+
+                    // Check if all dosen in the schedule match the selected dosen
+                    const allDosenMatch = scheduleDosenNidns.every(nidn => selectedDosenNidns.includes(nidn)) &&
+                                        selectedDosenNidns.every(nidn => scheduleDosenNidns.includes(nidn));
+
+                    if (allDosenMatch) {
+                        return true; // Conflict found
+                    }
+                }
+            }
+            return false;
+        });
+
+        const conflict2 = existingSchedules.some(schedule => {
             console.log(schedule.id_jadwal, currentScheduleId)
             return (
                 schedule.ruang === ruangValue && // Check same room
@@ -476,9 +509,12 @@ document.addEventListener('DOMContentLoaded', function () {
             );
         });
 
-        if (conflict) {
+        if (conflict1) {
+            event.preventDefault(); // Prevent form submission
+            alert("Jadwal bentrok! Dosen tidak boleh memiliki waktu yang sama dalam mata kuliah yang sama pada hari tersebut.");
+        } else if (conflict2){
             event.preventDefault();
-            alert("Jadwal bentrok! Ruang sudah digunakan pada waktu tersebut.");
+            alert("Ruang di waktu yang sama sudah diisi oleh jadwal lain!")
         }
     });
 

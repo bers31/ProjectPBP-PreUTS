@@ -96,7 +96,7 @@ class MataKuliahController extends Controller
     
         // Redirect back to the index with a success message
         return redirect()->route('matkul.index')
-                         ->with('success', 'Matakuliah berhasil diupdate!');
+                         ->with('success_update', 'Matakuliah berhasil diupdate!');
     }
     
 
@@ -110,7 +110,7 @@ class MataKuliahController extends Controller
     
         // Redirect back with a success message
         return redirect()->route('matkul.index')
-                         ->with('success', 'Matakuliah has been deleted successfully!');
+                         ->with('success_delete', 'Matakuliah has been deleted successfully!');
     }
     
 }
