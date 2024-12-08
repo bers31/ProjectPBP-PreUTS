@@ -11,7 +11,7 @@ class KHS extends Model
     protected $table = 'khs';
     public $incrementing = false;
     protected $primaryKey = ['nim','kode_mk','semester'];
-    protected $fillable = ['id_irs', 'id_jadwal'];
+    protected $fillable = ['nim','kode_mk','semester','nilai'];
 
     protected function setKeysForSaveQuery($query)
     {

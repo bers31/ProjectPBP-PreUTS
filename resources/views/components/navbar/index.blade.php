@@ -40,7 +40,7 @@
 
     @if(Auth::user()->role === "dosen")
       <x-navbar.list href="{{ route('dosen.perwalian') }}">Perwalian</x-navbar.list>
-      <x-navbar.list href="{{ route('dosen.input_nilai', Auth::user()->dosen->nidn) }}">Input Nilai</x-navbar.list>
+      <x-navbar.list href="{{ route('dosen.input_nilai') }}">Input Nilai</x-navbar.list>
       @isset(Auth::user()->dosen->dekan)
         @if (Route::is('dekan.dashboard'))
           <x-navbar.list href="{{ route('dosen.dashboard') }}">Mode Dosen</x-navbar.list>
@@ -111,7 +111,7 @@
 
     @if(Auth::user()->role === "dosen")
       <x-navbar.m-list href="{{ route('dosen.perwalian') }}">Perwalian</x-navbar.m-list>
-      <x-navbar.m-list href="{{ route('dosen.input_nilai', Auth::user()->dosen->nidn) }}">Input Nilai</x-navbar.m-list>
+      <x-navbar.m-list href="{{ route('dosen.input_nilai') }}">Input Nilai</x-navbar.m-list>
     @endif
 
     @if (Auth::user()->role === "admin")

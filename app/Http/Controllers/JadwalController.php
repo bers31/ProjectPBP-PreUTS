@@ -19,6 +19,35 @@ class JadwalController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     public function apiJadwal()
+     {
+         $today = now()->dayOfWeek; // Hari saat ini
+         $currentTime = now()->format('H:i:s'); // Jam saat ini
+     
+         $jadwals = Jadwal::with('dosen_pengampu')
+             ->orderByRaw("
+                 CASE 
+                     WHEN hari >= ? THEN 0
+                     ELSE 1
+                 END,
+                 hari ASC, jam_mulai ASC
+             ", [$today])
+             ->get()
+             ->map(function ($jadwal) {
+                 return [
+                     'hari' => $jadwal->hari,
+                     'jam_mulai' => $jadwal->jam_mulai,
+                     'jam_selesai' => $jadwal->jam_selesai,
+                     'kode_kelas' => $jadwal->kode_kelas,
+                     'nama_mk' => $jadwal->mataKuliah->nama_mk ,
+                     'ruang' => $jadwal->ruang
+                 ];
+             });
+        return response()->json($jadwals);
+     }
+     
+     
     public function jadwalMengajar()
     {
         // Get authenticated user's NIDN (assuming the user is a Dosen)

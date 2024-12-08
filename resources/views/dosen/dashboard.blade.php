@@ -42,12 +42,7 @@
                     <p class="text-lg text-gray-600">Departemen {{Auth::user()->dosen->departemen->nama}}</p>                                <!-- Prodi -->
                     <p class="text-lg text-blue-500">{{ Auth::user()->dosen->email }}</p>           <!-- Email -->
                 </div>
-                <!-- Biodata -->
-                <div class="ml-auto mt-4 lg:mt-0 flex justify-center lg:block">
-                    <button class="px-4 py-2 border-2 rounded-lg text-black font-semibold text-sm lg:text-lg hover:bg-[#f0f0f0]">
-                        Biodata
-                    </button>
-                </div>
+
             </div>
 
             <!-- Tanggal Penting Section -->
@@ -77,7 +72,7 @@
                 </div>
                 <!-- Registrasi -->
                 <div class="flex items-center justify-center p-8 md:p-4 lg:p-8 border-2 border-[#80747475] hover:bg-[#f0f0f0] rounded-xl gap-3 shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
-                    <a href="{{ route('dosen.kuliahonline') }}" class="flex items-center gap-5 text-center md:flex-col lg:flex-row no-underline">
+                    <a href="{{ url('https://kulon2.undip.ac.id/') }}" class="flex items-center gap-5 text-center md:flex-col lg:flex-row no-underline" target="_blank">
                         <div class="flex items-center gap-5 p-1 text-center md:flex-co lg:flex-row">
                             <img src="\img\registrasi.svg" alt="registrasi" class="w-10 md:w-8 lg:w-10">
                             <p class="font-semibold text-lg md:text-sm lg:text-lg">
@@ -93,6 +88,21 @@
                 <div class="font-bold text-lg lg:text-xl">
                     Jadwal Mengajar Hari ini
                 </div>
+    
+                    <table class="jadwal-table">
+                        <thead>
+                            <tr>
+                                <th>Nama MK</th>
+                                <th>Ruangan</th>
+                                <th>Kelas</th>
+                                <th>Hari</th>
+                                <th>Jam</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jadwal-body">
+                            <!-- Data diisi dengan AJAX atau PHP -->
+                        </tbody>
+                    </table>
             </div>
         
             <!-- Prestasi Akademik & Informasi Section -->
@@ -112,4 +122,68 @@
             </div>
         </div>
     </div>      
+    <style>
+        .jadwal-container {
+            width: 100%;
+            max-width: 400px; /* Ukuran tabel kecil */
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .jadwal-header {
+            background-color: #f4f4f4;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .jadwal-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .jadwal-table th, .jadwal-table td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .jadwal-table tbody {
+            display: block;
+            max-height: 200px; /* Scroll vertikal */
+            overflow-y: auto;
+        }
+
+        .jadwal-table thead, .jadwal-table tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        .jadwal-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/api/jadwal') // API untuk mengambil jadwal
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('jadwal-body');
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.nama_mk}</td>
+                        <td>${item.ruang}</td>
+                        <td>${item.kode_kelas}</td>
+                        <td>${item.hari}</td>
+                        <td>${item.jam_mulai} - ${item.jam_selesai} </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching jadwal:', error));
+    });</script>
 @include('footer')
