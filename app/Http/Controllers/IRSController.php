@@ -25,6 +25,11 @@ class IRSController extends Controller
         // Menampilkan matkul sesuai semester mahasiswa
         $semesterMHS = Mahasiswa::where('nim', $nim)->value('semester');
         $irs = IRS::where('nim_mahasiswa', $nim)->where('semester',$semesterMHS)->first();
+        
+        // Handle the case where IRS is null
+        if ($irs === null) {
+            return redirect()->back()->with('error', 'Registrasi Terlebih dahulu');
+        }
 
         // Get all Mata Kuliah for the semester
         $mataKuliah = MataKuliah::where('semester', $semesterMHS)->get();
@@ -121,9 +126,6 @@ class IRSController extends Controller
             return $kelas;
         });
 
-        // dd($kuotaPerKelasWithKuotaSisa);
-
-        
         $jadwal = Jadwal::where('id_jadwal', $id_jadwal)->first();
 
         $semesterAktor = IRS::where('id_irs', $id_irs)->value('semester');
@@ -145,52 +147,8 @@ class IRSController extends Controller
                     return redirect()->back()->with('error', 'Jatah Tambahan kelas ini sudah penuh!');
                 }
                 // dd($kelas->kode_kelas);
-            }
-
-            
+            }  
         }
-
-
-        // $kuotaSisa = 
-
-        // dd($kuotaPerKelasWithPercentage);
-        
-        // $kuotaWajib = (int) ($totalMHSWajib / $totalKelasMK);
-
-        // $kuotaSisa = (int) ($kuotaWajib - $kuotaKelas);
-
-
-
-        // //  ambil data jadwal dari detail_irs
-        // $getJadwal = DetailIRS::where('id_jadwal', $id_jadwal)->value('id_jadwal');
-
-        // // ambil MK dari jadwal
-        // $getKodeMK = Jadwal::where('id_jadwal', $getJadwal)->value('kode_mk');
-
-        // // Dapatkan semester dari kode_mk
-        // $getSemester = MataKuliah::where('kode_mk', $getKodeMK)->value('semester');
-
-        // // Menghitung berapa mahasiswa semester 1 yang wajib mendapatkan mk tsbt
-        // $countMahasiswa = Mahasiswa::where('semester', $getSemester)->count();
-
-        // // Dapatkan kode_tahun dari irs
-        // $getTahun = IRS::where('id_irs', $id_irs)->value('kode_tahun');
-
-        // // Dapatkan banyaknya kelas pada mk tersebut pada jadwal
-        // $countKelas = Jadwal::where('kode_mk', $getKodeMK)
-        //                     ->where('kode_tahun', $getTahun)
-        //                     ->count();
-
-        // dd($countKelas);
-
-        // // Membagi Mahasiswa wajib ambil matkul pada tiap kelas
-        // // $totalMHSWajib = $countMahasiswa / $countKelas;
-        // // dd($totalMHSWajib);
-
-        // // Dapatkan semester mahasiswa
-        // // $getNIM = IRS::where('id_irs', $id_irs)->value('nim_mahasiswa');
-
-        // // Kuota kelas untuk Mahasiswa tidak wajib
         
         // Handle kuota pengambilan kelas
         // Hitung jumlah id_jadwal di DetailIRS
@@ -203,6 +161,8 @@ class IRSController extends Controller
         if ($jumlahPengguna >= $kuota) {
             return redirect()->back()->with('error', 'Jadwal sudah penuh!');
         }
+
+
 
         // Dapatkan informasi jadwal yang baru akan ditambahkan
         $newJadwal = Jadwal::findOrFail($id_jadwal);
@@ -258,6 +218,36 @@ class IRSController extends Controller
             return redirect()->back()->with('error', 
                 "Jadwal bentrok dengan mata kuliah {$existingMatkul->nama_mk} pada hari {$jadwalBentrok->jadwal->hari}! "
             );
+        }        
+        
+        
+        // Sesuaikan sks mahasiswa
+        // Ambil IPK terkini mahasiswa
+        $getNIM = IRS::where('id_irs', $id_irs)->value('nim_mahasiswa');
+        $getIPK = Mahasiswa::where('nim', $getNIM)->value('ipk');
+
+        $getSKS = MataKuliah::where('kode_mk', $kode_mk)->value('sks');
+
+        if ($getIPK < 2.00) {
+            $jatahSKS = 18;
+        } elseif ($getIPK >= 2.00 && $getIPK <= 2.49) {
+            $jatahSKS = 20;
+        } elseif ($getIPK >= 2.50 && $getIPK <= 2.99) {
+            $jatahSKS = 22;
+        } elseif ($getIPK >= 3.00) {
+            $jatahSKS = 24;
+        }
+
+        // ambil total sks yang sudah ada dalam detail IRS
+        $sksTerambil = DetailIrs::where('id_irs', $id_irs)->pluck('id_jadwal');
+
+        // Ambil kode_mk dan sks dari tabel Jadwal dan MataKuliah
+        $totalSKS = Jadwal::whereIn('id_jadwal', $sksTerambil)
+            ->join('mata_kuliah', 'jadwal.kode_mk', '=', 'mata_kuliah.kode_mk')
+            ->sum('mata_kuliah.sks');
+
+        if (($totalSKS + $getSKS) > $jatahSKS) {
+            return redirect()->back()->with('error', 'SKS tidak mencukupi');
         }
     
         // Tambahkan jadwal ke detail_irs
@@ -268,7 +258,6 @@ class IRSController extends Controller
     
         return redirect()->route('mahasiswa.irs_mhs')->with('success', 'Jadwal berhasil ditambahkan!');
     }
-
 
     public function delete(Request $request)
     {   
@@ -289,80 +278,6 @@ class IRSController extends Controller
         // Redirect back with a success message
         return redirect()->route('mahasiswa.irs_mhs')->with('success', 'Jadwal berhasil dihapus!');
     }
-    
-    // public function updateMK(Request $request)
-    // {
-    //     // Validasi input
-    //     $validated = $request->validate([
-    //         'action' => 'required|in:add,remove',
-    //         'selectedMK' => 'required|array',
-    //         'selectedMK.*.id' => 'exists:mata_kuliah,kode_mk',
-    //     ]);
-    
-    //     // Ambil jadwal tambahan yang dipilih
-    //     $selectedMKIds = collect($validated['selectedMK'])->pluck('id')->toArray();
-    //     $selectedMKs = MataKuliah::whereIn('kode_mk', $selectedMKIds)->get();
-    //     // $selectedJadwals = Jadwal::whereIn('id_jadwal', $selectedJadwalIds)->get();
-    
-    //     // Ambil jadwal yang sudah ada di session
-    //     $existingMKs = session('selectedMKs', collect([]));
-    
-    //     if ($validated['action'] === 'add') {
-    //         // Gabungkan dengan jadwal yang sudah ada di session sebelumnya
-    //         $mergedMKs = $existingMKs->merge($selectedMKs);
-    //         $message = 'Jadwal berhasil ditambahkan!';
-    //     } else {
-    //         // Hapus jadwal yang dipilih
-    //         $mergedMKs = $existingMKs->reject(function ($mataKuliah) use ($selectedMKIds) {
-    //             return in_array($mataKuliah->kode_mk, $selectedMKIds);
-    //         });
-    //         $message = 'Jadwal berhasil dihapus!';
-    //     }
-    
-    //     // Simpan jadwal tambahan ke session
-    //     session()->put('selectedMKs', $mergedMKs);
-    
-    //     // Redirect dengan flash message
-    //     return redirect()->route('mahasiswa.irs_mhs')->with('success', $message);
-    // }
-
-
-
-    // public function updateMK(Request $request)
-    // {
-    //     // Validasi input
-    //     $validated = $request->validate([
-    //         'action' => 'required|in:add,remove',
-    //         'selectedMK' => 'required|array',
-    //         'selectedMK.*.id' => 'exists:mata_kuliah,kode_mk',
-    //     ]);
-
-    //     // Ambil data mata kuliah yang dipilih
-    //     $selectedMKIds = collect($validated['selectedMK'])->pluck('id')->toArray();
-    //     $selectedMKs = MataKuliah::whereIn('kode_mk', $selectedMKIds)->get();
-
-    //     // Ambil data mata kuliah yang disimpan di cookie
-    //     $existingMKs = json_decode(Cookie::get('selectedMKs', '[]'), true);
-
-    //     if ($validated['action'] === 'add') {
-    //         // Gabungkan data baru dengan data lama
-    //         $mergedMKs = collect($existingMKs)->merge($selectedMKs)->unique('kode_mk')->values();
-    //         $message = 'Mata kuliah berhasil ditambahkan!';
-    //     } else {
-    //         // Hapus mata kuliah yang dipilih
-    //         $mergedMKs = collect($existingMKs)->reject(function ($mataKuliah) use ($selectedMKIds) {
-    //             return in_array($mataKuliah['kode_mk'], $selectedMKIds);
-    //         });
-    //         $message = 'Mata kuliah berhasil dihapus!';
-    //     }
-
-    //     // Simpan data ke cookie
-    //     Cookie::queue('selectedMKs', $mergedMKs->toJson(), 1440); // Simpan selama 1 hari (1440 menit)
-
-    //     // Redirect dengan flash message
-    //     return redirect()->route('mahasiswa.irs_mhs')->with('success', $message);
-    // }    
-
 
     public function updateMK(Request $request)
     {

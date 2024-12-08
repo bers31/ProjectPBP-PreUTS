@@ -63,12 +63,20 @@
                                             {{ $jadwal->jam_mulai }} - {{ $jadwal->jam_selesai }}
                                         </td>
                                         <td class="px-4 py-3 text-center border">{{ $jadwal->ruang }}</td>
-                                        <td class="px-4 py-3 border">{{ $jadwal->dosen }}</td>
+                                        <td class="px-4 py-3 border">
+                                            @if($jadwal->dosen_pengampu->isNotEmpty())
+                                                {{ $jadwal->dosen_pengampu->map(function($dosenPengampu) {
+                                                    return $dosenPengampu->dosen->nama;
+                                                })->implode(', ') }}
+                                            @else
+                                                Tidak ada dosen
+                                            @endif
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
                                         <td colspan="8" class="px-4 py-3 text-center text-gray-500 border">
-                                            Tidak ada jadwal 
+                                            Tidak ada jadwal
                                         </td>
                                     </tr>
                                 @endforelse

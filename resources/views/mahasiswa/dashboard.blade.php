@@ -117,7 +117,10 @@
                         <div class="text-center text-sm lg:text-lg">
                             <p>Tahun Akademik</p>
                             <p class="font-normal">
-                                {{-- {{ Auth::user()->mahasiswa->irs()->latest()->first()->tahun->tahun_akademik }} --}}
+                                @php
+                                    $tahunAkademikAktif = \App\Models\Tahun::where('status', 'aktif')->first();
+                                @endphp
+                                {{ $tahunAkademikAktif ? $tahunAkademikAktif->tahun_akademik : 'Tidak ada tahun akademik aktif' }}
                                 ({{Auth::user()->mahasiswa->semester % 2 != 0 ? 'Ganjil' : 'Genap'}})
                             </p> 
                         </div>
