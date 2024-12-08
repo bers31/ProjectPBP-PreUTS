@@ -29,6 +29,7 @@
                     </div>
                 </div>
 
+               
                 <!-- Dosen Pengampu Input -->
                 <div id="selectedDosenContainer">
                     <div class="mb-4">
@@ -37,6 +38,9 @@
                         <div id="dosenList" class="max-h-40 overflow-y-auto border border-gray-300 rounded-lg bg-white p-2">
                             <!-- Dynamically populated -->
                         </div>
+                        @error('dosen_pengampu')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="mb-4 bg-gray-100 border border-gray-200 rounded-lg p-4">
@@ -401,15 +405,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const hariValue = hari.value;
         const jamMulaiValue = jamMulai.value;
         const jamSelesaiValue = jamSelesai.value;
-        const kuotaValue = kuota.value; // Get the kuota value
+        const kodeMkValue = kodeMkSelect.value; // Get selected mata kuliah
         const selectedRuangOption = ruang.options[ruang.selectedIndex];
+        const kuotaValue = kuota.value; // Get the kuota value
         const kapasitas = selectedRuangOption ? parseInt(selectedRuangOption.getAttribute('data-kapasitas'), 10) : 0;
 
-        console.log(selectedRuangOption);
-        console.log(kapasitas);
+        console.log(kuotaValue, kapasitas);
 
-
-        // Validate the schedule
+        // Get selected dosen NIDNs
+        const selectedDosenNidns = getSelectedDosenNidns(selectedDosenDisplay);
 
         if (parseInt(kuotaValue, 10) > kapasitas) {
             event.preventDefault();
@@ -417,7 +421,30 @@ document.addEventListener('DOMContentLoaded', function () {
             return; // Stop form submission
         }
 
-        const conflict = existingSchedules.some(schedule => {
+        // Validate against existing schedules
+        const conflict1 = existingSchedules.some(schedule => {
+            // Check if the same day and same mata kuliah
+            if (schedule.hari === hariValue && schedule.kode_mk === kodeMkValue) {
+                // Check if time overlaps
+                const timeOverlap = isTimeOverlap(schedule.jam_mulai, schedule.jam_selesai, jamMulaiValue, jamSelesaiValue);
+
+                if (timeOverlap) {
+                    // Extract dosen NIDNs from the existing schedule
+                    const scheduleDosenNidns = schedule.dosen_pengampu.map(dp => dp.dosen.nidn);
+
+                    // Check if all dosen in the schedule match the selected dosen
+                    const allDosenMatch = scheduleDosenNidns.every(nidn => selectedDosenNidns.includes(nidn)) &&
+                                        selectedDosenNidns.every(nidn => scheduleDosenNidns.includes(nidn));
+
+                    if (allDosenMatch) {
+                        return true; // Conflict found
+                    }
+                }
+            }
+            return false;
+        });
+
+        const conflict2 = existingSchedules.some(schedule => {
             return (
                 schedule.ruang === ruangValue && // Check same room
                 schedule.hari === hariValue && // Check same day
@@ -425,9 +452,12 @@ document.addEventListener('DOMContentLoaded', function () {
             );
         });
 
-        if (conflict) {
+        if (conflict1) {
+            event.preventDefault(); // Prevent form submission
+            alert("Jadwal bentrok! Dosen tidak boleh memiliki waktu yang sama dalam mata kuliah yang sama pada hari tersebut.");
+        } else if (conflict2){
             event.preventDefault();
-            alert("Jadwal bentrok! Ruang sudah digunakan pada waktu tersebut.");
+            alert("Ruang di waktu yang sama sudah diisi oleh jadwal lain!")
         }
     });
 
@@ -435,6 +465,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function isTimeOverlap(startA, endA, startB, endB) {
         return (startA < endB && startB < endA);
     }
+
 
     // console.log(getSelectedDosenNidns(selectedDosenDisplay));
 

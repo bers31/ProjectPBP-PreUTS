@@ -46,7 +46,7 @@
                                     <form action="{{ route('dosen.destroy', $row) }}" method="POST" class="inline-block">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" onclick="return confirm('Are you sure?')" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 w-full">
+                                        <button type="submit" onclick="return confirm('Are you sure?')" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 w-full delete-button">
                                             Delete
                                         </button>
                                     </form>
@@ -58,6 +58,77 @@
             </table>
         </div>
     </div>
+
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if(session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Dosen Berhasil Ditambahkan!',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6' // Change this to your desired color (hex, rgb, etc.)
+                });
+            });
+        </script>
+    @endif
+
+    @if(session('success_update'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Dosen Berhasil Diubah!',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+            });
+        </script>
+    @endif
+
+    @if(session('success_delete'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Dosen Berhasil Dihapus!',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+            });
+        </script>
+    @endif
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Attach event listener to all delete buttons
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                const form = this.closest('form'); // Get the parent form of the clicked button
+
+                Swal.fire({
+                    title: 'Hapus Dosen',
+                    text: 'Yakin Menghapus Dosen?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33', // Red color for the confirm button
+                    cancelButtonColor: '#3085d6', // Blue color for the cancel button
+                    confirmButtonText: 'Yessir!',
+                    cancelButtonText: 'Naahhh.',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit(); // Submit the form if confirmed
+                    }
+                });
+            });
+        });
+    });
+</script>
 
 @include('../footer')
 

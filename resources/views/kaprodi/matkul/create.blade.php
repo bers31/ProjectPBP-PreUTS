@@ -12,13 +12,13 @@
 
                 <!-- NIM Input -->
                 <div class="mb-4">
-                    <label for="kodemk" class="block mb-2 text-sm font-medium text-gray-900">Kode Matakuliah</label>
+                    <label for="kode_mk" class="block mb-2 text-sm font-medium text-gray-900">Kode Matakuliah</label>
                     <input 
                         type="text" 
                         name="kode_mk" 
-                        id="kodemk" 
+                        id="kode_mk" 
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        value="{{ old('kodemk') }}">
+                        value="{{ old('kode_mk') }}">
                     @error('kode_mk')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
@@ -26,14 +26,14 @@
 
                 <!-- Nama Input -->
                 <div class="mb-4">
-                    <label for="nama" class="block mb-2 text-sm font-medium text-gray-900">Nama Matakuliah</label>
+                    <label for="nama_mk" class="block mb-2 text-sm font-medium text-gray-900">Nama Matakuliah</label>
                     <input 
                         type="text" 
                         name="nama_mk" 
-                        id="nama" 
+                        id="nama_mk" 
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        value="{{ old('nama') }}">
-                    @error('nama')
+                        value="{{ old('nama_mk') }}">
+                    @error('nama_mk')
                         <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                     @enderror
                 </div>
