@@ -88,8 +88,8 @@
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prodi</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Batas SKS</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKS Diajukan</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Batas SKS</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tahun Masuk</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status IRS</th>
                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
@@ -276,8 +276,8 @@
                             mahasiswa.nama,
                             mahasiswa.prodi.nama,
                             mahasiswa.status,
-                            "",
-                            "",
+                            mahasiswa.total_sks_diajukan,
+                            mahasiswa.batas_sks,
                             mahasiswa.tahun_masuk,
                             irsStatus,
                             '<div class="flex space-x-2">' +
@@ -432,8 +432,8 @@
                                         mahasiswa.nama,
                                         mahasiswa.prodi.nama,
                                         mahasiswa.status,
-                                        "",
-                                        "",
+                                        mahasiswa.total_sks_diajukan,
+                                        mahasiswa.batas_sks,
                                         mahasiswa.tahun_masuk,
                                         irsStatus,
                                         renderActionButtons(mahasiswa, result.tahun_ajaran_aktif.kode_tahun)

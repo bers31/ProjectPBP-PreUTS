@@ -20,6 +20,8 @@ class Mahasiswa extends Model
         'email',
         'kode_prodi',
         'doswal',
+        'ipk',
+        'sks'
     ];
     
     public function user() 
@@ -43,6 +45,11 @@ class Mahasiswa extends Model
     public function irs()
     {
         return $this->hasMany(IRS::class, 'nim_mahasiswa', 'nim');
+    }
+
+    public function khs()
+    {
+        return $this->hasMany(KHS::class, 'nim', 'nim');
     }
 
     public function detailIrs()

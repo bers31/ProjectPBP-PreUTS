@@ -27,7 +27,11 @@ class DatabaseSeeder extends Seeder
             // IRSSeeder::class,
             // IRSDetailSeeder::class,
             DosenPengampuSeeder::class,
-            TestSeeder::class
+            TestSeeder::class,
+            JadwalNowSeeder::class,
+            nDetailIrs::class,
+            nKHSSeeder::class,
+
         ]);
     }
 }

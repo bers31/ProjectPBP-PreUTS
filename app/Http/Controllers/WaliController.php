@@ -78,26 +78,54 @@ class WaliController extends Controller
         ];
         // Query untuk data mahasiswa dengan filter
         $mahasiswaList = $user->dosen->mahasiswa()
-        ->when($prodi, function ($query) use ($prodi) {
-            $query->where('kode_prodi', $prodi);
-        })
-        ->when($tahun, function ($query) use ($tahun) {
-            $query->where('tahun_masuk', $tahun);
-        })
-        ->when($status !== 'non_aktif', function ($query) use ($status, $tahunAjaranAktif) {
-            $query->whereHas('irs', function ($query) use ($status, $tahunAjaranAktif) {
-                $query->where('kode_tahun', $tahunAjaranAktif->kode_tahun)
-                    ->when($status, function ($query) use ($status) {
-                        $query->where('status', $status);
-                    });
+            ->when($prodi, function ($query) use ($prodi) {
+                $query->where('kode_prodi', $prodi);
+            })
+            ->when($tahun, function ($query) use ($tahun) {
+                $query->where('tahun_masuk', $tahun);
+            })
+            ->when($status !== 'non_aktif', function ($query) use ($status, $tahunAjaranAktif) {
+                $query->whereHas('irs', function ($query) use ($status, $tahunAjaranAktif) {
+                    $query->where('kode_tahun', $tahunAjaranAktif->kode_tahun)
+                        ->when($status, function ($query) use ($status) {
+                            $query->where('status', $status);
+                        });
+                });
+            })
+            ->when($status === 'non_aktif', function ($query) use ($non_aktif) {
+                $query->whereIn('status', $non_aktif);
+            })
+            ->with(['prodi', 'irs' => function ($query) use ($tahunAjaranAktif) {
+                // Memastikan hanya mengambil IRS berdasarkan tahun ajaran aktif
+                $query->where('kode_tahun', $tahunAjaranAktif->kode_tahun);
+            }])
+            ->get()
+            ->map(function ($mahasiswa) use ($tahunAjaranAktif) {
+                // Menghitung total SKS yang diambil mahasiswa pada IRS
+                $totalSks = $mahasiswa->irs->flatMap(function ($irs) {
+                    return $irs->detailIrs;
+                })->sum(function ($detailIrs) {
+                    return $detailIrs->jadwal->mataKuliah->sks ?? 0; // Mengambil SKS dari jadwal yang terkait dengan detail IRS
+                });
+
+                // Mengambil IPS semester sebelumnya atau menggunakan IPK sebagai fallback
+                $semesterSebelumnya = $mahasiswa->semester - 1;
+                $ipsSebelumnya = $mahasiswa->ipk; // Jika IPS tidak ditemukan, menggunakan IPK mahasiswa
+                if ($ipsSebelumnya < 2.00 && $mahasiswa->semester != 1) {
+                    $jatahSKS = 18;
+                } elseif ($ipsSebelumnya >= 2.00 && $ipsSebelumnya <= 2.49) {
+                    $jatahSKS = 20;
+                } elseif ($ipsSebelumnya >= 2.50 && $ipsSebelumnya <= 2.99) {
+                    $jatahSKS = 22;
+                } elseif ($ipsSebelumnya >= 3.00 || $mahasiswa->semester == 1) {
+                    $jatahSKS = 24;
+                }
+                // Menambahkan data SKS dan IPS sebelumnya pada objek mahasiswa
+                $mahasiswa->total_sks_diajukan = $totalSks;
+                $mahasiswa->batas_sks = $jatahSKS;
+
+                return $mahasiswa;
             });
-        })
-        ->when($status === 'non_aktif', function ($query) use ($non_aktif) {
-            // If status is 'non_aktif', we don't apply the `whereHas` for 'irs'
-            $query->whereIn('status', $non_aktif);
-        })
-        ->with(['prodi', 'irs']) // Fetching only 'prodi' when 'non_aktif'
-        ->get();
     
         return response()->json([
             'mahasiswa' => $mahasiswaList,
