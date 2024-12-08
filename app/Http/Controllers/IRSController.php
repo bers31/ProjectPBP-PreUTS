@@ -220,7 +220,6 @@ class IRSController extends Controller
             );
         }        
         
-        
         // Sesuaikan sks mahasiswa
         // Ambil IPK terkini mahasiswa
         $getNIM = IRS::where('id_irs', $id_irs)->value('nim_mahasiswa');
@@ -228,13 +227,13 @@ class IRSController extends Controller
 
         $getSKS = MataKuliah::where('kode_mk', $kode_mk)->value('sks');
 
-        if ($getIPK < 2.00) {
+        if ($getIPK < 2.00 && $semesterAktor != 1) {
             $jatahSKS = 18;
         } elseif ($getIPK >= 2.00 && $getIPK <= 2.49) {
             $jatahSKS = 20;
         } elseif ($getIPK >= 2.50 && $getIPK <= 2.99) {
             $jatahSKS = 22;
-        } elseif ($getIPK >= 3.00) {
+        } elseif ($getIPK >= 3.00 || $semesterAktor == 1) {
             $jatahSKS = 24;
         }
 
