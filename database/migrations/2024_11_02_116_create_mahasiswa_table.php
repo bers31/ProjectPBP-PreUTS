@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->integer('semester')->default(1);
             $table->integer('sks')->default(0);
-            $table->decimal('ipk',2,2)->default(0);
+            $table->decimal('ipk', 4, 2)->default(0);
             $table->string('kode_prodi');
             $table->foreign('kode_prodi')->references('kode_prodi')->on('prodi');
             $table->string('doswal');

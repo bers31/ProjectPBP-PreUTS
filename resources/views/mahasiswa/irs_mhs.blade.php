@@ -10,7 +10,6 @@
             </div>
         </div>
 
-
         <!-- Content -->
         <div class="flex py-3 p-8">
             <!-- SideBar Information -->
@@ -1431,6 +1430,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Filter hasil pencarian saat mengetik
+    searchInput.addEventListener("input", () => {
+        const searchValue = searchInput.value.toLowerCase();
+        document.querySelectorAll(".add-mk").forEach((item) => {
+            const text = item.textContent.toLowerCase();
+            if (text.includes(searchValue)) {
+                item.classList.remove("hidden");
+            } else {
+                item.classList.add("hidden");
+            }
+        });
+    });
+
     // Saat klik item di dropdown
     document.querySelectorAll(".add-mk").forEach((item) => {
         item.addEventListener("click", (event) => {
@@ -1439,6 +1451,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const name = item.textContent.trim();
             // Masukkan teks ke input
             searchInput.value = name;
+            // Sembunyikan dropdown
+            dropdown.classList.add("hidden");
         });
     });
 
