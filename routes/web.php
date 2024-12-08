@@ -11,6 +11,7 @@ use App\Http\Controllers\historyIRSController;
 use App\Http\Controllers\InputNilaiController;
 use App\Http\Controllers\KuliahOnlineController;
 use App\Http\Controllers\IRSController;
+use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\UserController;
@@ -20,7 +21,6 @@ use App\Http\Controllers\RuangController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\PDFController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::get('/', function () {
     return view('welcome');
