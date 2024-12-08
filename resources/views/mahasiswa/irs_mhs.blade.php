@@ -1341,7 +1341,7 @@
                                 <h3 class="text-lg font-semibold text-gray-800 border-b pb-2">List Mata Kuliah </h3>
                                 <p>SKS Terpilih = {{ $totalSKS }}</p>
                             </div>
-                            <ul class="mt-4 space-y-3">
+                            <ul class="mt-4 space-y-3 max-h-96 overflow-y-auto">
                                 @foreach ($detailIrs as $detail)
                                     <li class="flex justify-between items-center bg-gray-100 p-3 rounded-lg shadow-sm hover:bg-gray-200">
                                         <div>

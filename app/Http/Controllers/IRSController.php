@@ -25,9 +25,19 @@ class IRSController extends Controller
         // Menampilkan matkul sesuai semester mahasiswa
         $semesterMHS = Mahasiswa::where('nim', $nim)->value('semester');
         $irs = IRS::where('nim_mahasiswa', $nim)->where('semester',$semesterMHS)->first();
-        
-        // Handle the case where IRS is null
-        if ($irs === null) {
+
+        // Ambil status mahasiswa
+        $status = Mahasiswa::where('nim', $nim)->value('status');
+
+        // check status setujui
+        $statusIRS = $irs->status;
+        // Jika sudah disetujui irs tidak bisa diakses
+        if ($statusIRS === 'sudah_disetujui') {
+            return redirect()->back()->with('error', 'IRS Sudah Disetujui');
+        }
+
+        // Jika belum melakukan registrasi dan status belum aktif
+        if ($irs === null && $status != 'aktif') {
             return redirect()->back()->with('error', 'Registrasi Terlebih dahulu');
         }
 
@@ -35,20 +45,33 @@ class IRSController extends Controller
         $mataKuliah = MataKuliah::where('semester', $semesterMHS)->get();
     
         // Get all Jadwal based on Mata Kuliah kode_mk
-        $jadwals = Jadwal::whereIn('kode_mk', $mataKuliah->pluck('kode_mk'))->get();
+        // $jadwals = Jadwal::whereIn('kode_mk', $mataKuliah->pluck('kode_mk'))->get();
+
+        $jadwals = Jadwal::whereIn('kode_mk', $mataKuliah->pluck('kode_mk'))
+                    ->where('status', 'disetujui')
+                    ->get();
     
         // Menampilkan jadwal tambahan
         $isGanjil = $semesterMHS % 2 !== 0;
 
-        $mkTambahan = MataKuliah::whereRaw('semester % 2 = ?', [$isGanjil ? 1 : 0])
-                                ->where('semester', '!=', $semesterMHS)
-                                ->get();
+        $mkTambahan = MataKuliah::where(function ($query) use ($isGanjil, $semesterMHS) {
+                    $query->where('semester', '=', 0) // Semester 0 tetap dimasukkan
+                        ->orWhere(function ($query) use ($isGanjil, $semesterMHS) {
+                        $query->whereRaw('semester % 2 = ?', [$isGanjil ? 1 : 0]) // Ganjil/Genap
+                            ->where('semester', '!=', $semesterMHS); // Tidak sama dengan semesterMHS
+                        });
+                    })->get();
     
         // Ambil mata kuliah yang sudah dipilih dari cookie
         $selectedMKs = collect(json_decode(Cookie::get("selectedMKs_user_{$nim}", '[]'), true));
 
         // Tambahkan jadwal berdasarkan mata kuliah yang dipilih
-        $selectedJadwals = Jadwal::whereIn('kode_mk', $selectedMKs->pluck('kode_mk'))->get();
+        // $selectedJadwals = Jadwal::whereIn('kode_mk', $selectedMKs->pluck('kode_mk'))->get();
+
+        // Tambahkan jadwal berdasarkan mata kuliah yang dipilih
+        $selectedJadwals = Jadwal::whereIn('kode_mk', $selectedMKs->pluck('kode_mk'))
+                            ->where('status', 'disetujui')
+                            ->get();
 
         // Gabungkan dengan jadwal yang ada
         $jadwals = $jadwals->merge($selectedJadwals);
@@ -143,7 +166,7 @@ class IRSController extends Controller
             
             foreach ($kuotaPerKelasWithKuotaSisa as $kelas) {
                 // dd($kelas->kuotaSisa);
-                if ($kelas->kode_kelas === $kodeKelas && $kuotaTerambil + 1 >= $kelas->kuotaSisa){
+                if ($kelas->kode_kelas === $kodeKelas && $kuotaTerambil + 1 > $kelas->kuotaSisa){
                     return redirect()->back()->with('error', 'Jatah Tambahan kelas ini sudah penuh!');
                 }
                 // dd($kelas->kode_kelas);
@@ -161,8 +184,6 @@ class IRSController extends Controller
         if ($jumlahPengguna >= $kuota) {
             return redirect()->back()->with('error', 'Jadwal sudah penuh!');
         }
-
-
 
         // Dapatkan informasi jadwal yang baru akan ditambahkan
         $newJadwal = Jadwal::findOrFail($id_jadwal);
