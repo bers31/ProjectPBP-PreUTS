@@ -140,7 +140,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('api/fetch-history-khs', [KHSController::class, 'fetchHistoryKHS']);
     Route::post('api/check-khs', [InputNilaiController::class, 'checkKHS']);
     Route::post('api/update-khs', [InputNilaiController::class, 'updateKHS']);
-    Route::get('/mhs/print_irs/{nim}', [PDFController::class, 'viewIRS']);
+    Route::get('/mhs/print_irs/{nim}', [PDFController::class, 'viewIRS'])->name('printIRS');
 });
 
 Route::middleware(['auth','role:dosen'])->group(function(){
