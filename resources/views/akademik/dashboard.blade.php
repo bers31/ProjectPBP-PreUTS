@@ -71,7 +71,7 @@
                 </select>
             </div>
 
-            <!-- Form Tetapkan Semua -->
+            <!-- Form Penetapan -->
             <form action="{{ route('akademik.updateAllRuang') }}" method="POST" id="ruangForm">
                 @csrf
                 <table id="ruangTable" class="table-auto w-full border">
@@ -80,6 +80,7 @@
                             <th class="px-4 py-2">Nama/Kode Ruang</th>
                             <th class="px-4 py-2">Kapasitas</th>
                             <th class="px-4 py-2">Prodi</th>
+                            <th class="px-4 py-2">Kode Departemen</th>
                             <th class="px-4 py-2">Aksi</th>
                         </tr>
                     </thead>
@@ -95,32 +96,36 @@
                                         class="border rounded p-2 w-full">
                                 </td>
                                 <td class="border px-4 py-2">
-                                <select 
-                                    name="prodi[{{ $ruang->kode_ruang }}]" 
-                                    class="border rounded p-2 w-full prodi-select"
-                                    data-ruang="{{ $ruang->kode_ruang }}">
-                                    <option value="">Pilih Prodi</option>
-                                    @foreach($fakultas->where('kode_fakultas', $ruang->kode_fakultas)->first()->departemen as $departemen)
-                                        @foreach($departemen->prodi as $prodi)
+                                    <select 
+                                        name="prodi[{{ $ruang->kode_ruang }}]" 
+                                        class="border rounded p-2 w-full prodi-select"
+                                        data-ruang="{{ $ruang->kode_ruang }}">
+                                        <option value="">Pilih Prodi</option>
+                                        @foreach($prodis as $prodi)
                                             <option 
                                                 value="{{ $prodi->kode_prodi }}" 
+                                                data-departemen="{{ $prodi->kode_departemen }}"
                                                 data-strata="{{ $prodi->strata }}" 
                                                 class="prodi-option"
                                                 {{ $prodi->kode_prodi == $ruang->kode_prodi ? 'selected' : '' }}>
-                                                {{ $prodi->nama }}
+                                                {{ $prodi->nama }} ({{ $prodi->strata }})
                                             </option>
                                         @endforeach
-                                    @endforeach
-                                </select>
-
+                                    </select>
+                                </td>
+                                <td class="border px-4 py-2">
+                                    <input 
+                                        type="text" 
+                                        class="border rounded p-2 w-full kode-departemen"
+                                        data-ruang="{{ $ruang->kode_ruang }}"
+                                        value="{{ $ruang->departemen ? $ruang->departemen->kode_departemen : '' }}"
+                                        readonly>
                                 </td>
                                 <td class="border px-4 py-2">
                                     <button 
-                                        type="submit" 
-                                        formaction="{{ route('akademik.updateRuang') }}" 
-                                        name="ruang" 
-                                        value="{{ $ruang->kode_ruang }}" 
-                                        class="bg-blue-500 text-white px-4 py-2 rounded tetapkan-btn">
+                                        type="button" 
+                                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 tetapkan-btn"
+                                        data-ruang="{{ $ruang->kode_ruang }}">
                                         Tetapkan
                                     </button>
                                 </td>
@@ -128,14 +133,12 @@
                         @endforeach
                     </tbody>
                 </table>
-
-                <!-- Tombol Tetapkan Semua -->
-                <div class="mt-4">
-                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded tetapkan-semua-btn">
-                        Tetapkan Semua
-                    </button>
-                </div>
             </form>
+            <div class="mb-4">
+                <button type="submit" form="ruangForm" class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">
+                    Tetapkan Semua
+                </button>
+            </div>
         </div>
     </main>
     <!-- Footer -->
@@ -170,43 +173,83 @@
 </style>
 
 <script>
-    $(document).ready(function() {
-        // Inisialisasi DataTables untuk tabel ruang
-        $('#ruangTable').DataTable({
-            "dom": '<"top"<"flex items-center justify-between"<"flex items-center gap-2"f><"ml-auto"l>>>rt<"bottom"p><"clear">',
-            "paging": true,
-            "info": false, // Sembunyikan informasi jumlah data
-            "searching": true, // Aktifkan pencarian
-            "ordering": true, // Aktifkan pengurutan
-            "language": {
-                "search": "_INPUT_", // Menghapus label 'Search'
-                "searchPlaceholder": "Cari Ruang", // Placeholder untuk pencarian
-                "lengthMenu": "Tampilkan _MENU_ data", // Ubah teks dropdown
-                "paginate": {
-                    "previous": "Sebelumnya",
-                    "next": "Berikutnya"
-                }
-            }
-        });
+    $(document).ready(function () {
+        // Event handler untuk tombol tetapkan individual
+        $('.tetapkan-btn').on('click', function(e) {
+            e.preventDefault();
+            const ruangId = $(this).data('ruang');
+            const formData = new FormData();
+            
+            formData.append('_token', $('input[name="_token"]').val());
+            formData.append('ruang', ruangId);
+            formData.append(`kapasitas[${ruangId}]`, $(`input[name="kapasitas[${ruangId}]"]`).val());
+            formData.append(`prodi[${ruangId}]`, $(`select[name="prodi[${ruangId}]"]`).val());
 
-        // Filter dropdown Prodi berdasarkan Strata
-        $('#strataFilter').on('change', function() {
-            const selectedStrata = $(this).val(); // Ambil strata yang dipilih
-            $('.prodi-select').each(function() {
-                const $dropdown = $(this);
-                $dropdown.find('.prodi-option').each(function() {
-                    const $option = $(this);
-                    if (selectedStrata === "" || $option.data('strata') === selectedStrata) {
-                        $option.show(); // Tampilkan opsi jika strata cocok
-                    } else {
-                        $option.hide(); // Sembunyikan opsi jika strata tidak cocok
-                    }
-                });
-                // Reset dropdown jika opsi terpilih tidak cocok
-                if ($dropdown.find('.prodi-option:selected').is(':hidden')) {
-                    $dropdown.val(''); // Reset ke default
+            $.ajax({
+                url: '{{ route("akademik.updateRuang") }}',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    alert('Ruang berhasil diperbarui!');
+                },
+                error: function(xhr) {
+                    alert('Terjadi kesalahan saat memperbarui ruang.');
                 }
             });
+        });
+
+        // Form submit handler untuk tetapkan semua
+        $('#ruangForm').on('submit', function(e) {
+            e.preventDefault();
+            
+            // Create FormData object
+            const formData = new FormData();
+            formData.append('_token', $('input[name="_token"]').val());
+
+            // Collect all kapasitas and prodi values
+            $('#ruangTable tbody tr').each(function() {
+                const kodeRuang = $(this).find('.tetapkan-btn').data('ruang');
+                const kapasitas = $(this).find(`input[name="kapasitas[${kodeRuang}]"]`).val();
+                const prodi = $(this).find(`select[name="prodi[${kodeRuang}]"]`).val();
+                
+                formData.append(`kapasitas[${kodeRuang}]`, kapasitas);
+                formData.append(`prodi[${kodeRuang}]`, prodi);
+            });
+
+            // Submit the form using AJAX
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    alert('Semua ruang berhasil diperbarui!');
+                    // Optional: Reload the page to show updated values
+                    window.location.reload();
+                },
+                error: function(xhr) {
+                    alert('Terjadi kesalahan saat memperbarui ruang.');
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        // Update kode_departemen saat prodi berubah
+        $('.prodi-select').on('change', function () {
+            const selectedProdi = $(this).find('option:selected');
+            const kodeDepartemen = selectedProdi.data('departemen');
+            const ruangId = $(this).data('ruang');
+
+            $(`.kode-departemen[data-ruang="${ruangId}"]`).val(kodeDepartemen);
+        });
+
+        // Add click handler for Tetapkan Semua button
+        $('.bg-green-500').on('click', function(e) {
+            e.preventDefault();
+            $('#ruangForm').submit();
         });
     });
 </script>

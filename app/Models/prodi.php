@@ -16,6 +16,11 @@ class Prodi extends Model
     // Tambahkan fillable untuk mass assignment
     protected $fillable = ['kode_prodi', 'nama'];
 
+    public function ruang()
+    {
+        return $this->hasMany(Ruang::class, 'kode_prodi', 'kode_prodi');
+    }
+
     public function mahasiswa(){
         return $this->hasMany(Mahasiswa::class, 'kode_prodi','kode_prodi');
     }
@@ -25,7 +30,7 @@ class Prodi extends Model
     }
 
     public function kaprodi(){
-        return $thhis->hasMany(Kaprodi::class, 'kode_prodi', 'kode_prodi');
+        return $this->hasMany(Kaprodi::class, 'kode_prodi', 'kode_prodi');
     }
 
 }

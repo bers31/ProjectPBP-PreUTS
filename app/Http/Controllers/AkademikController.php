@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ruang;
-use App\Models\Fakultas;
+use App\Models\Departemen;
+use App\Models\Prodi;
 
 class AkademikController extends Controller
 {
@@ -13,10 +14,10 @@ class AkademikController extends Controller
      */
     public function index()
     {
-        $ruangs = Ruang::with('fakultas')->get(); // Mengambil data ruang beserta fakultasnya
-        $fakultas = Fakultas::with('departemen.prodi')->get(); // Mengambil semua fakultas dan data prodi terkait
+        $ruangs = Ruang::with(['departemen', 'prodi'])->get();
+        $prodis = Prodi::all();
 
-        return view('akademik.dashboard', compact('ruangs', 'fakultas'));
+        return view('akademik.dashboard', compact('ruangs', 'prodis'));
     }
 
     /**
@@ -24,30 +25,39 @@ class AkademikController extends Controller
      */
     public function updateRuang(Request $request)
     {
-        // Debug untuk melihat data yang dikirim
-        \Log::info($request->all());
-        
         $request->validate([
             'ruang' => 'required|string|exists:ruang,kode_ruang',
             'kapasitas' => 'required|array',
+            'kapasitas.*' => 'nullable|integer|min:1',
             'prodi' => 'required|array',
+            'prodi.*' => 'required|string|exists:prodi,kode_prodi'
         ]);
-    
-        $ruang = Ruang::where('kode_ruang', $request->ruang)->firstOrFail();
-        
-        // Dapatkan kode_prodi dari form
-        $kodeProdi = $request->input("prodi.{$request->ruang}");
-        
+
+        $kodeRuang = $request->input('ruang');
+        $ruang = Ruang::where('kode_ruang', $kodeRuang)->firstOrFail();
+        $kodeProdi = $request->input("prodi.$kodeRuang");
+        $prodi = Prodi::where('kode_prodi', $kodeProdi)->firstOrFail();
+
+        // Validasi prodi berdasarkan strata
+        if (!$prodi) {
+            return redirect()->route('akademik.dashboard')
+                ->withErrors(['error' => 'Prodi yang dipilih tidak valid.']);
+        }
+
         // Update ruang
         $ruang->update([
-            'kapasitas' => $request->input("kapasitas.{$request->ruang}"),
-            'kode_prodi' => $kodeProdi
+            'kapasitas' => $request->input("kapasitas.$kodeRuang"),
+            'kode_prodi' => $kodeProdi,
+            'kode_departemen' => $prodi->kode_departemen,
         ]);
-    
+
         return redirect()->route('akademik.dashboard')
             ->with('success', 'Kapasitas dan prodi ruang berhasil diperbarui.');
     }
-    
+
+    /**
+     * Mengubah kapasitas dan prodi untuk semua ruang.
+     */
     public function updateAllRuang(Request $request)
     {
         // Debug untuk melihat data yang dikirim

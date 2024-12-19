@@ -24,9 +24,15 @@ class ruang extends Model
     /**
      * Relasi Ruang terhadap fakultas
      */
-    public function fakultas()
+
+    public function prodi()
     {
-        return $this->belongsTo(Fakultas::class, 'kode_fakultas', 'kode_fakultas');
+        return $this->belongsTo(Prodi::class, 'kode_prodi', 'kode_prodi');
+    }
+
+    public function departemen()
+    {
+        return $this->belongsTo(Departemen::class, 'kode_departemen', 'kode_departemen');
     }
 
     public function jadwal()

@@ -130,7 +130,9 @@
                                 <form action="{{ route('dekan.setJadwal') }}" method="POST" class="inline">
                                     @csrf
                                     <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
-                                    <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded">Setujui</button>
+                                    <button type="button" class="btn-setujui bg-blue-500 text-white px-3 py-1 rounded">
+                                        Setujui
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -143,7 +145,9 @@
             <form action="{{ route('dekan.setAllJadwal') }}" method="POST" class="mt-4">
                 @csrf
                 <input type="hidden" name="prodi" value="{{ request('prodi') }}">
-                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Setujui Semua</button>
+                <button type="button" class="btn-setujui-semua bg-green-500 text-white px-4 py-2 rounded">
+                    Setujui Semua
+                </button>
             </form>
         </div>
 
@@ -179,7 +183,7 @@
                                             <option value="Tersedia" {{ $ruang->status_ketersediaan == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
                                             <option value="Penuh" {{ $ruang->status_ketersediaan == 'Penuh' ? 'selected' : '' }}>Penuh</option>
                                         </select>
-                                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">
+                                        <button type="button" class="btn-tetapkan bg-blue-500 text-white px-4 py-2 rounded">
                                             Tetapkan
                                         </button>
                                     </form>
@@ -191,9 +195,9 @@
 
                 <!-- Tombol Massal -->
                 <div class="mt-4">
-                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">
-                        Tetapkan Semua
-                    </button>
+                <button type="button" class="btn-tetapkan-semua bg-green-500 text-white px-4 py-2 rounded">
+                    Tetapkan Semua
+                </button>
                 </div>
             </form>
         </div>
@@ -208,6 +212,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
     .dataTables_length select {
         width: 3rem;
@@ -227,6 +232,39 @@
         padding: 8px 0;
         margin-bottom: 8px;
     }
+    /* SweetAlert Confirm Button */
+    .swal2-confirm {
+        background-color: #3085d6 !important; /* Warna biru */
+        color: white !important; /* Warna teks putih */
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+    }
+
+    /* Hover untuk tombol Confirm */
+    .swal2-confirm:hover {
+        background-color: #2874c7 !important; /* Biru lebih gelap */
+        cursor: pointer;
+    }
+
+    /* SweetAlert Cancel Button */
+    .swal2-cancel {
+        background-color: #d33 !important; /* Warna merah */
+        color: white !important; /* Warna teks putih */
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+    }
+
+    /* Hover untuk tombol Cancel */
+    .swal2-cancel:hover {
+        background-color: #c12f2f !important; /* Merah lebih gelap */
+        cursor: pointer;
+    }
+
+
 </style>
 
 <script>
@@ -285,4 +323,74 @@
             });
         });
     });
+    document.addEventListener('DOMContentLoaded', function () {
+        // Konfirmasi untuk tombol "Setujui"
+        document.querySelectorAll('.btn-setujui').forEach(button => {
+            button.addEventListener('click', function () {
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Anda akan menyetujui jadwal ini.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Setujui!',
+                    cancelButtonText: 'Batal'
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        button.closest('form').submit();
+                    }
+                });
+            });
+        });
+
+        // Konfirmasi untuk tombol "Setujui Semua"
+        document.querySelector('.btn-setujui-semua')?.addEventListener('click', function () {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda akan menyetujui semua jadwal.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Setujui Semua!',
+                cancelButtonText: 'Batal'
+            }).then(result => {
+                if (result.isConfirmed) {
+                    this.closest('form').submit();
+                }
+            });
+        });
+
+        // Konfirmasi untuk tombol "Tetapkan"
+        document.querySelectorAll('.btn-tetapkan').forEach(button => {
+            button.addEventListener('click', function () {
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Anda akan menetapkan status ruang ini.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Tetapkan!',
+                    cancelButtonText: 'Batal'
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        button.closest('form').submit();
+                    }
+                });
+            });
+        });
+
+        // Konfirmasi untuk tombol "Tetapkan Semua"
+        document.querySelector('.btn-tetapkan-semua')?.addEventListener('click', function () {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda akan menetapkan status semua ruang.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Tetapkan Semua!',
+                cancelButtonText: 'Batal'
+            }).then(result => {
+                if (result.isConfirmed) {
+                    this.closest('form').submit();
+                }
+            });
+        });
+    });
+
 </script>
