@@ -21,8 +21,15 @@ class UserStarter extends Seeder
             'password' => '12345', // Admin password
             'role' => 'dosen', // Assign the admin role
         ]);
+
         User::create([
             'email' => 'siti@lecturers.undip.ac.id',
+            'password' => '12345', // Admin password
+            'role' => 'dosen', // Assign the admin role
+        ]);
+
+        User::create([
+            'email' => 'bayu@lecturers.undip.ac.id',
             'password' => '12345', // Admin password
             'role' => 'dosen', // Assign the admin role
         ]);
@@ -32,11 +39,13 @@ class UserStarter extends Seeder
             'password' => '12345', // Admin password
             'role' => 'mahasiswa', // Assign the admin role
         ]);
+
         User::create([
             'email' => 'faisalrizki@students.undip.ac.id',
             'password' => '12345', // Admin password
             'role' => 'mahasiswa', // Assign the admin role
         ]);
+        
         User::create([
             'email' => 'akademik@example.com',
             'password' => '12345', // Admin password

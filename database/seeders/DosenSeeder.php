@@ -651,6 +651,13 @@ class DosenSeeder extends Seeder
             'email' => 'bolazarus@lecturers.undip.ac.id',
             'kode_departemen' => 'IF'
         ]);
+
+        Dosen::Create([
+            'nidn' => '123456789100',
+            'nama' => 'Bayu',
+            'email' => 'bayu@lecturers.undip.ac.id',
+            'kode_departemen' => 'KIM'
+        ]);
           
     }
 }

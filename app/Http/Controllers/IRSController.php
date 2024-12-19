@@ -8,6 +8,7 @@ use App\Models\IRS;
 use App\Models\Jadwal;
 use App\Models\Mahasiswa;
 use App\Models\MataKuliah;
+use App\Models\Periode;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,8 +42,13 @@ class IRSController extends Controller
             return redirect()->back()->with('error', 'Registrasi Terlebih dahulu');
         }
 
+        // prodi mhs
+        $prodi = $mahasiswa->kode_prodi;
+
         // Get all Mata Kuliah for the semester
-        $mataKuliah = MataKuliah::where('semester', $semesterMHS)->get();
+        $mataKuliah = MataKuliah::where('semester', $semesterMHS)
+                    ->where('kode_prodi', $prodi)
+                    ->get();
     
         // Get all Jadwal based on Mata Kuliah kode_mk
         // $jadwals = Jadwal::whereIn('kode_mk', $mataKuliah->pluck('kode_mk'))->get();
@@ -97,7 +103,11 @@ class IRSController extends Controller
             'id_irs' => 'required|exists:irs,id_irs',
             'id_jadwal' => 'required|exists:jadwal,id_jadwal',
         ]);
-    
+        
+        if (Periode::where('status', 'aktif')->first('type') === '4_minggu'){
+            return redirect()->back()->with('error', 'Anda hanya bisa menghapus IRS!');
+        }
+
         $id_jadwal = $request->id_jadwal;
         $id_irs = $request->id_irs;
 
