@@ -152,54 +152,100 @@
         </div>
 
         <!-- Penetapan Ketersediaan Ruang Kelas Section -->
-        <div class="border p-6 rounded-lg shadow-md">
-            <h2 class="font-semibold text-xl mb-4">Penetapan Ketersediaan Ruang Kelas</h2>
+        <div class="border p-6 rounded-lg shadow-md mt-6">
+            <h2 class="font-semibold text-xl mb-4">Persetujuan Perubahan Ruang</h2>
 
-            <!-- Form Penetapan Status Ruang Massal -->
-            <form action="{{ route('dekan.setAllRuang') }}" method="POST">
-                @csrf
-                <input type="hidden" name="prodi" value="{{ request('prodi') }}">
-
-                <table id="ruangTable" class="table-auto w-full border">
+            @if($pendingRoomChanges && count($pendingRoomChanges) > 0)
+                <table id="roomChangesTable" class="table-auto w-full border">
                     <thead>
                         <tr>
-                            <th class="px-4 py-2">Nama/Kode Ruang</th>
-                            <th class="px-4 py-2">Kapasitas</th>
-                            <th class="px-4 py-2">Status</th>
+                            <th class="px-4 py-2">Kode Ruang</th>
+                            <th class="px-4 py-2">Tipe Perubahan</th>
+                            <th class="px-4 py-2">Detail Perubahan</th>
+                            <th class="px-4 py-2">Diajukan Oleh</th>
                             <th class="px-4 py-2">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($ruangs as $ruang)
+                        @foreach($pendingRoomChanges as $change)
                             <tr>
-                                <td class="border px-4 py-2">{{ $ruang->kode_ruang }}</td>
-                                <td class="border px-4 py-2">{{ $ruang->kapasitas }}</td>
-                                <td class="border px-4 py-2">{{ $ruang->status_ketersediaan }}</td>
+                                <td class="border px-4 py-2">{{ $change->kode_ruang }}</td>
                                 <td class="border px-4 py-2">
-                                    <!-- Format Array -->
-                                    <form action="{{ route('dekan.setRuang') }}" method="POST"></form>
-                                        <input type="hidden" name="kode" value="{{ $ruang->kode_ruang }}">
-                                        <select name="status_ketersediaan[{{ $ruang->kode_ruang }}]" class="border rounded p-1">
-                                            <option value="Tersedia" {{ $ruang->status_ketersediaan == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
-                                            <option value="Penuh" {{ $ruang->status_ketersediaan == 'Penuh' ? 'selected' : '' }}>Penuh</option>
-                                        </select>
-                                        <button type="button" class="btn-tetapkan bg-blue-500 text-white px-4 py-2 rounded">
-                                            Tetapkan
-                                        </button>
-                                    </form>
+                                    @if($change->action_type == 'create')
+                                        <span class="text-green-600">Pembuatan Baru</span>
+                                    @elseif($change->action_type == 'update')
+                                        <span class="text-blue-600">Perubahan</span>
+                                    @else
+                                        <span class="text-red-600">Penghapusan</span>
+                                    @endif
+                                </td>
+                                <td class="border px-4 py-2">
+                                    @if($change->action_type == 'update')
+                                        @php
+                                            $oldData = json_decode($change->old_data, true);
+                                            $newData = json_decode($change->new_data, true);
+                                        @endphp
+                                        <ul class="list-disc list-inside">
+                                            @foreach($newData as $key => $value)
+                                                @if(isset($oldData[$key]) && $oldData[$key] != $value)
+                                                    <li>{{ ucfirst($key) }}: {{ $oldData[$key] }} → {{ $value }}</li>
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                    @elseif($change->action_type == 'create')
+                                        @php
+                                            $newData = json_decode($change->new_data, true);
+                                        @endphp
+                                        <ul class="list-disc list-inside">
+                                            <li>Kapasitas: {{ $newData['kapasitas'] }}</li>
+                                            <li>Status: {{ $newData['status_ketersediaan'] }}</li>
+                                        </ul>
+                                    @else
+                                        <span class="text-red-600">Penghapusan ruang</span>
+                                    @endif
+                                </td>
+                                <td class="border px-4 py-2">{{ $change->creator->name ?? 'N/A' }}</td>
+                                <td class="border px-4 py-2">
+                                    <div class="flex space-x-2">
+                                        <form action="{{ route('dekan.approveRoomChange', $change->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            <button type="button" class="btn-approve-room bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
+                                                Setujui
+                                            </button>
+                                        </form>
+                                        <form action="{{ route('dekan.rejectRoomChange', $change->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            <button type="button" class="btn-reject-room bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
+                                                Tolak
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
 
-                <!-- Tombol Massal -->
-                <div class="mt-4">
-                <button type="button" class="btn-tetapkan-semua bg-green-500 text-white px-4 py-2 rounded">
-                    Tetapkan Semua
-                </button>
+                <!-- Tambahkan tombol Setujui Semua dan Tolak Semua -->
+                <div class="mt-4 flex gap-4">
+                    <form action="{{ route('dekan.approveAllRoomChanges') }}" method="POST">
+                        @csrf
+                        <button type="button" class="btn-approve-all bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                            Setujui Semua
+                        </button>
+                    </form>
+                    <form action="{{ route('dekan.rejectAllRoomChanges') }}" method="POST">
+                        @csrf
+                        <button type="button" class="btn-reject-all bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                            Tolak Semua
+                        </button>
+                    </form>
                 </div>
-            </form>
+            @else
+                <div class="text-center py-4 text-gray-600">
+                    Tidak ada perubahan ruang yang menunggu persetujuan.
+                </div>
+            @endif
         </div>
     </main>
 
@@ -270,16 +316,16 @@
 <script>
     $(document).ready(function() {
         // Inisialisasi DataTables untuk tabel ruang
-        $('#ruangTable').DataTable({
+        $('#roomChangesTable').DataTable({
             "dom": '<"top"<"flex items-center justify-between"<"flex items-center gap-2"f><"ml-auto"l>>>rt<"bottom"p><"clear">',
             "paging": true,
-            "info": false, // Sembunyikan informasi jumlah data
-            "searching": true, // Aktifkan pencarian
-            "ordering": true, // Aktifkan pengurutan
+            "info": false,
+            "searching": true,
+            "ordering": true,
             "language": {
-                "search": "_INPUT_", // Menghapus label 'Search'
-                "searchPlaceholder": "Cari Ruang", // Placeholder untuk pencarian
-                "lengthMenu": "Tampilkan _MENU_ data", // Ubah teks dropdown
+                "search": "_INPUT_",
+                "searchPlaceholder": "Cari Perubahan",
+                "lengthMenu": "Tampilkan _MENU_ data",
                 "paginate": {
                     "previous": "Sebelumnya",
                     "next": "Berikutnya"
@@ -358,32 +404,29 @@
             });
         });
 
-        // Konfirmasi untuk tombol "Tetapkan"
-        document.querySelectorAll('.btn-tetapkan').forEach(button => {
-            button.addEventListener('click', function () {
-                Swal.fire({
-                    title: 'Apakah Anda yakin?',
-                    text: "Anda akan menetapkan status ruang ini.",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, Tetapkan!',
-                    cancelButtonText: 'Batal'
-                }).then(result => {
-                    if (result.isConfirmed) {
-                        button.closest('form').submit();
-                    }
-                });
+        document.querySelector('.btn-approve-all')?.addEventListener('click', function () {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda akan menyetujui semua perubahan ruang.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Setujui Semua!',
+                cancelButtonText: 'Batal'
+            }).then(result => {
+                if (result.isConfirmed) {
+                    this.closest('form').submit();
+                }
             });
         });
 
-        // Konfirmasi untuk tombol "Tetapkan Semua"
-        document.querySelector('.btn-tetapkan-semua')?.addEventListener('click', function () {
+        // Konfirmasi untuk tombol "Tolak Semua"
+        document.querySelector('.btn-reject-all')?.addEventListener('click', function () {
             Swal.fire({
                 title: 'Apakah Anda yakin?',
-                text: "Anda akan menetapkan status semua ruang.",
+                text: "Anda akan menolak semua perubahan ruang.",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Ya, Tetapkan Semua!',
+                confirmButtonText: 'Ya, Tolak Semua!',
                 cancelButtonText: 'Batal'
             }).then(result => {
                 if (result.isConfirmed) {

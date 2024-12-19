@@ -110,10 +110,6 @@
                     <h3 class="font-semibold text-lg">Dosen Management</h3>
                     <p class="text-gray-600">Manage lecturer data and assignments</p>
                 </a>
-                <a href="{{ route('ruang.index') }}" class="p-4 border-2 rounded-lg hover:bg-blue-50">
-                    <h3 class="font-semibold text-lg">Room Management</h3>
-                    <p class="text-gray-600">Manage room</p>
-                </a>
             </div>
         </div>
 
@@ -136,10 +132,6 @@
                     <div class="text-center">
                         <p class="font-semibold">Total Dosen</p>
                         <p class="mt-2">{{ $Dosen }}</p>
-                    </div>
-                    <div class="text-center">
-                        <p class="font-semibold">Total Ruang</p>
-                        <p class="mt-2">{{ $Ruang }}</p>
                     </div>
                 </div>
             </div>

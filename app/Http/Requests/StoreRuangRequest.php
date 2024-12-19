@@ -12,7 +12,7 @@ class StoreRuangRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::user() && Auth::user()->role === 'admin';
+        return Auth::user() && Auth::user()->role === 'akademik';
     }
 
     /**

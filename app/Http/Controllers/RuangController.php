@@ -2,79 +2,90 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Ruang;
+use App\Models\Departemen;
+use App\Models\PendingRoomChange;
 use App\Http\Requests\StoreRuangRequest;
 use App\Http\Requests\UpdateRuangRequest;
-use App\Models\Departemen;
-use App\Models\Ruang;
-use App\Models\Fakultas;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RuangController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-
     public function index()
     {
-        //
-        $ruang = Ruang::with('departemen')->get();
-        return view('admin.ruang.index', compact('ruang'));
+        $ruang = Ruang::get();
+        $pendingChanges = PendingRoomChange::where('approval_status', 'pending')->get();
+        return view('akademik.ruang.index', compact('ruang', 'pendingChanges'));
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
-        // $fakultas = Fakultas::get(['nama_fakultas','kode_fakultas']);
-        $departemen = Departemen::all(); // Get all departemen records
-        return view('admin.ruang.create', compact('departemen')); // Pass to the view 
+        $departemen = Departemen::all();
+        return view('akademik.ruang.create', compact('departemen'));
     }
 
-        /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreRuangRequest $request)
     {
         $validated = $request->validated();
+        
+        // Set default status_ketersediaan if not provided
+        $validated['status_ketersediaan'] = $validated['status_ketersediaan'] ?? 'Tersedia';
 
-        Ruang::create($validated);
+        PendingRoomChange::create([
+            'action_type' => 'create',
+            'kode_ruang' => $validated['kode_ruang'],
+            'kode_departemen' => $validated['kode_departemen'],
+            'kode_prodi' => $validated['kode_prodi'] ?? null,
+            'kapasitas' => $validated['kapasitas'],
+            'status_ketersediaan' => $validated['status_ketersediaan'],
+            'new_data' => json_encode($validated),
+            'created_by' => Auth::id()
+        ]);
 
-        return redirect()->route('ruang.index')->with('success', 'Ruang berhasil dibuat!');
+        return redirect()->route('ruang.index')
+            ->with('success', 'Permintaan pembuatan ruang telah dikirim ke Dekan untuk persetujuan.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Ruang $ruang)
     {
-        // $fakultas = Fakultas::get(['nama_fakultas','kode_fakultas']);
-        $departemen = Departemen::all(); // Get all departemen records
-        return view('admin.ruang.edit', compact('ruang','departemen')); // Pass to the view 
+        $departemen = Departemen::all();
+        return view('akademik.ruang.edit', compact('ruang', 'departemen'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateRuangRequest $request, Ruang $ruang)
     {
         $validated = $request->validated();
 
-        $ruang->update($validated);
+        PendingRoomChange::create([
+            'action_type' => 'update',
+            'kode_ruang' => $ruang->kode_ruang,
+            'kode_departemen' => $validated['kode_departemen'],
+            'kode_prodi' => $validated['kode_prodi'] ?? null,
+            'kapasitas' => $validated['kapasitas'],
+            'status_ketersediaan' => $validated['status_ketersediaan'] ?? $ruang->status_ketersediaan,
+            'old_data' => json_encode($ruang->toArray()),
+            'new_data' => json_encode($validated),
+            'created_by' => Auth::id()
+        ]);
 
-        return redirect()->route('ruang.index')->with('success', 'Ruang berhasil diubah!');
+        return redirect()->route('ruang.index')
+            ->with('success', 'Permintaan perubahan ruang telah dikirim ke Dekan untuk persetujuan.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Ruang $ruang)
     {
-        $ruang->delete();
-        return redirect()->route('ruang.index')->with('success', 'Ruang deleted successfully.');
+        PendingRoomChange::create([
+            'action_type' => 'delete',
+            'kode_ruang' => $ruang->kode_ruang,
+            'kode_departemen' => $ruang->kode_departemen,
+            'kode_prodi' => $ruang->kode_prodi,
+            'kapasitas' => $ruang->kapasitas,
+            'status_ketersediaan' => $ruang->status_ketersediaan,
+            'old_data' => json_encode($ruang->toArray()),
+            'created_by' => Auth::id()
+        ]);
+
+        return redirect()->route('ruang.index')
+            ->with('success', 'Permintaan penghapusan ruang telah dikirim ke Dekan untuk persetujuan.');
     }
 }

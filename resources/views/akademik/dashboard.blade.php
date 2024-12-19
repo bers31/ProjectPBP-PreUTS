@@ -59,86 +59,22 @@
         @endif
 
         <!-- Penetapan Kapasitas Ruang Kelas Section -->
-        <div class="border p-6 rounded-lg shadow-md mb-6">
-            <h2 class="font-semibold text-xl mb-4">Penetapan Kapasitas Ruang Kelas</h2>
-            <!-- Strata Dropdown -->
-            <div class="mb-4">
-                <label for="strata" class="block text-sm font-medium text-gray-700 mb-2">Pilih Strata:</label>
-                <select id="strataFilter" class="border-2 border-[#80747475] rounded-lg p-2 w-48">
-                    <option value="S1">S1</option>
-                    <option value="S2">S2</option>
-                    <option value="S3">S3</option>
-                </select>
-            </div>
-
-            <!-- Form Penetapan -->
-            <form action="{{ route('akademik.updateAllRuang') }}" method="POST" id="ruangForm">
-                @csrf
-                <table id="ruangTable" class="table-auto w-full border">
-                    <thead>
-                        <tr>
-                            <th class="px-4 py-2">Nama/Kode Ruang</th>
-                            <th class="px-4 py-2">Kapasitas</th>
-                            <th class="px-4 py-2">Prodi</th>
-                            <th class="px-4 py-2">Kode Departemen</th>
-                            <th class="px-4 py-2">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($ruangs as $ruang)
-                            <tr>
-                                <td class="border px-4 py-2">{{ $ruang->kode_ruang }}</td>
-                                <td class="border px-4 py-2">
-                                    <input 
-                                        type="number" 
-                                        name="kapasitas[{{ $ruang->kode_ruang }}]" 
-                                        value="{{ $ruang->kapasitas }}" 
-                                        class="border rounded p-2 w-full">
-                                </td>
-                                <td class="border px-4 py-2">
-                                    <select 
-                                        name="prodi[{{ $ruang->kode_ruang }}]" 
-                                        class="border rounded p-2 w-full prodi-select"
-                                        data-ruang="{{ $ruang->kode_ruang }}">
-                                        <option value="">Pilih Prodi</option>
-                                        @foreach($prodis as $prodi)
-                                            <option 
-                                                value="{{ $prodi->kode_prodi }}" 
-                                                data-departemen="{{ $prodi->kode_departemen }}"
-                                                data-strata="{{ $prodi->strata }}" 
-                                                class="prodi-option"
-                                                {{ $prodi->kode_prodi == $ruang->kode_prodi ? 'selected' : '' }}>
-                                                {{ $prodi->nama }} ({{ $prodi->strata }})
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td class="border px-4 py-2">
-                                    <input 
-                                        type="text" 
-                                        class="border rounded p-2 w-full kode-departemen"
-                                        data-ruang="{{ $ruang->kode_ruang }}"
-                                        value="{{ $ruang->departemen ? $ruang->departemen->kode_departemen : '' }}"
-                                        readonly>
-                                </td>
-                                <td class="border px-4 py-2">
-                                    <button 
-                                        type="button" 
-                                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 tetapkan-btn"
-                                        data-ruang="{{ $ruang->kode_ruang }}">
-                                        Tetapkan
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </form>
-            <div class="mb-4">
-                <button type="submit" form="ruangForm" class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">
-                    Tetapkan Semua
-                </button>
-            </div>
+        <div class="p-6 space-y-6">
+            <h2 class="text-2xl font-bold text-gray-800">Room Management</h2>
+            <a href={{ route('ruang.index') }} class="group block">
+                <div class="relative overflow-hidden bg-gradient-to-r from-blue-500 to-blue-700 p-6 rounded-lg shadow-lg transform transition hover:scale-105 hover:shadow-2xl">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-semibold text-white group-hover:text-gray-100">Manage Rooms</h3>
+                            <p class="text-gray-200 mt-1">View and edit room details, capacity, and assignments</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="text-gray-100 group-hover:text-white" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="none" stroke="currentColor" stroke-width="2" d="M12 7v10m5-5H7"/>
+                        </svg>
+                    </div>
+                    <div class="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-blue-300 to-blue-600 transform transition-all duration-300 scale-x-0 group-hover:scale-x-100"></div>
+                </div>
+            </a>
         </div>
     </main>
     <!-- Footer -->
@@ -173,83 +109,80 @@
 </style>
 
 <script>
-    $(document).ready(function () {
-        // Event handler untuk tombol tetapkan individual
-        $('.tetapkan-btn').on('click', function(e) {
-            e.preventDefault();
-            const ruangId = $(this).data('ruang');
-            const formData = new FormData();
-            
-            formData.append('_token', $('input[name="_token"]').val());
-            formData.append('ruang', ruangId);
-            formData.append(`kapasitas[${ruangId}]`, $(`input[name="kapasitas[${ruangId}]"]`).val());
-            formData.append(`prodi[${ruangId}]`, $(`select[name="prodi[${ruangId}]"]`).val());
+    import React from 'react';
+    import { Activity, DoorOpen, Users, Settings } from 'lucide-react';
 
-            $.ajax({
-                url: '{{ route("akademik.updateRuang") }}',
-                method: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    alert('Ruang berhasil diperbarui!');
-                },
-                error: function(xhr) {
-                    alert('Terjadi kesalahan saat memperbarui ruang.');
-                }
-            });
-        });
+    const RoomManagementCard = () => {
+    return (
+        <div className="p-6 space-y-6">
+        <h2 className="text-2xl font-bold text-gray-800">Room Management</h2>
 
-        // Form submit handler untuk tetapkan semua
-        $('#ruangForm').on('submit', function(e) {
-            e.preventDefault();
-            
-            // Create FormData object
-            const formData = new FormData();
-            formData.append('_token', $('input[name="_token"]').val());
+        {/* Stats Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+            <div className="flex items-center space-x-3">
+                <DoorOpen className="text-blue-600" size={24} />
+                <div>
+                <p className="text-sm text-gray-600">Total Rooms</p>
+                <p className="text-xl font-bold text-gray-800">24</p>
+                </div>
+            </div>
+            </div>
 
-            // Collect all kapasitas and prodi values
-            $('#ruangTable tbody tr').each(function() {
-                const kodeRuang = $(this).find('.tetapkan-btn').data('ruang');
-                const kapasitas = $(this).find(`input[name="kapasitas[${kodeRuang}]"]`).val();
-                const prodi = $(this).find(`select[name="prodi[${kodeRuang}]"]`).val();
-                
-                formData.append(`kapasitas[${kodeRuang}]`, kapasitas);
-                formData.append(`prodi[${kodeRuang}]`, prodi);
-            });
+            <div className="bg-green-50 p-4 rounded-lg border border-green-100">
+            <div className="flex items-center space-x-3">
+                <Users className="text-green-600" size={24} />
+                <div>
+                <p className="text-sm text-gray-600">Total Capacity</p>
+                <p className="text-xl font-bold text-gray-800">1,250</p>
+                </div>
+            </div>
+            </div>
 
-            // Submit the form using AJAX
-            $.ajax({
-                url: $(this).attr('action'),
-                method: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    alert('Semua ruang berhasil diperbarui!');
-                    // Optional: Reload the page to show updated values
-                    window.location.reload();
-                },
-                error: function(xhr) {
-                    alert('Terjadi kesalahan saat memperbarui ruang.');
-                    console.error(xhr.responseText);
-                }
-            });
-        });
+            <div className="bg-purple-50 p-4 rounded-lg border border-purple-100">
+            <div className="flex items-center space-x-3">
+                <Activity className="text-purple-600" size={24} />
+                <div>
+                <p className="text-sm text-gray-600">Active Rooms</p>
+                <p className="text-xl font-bold text-gray-800">18</p>
+                </div>
+            </div>
+            </div>
+        </div>
 
-        // Update kode_departemen saat prodi berubah
-        $('.prodi-select').on('change', function () {
-            const selectedProdi = $(this).find('option:selected');
-            const kodeDepartemen = selectedProdi.data('departemen');
-            const ruangId = $(this).data('ruang');
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <a
+            href="/room-management"
+            className="group relative overflow-hidden bg-gradient-to-r from-blue-500 to-blue-700 p-6 rounded-lg shadow-lg transform transition hover:scale-105 hover:shadow-2xl"
+            >
+            <div className="flex items-center justify-between">
+                <div>
+                <h3 className="text-lg font-semibold text-white group-hover:text-gray-100">Manage Rooms</h3>
+                <p className="text-gray-200 mt-1">View and edit room details, capacity, and assignments</p>
+                </div>
+                <Settings className="text-gray-100 group-hover:text-white transition-colors" size={24} />
+            </div>
+            <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-blue-300 to-blue-600 transform transition-all duration-300 scale-x-0 group-hover:scale-x-100"></div>
+            </a>
 
-            $(`.kode-departemen[data-ruang="${ruangId}"]`).val(kodeDepartemen);
-        });
+            <a
+            href="/room-management/schedule"
+            className="group relative overflow-hidden bg-gradient-to-r from-green-500 to-green-700 p-6 rounded-lg shadow-lg transform transition hover:scale-105 hover:shadow-2xl"
+            >
+            <div className="flex items-center justify-between">
+                <div>
+                <h3 className="text-lg font-semibold text-white group-hover:text-gray-100">Room Schedule</h3>
+                <p className="text-gray-200 mt-1">View and manage room schedules and bookings</p>
+                </div>
+                <Activity className="text-gray-100 group-hover:text-white transition-colors" size={24} />
+            </div>
+            <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-green-300 to-green-600 transform transition-all duration-300 scale-x-0 group-hover:scale-x-100"></div>
+            </a>
+        </div>
+        </div>
+    );
+    };
 
-        // Add click handler for Tetapkan Semua button
-        $('.bg-green-500').on('click', function(e) {
-            e.preventDefault();
-            $('#ruangForm').submit();
-        });
-    });
+    export default RoomManagementCard;
 </script>

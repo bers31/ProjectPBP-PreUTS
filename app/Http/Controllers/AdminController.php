@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
-use App\Models\Ruang;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -18,8 +16,7 @@ class AdminController extends Controller
         $Users = User::count();
         $Mahasiswa = Mahasiswa::count();
         $Dosen = Dosen::count();
-        $Ruang = Ruang::count();
-        return view('admin.dashboard', compact('Users', 'Mahasiswa', 'Dosen', 'Ruang'));
+        return view('admin.dashboard', compact('Users', 'Mahasiswa', 'Dosen'));
     }
     
 

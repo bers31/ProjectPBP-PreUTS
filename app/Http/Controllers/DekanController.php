@@ -2,110 +2,191 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 use App\Models\Jadwal;
+use App\Models\PendingRoomChange;
 use App\Models\Ruang;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class DekanController extends Controller
 {
-    public function index(Request $request)
+    public function dashboard(Request $request)
     {
-        // Get all study programs related to dean's department
-        $stratas = DB::table('prodi')->distinct()->pluck('strata'); // Ambil strata unik
-        $prodis = DB::table('prodi')->get(); // Semua data prodi
-        // Data prodi berdasarkan strata
+        // Mengambil data strata
+        $stratas = DB::table('prodi')
+            ->select('strata')
+            ->distinct()
+            ->pluck('strata');
+
+        // Mengambil data prodi dan mengelompokkannya
+        $prodis = DB::table('prodi')->get();
         $prodiByStrata = $prodis->groupBy('strata');
         
-        // Get selected prodi from request
+        // Mendapatkan prodi yang dipilih
         $selectedProdi = $request->input('prodi');
-        
-        // Get schedules based on selected prodi
-        $jadwals = Jadwal::when($selectedProdi, function ($query, $selectedProdi) {
+
+        // Mengambil jadwal berdasarkan prodi
+        $jadwals = $this->getFilteredJadwal($selectedProdi);
+
+        // Mengambil perubahan ruangan yang pending
+        $pendingRoomChanges = PendingRoomChange::where('approval_status', 'pending')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('dekan.dashboard', compact(
+            'pendingRoomChanges',
+            'jadwals',
+            'prodis',
+            'stratas',
+            'prodiByStrata',
+            'selectedProdi'
+        ));
+    }
+
+    private function getFilteredJadwal($selectedProdi)
+    {
+        return Jadwal::when($selectedProdi, function ($query) use ($selectedProdi) {
             $query->whereHas('mataKuliah', function ($query) use ($selectedProdi) {
                 $query->where('kode_prodi', $selectedProdi);
             });
         })->get();
+    }
 
-        // Ambil ruang berdasarkan prodi yang dipilih
-        $ruangs = Ruang::when($selectedProdi, function ($query, $selectedProdi) {
-            return $query->whereHas('jadwal', function ($query) use ($selectedProdi) {
-                $query->whereHas('mataKuliah', function ($query) use ($selectedProdi) {
-                    $query->where('kode_prodi', $selectedProdi);
-                });
-            });
-        })->get();
+    public function approve($id)
+    {
+        try {
+            DB::beginTransaction();
+            
+            // Mengubah ini dari findOrFail menjadi first()
+            $change = PendingRoomChange::where('id', $id)->first();
+            
+            if (!$change) {
+                return $this->redirectWithError('Data perubahan ruang tidak ditemukan.');
+            }
 
-        return view('dekan.dashboard', [
-            'jadwals' => $jadwals,
-            'ruangs' => $ruangs,
-            'prodis' => $prodis,
-            'stratas' => $stratas,
-            'prodiByStrata' => $prodiByStrata,
-            'selectedProdi' => $selectedProdi,
+            $this->processRoomChange($change);
+            $this->updateChangeStatus($change, 'approved');
+
+            DB::commit();
+            return $this->redirectWithSuccess('Perubahan ruang telah disetujui.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->redirectWithError('Terjadi kesalahan saat memproses perubahan ruang: ' . $e->getMessage());
+        }
+    }
+
+    private function processRoomChange(PendingRoomChange $change)
+    {
+        if ($change->new_data) {
+            $newData = json_decode($change->new_data, true);
+
+            switch($change->action_type) {
+                case 'create':
+                    Ruang::create($newData);
+                    break;
+                case 'update':
+                    Ruang::where('kode_ruang', $change->kode_ruang)
+                        ->update($newData);
+                    break;
+                case 'delete':
+                    Ruang::where('kode_ruang', $change->kode_ruang)
+                        ->delete();
+                    break;
+            }
+        }
+    }
+
+    private function updateChangeStatus(PendingRoomChange $change, string $status)
+    {
+        $change->update([
+            'approval_status' => $status,
+            'approved_by' => Auth::id(),
+            'approved_at' => now()
         ]);
     }
 
-    public function setJadwal(Request $request)
+    public function reject($id)
     {
-        // Proses untuk menetapkan jadwal
-        $jadwal = Jadwal::findOrFail($request->input('id_jadwal'));
-        $jadwal->status = 'Disetujui';
-        $jadwal->save();
+        try {
+            // Mengubah ini juga dari findOrFail menjadi first()
+            $change = PendingRoomChange::where('id', $id)->first();
+            
+            if (!$change) {
+                return $this->redirectWithError('Data perubahan ruang tidak ditemukan.');
+            }
 
-        return redirect()->route('dekan.dashboard')->with('success', 'Jadwal berhasil ditetapkan.');
+            $this->updateChangeStatus($change, 'rejected');
+            
+            return $this->redirectWithSuccess('Perubahan ruang telah ditolak.');
+        } catch (\Exception $e) {
+            return $this->redirectWithError('Terjadi kesalahan saat menolak perubahan ruang: ' . $e->getMessage());
+        }
     }
 
-    public function setRuang(Request $request)
+    public function approveAllRoomChanges(Request $request)
     {
-        // Proses untuk menetapkan ketersediaan ruang kelas
-        $ruang = Ruang::findOrFail($request->input('kode_ruang'));
-        $ruang->status_ketersediaan = $request->input('status_ketersediaan');
-        $ruang->save();
+        $changes = PendingRoomChange::all(); // Ambil semua perubahan yang belum disetujui
+        foreach ($changes as $change) {
+            $change->update([
+                'approval_status' => 'approved',
+                'approved_by' => Auth::id(),
+                'approved_at' => now(),
+            ]);
+        }
 
-        return redirect()->route('dekan.dashboard')->with('success', 'Ketersediaan ruang berhasil diperbarui.');
+        return redirect()->back()->with('success', 'Semua perubahan ruang telah disetujui.');
+    }
+
+    public function rejectAllRoomChanges(Request $request)
+    {
+        $changes = PendingRoomChange::all(); // Ambil semua perubahan yang belum disetujui
+        foreach ($changes as $change) {
+            $change->update([
+                'approval_status' => 'rejected',
+                'approved_by' => Auth::id(),
+                'approved_at' => now(),
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Semua perubahan ruang telah ditolak.');
+    }
+
+
+    public function setJadwal(Request $request)
+    {
+        try {
+            $jadwal = Jadwal::findOrFail($request->input('id_jadwal'));
+            $jadwal->update(['status' => 'Disetujui']);
+
+            return $this->redirectWithSuccess('Jadwal berhasil ditetapkan.');
+        } catch (\Exception $e) {
+            return $this->redirectWithError('Terjadi kesalahan saat menetapkan jadwal.');
+        }
     }
 
     public function setAllJadwal(Request $request)
     {
-        $selectedProdi = $request->input('prodi');
+        try {
+            $selectedProdi = $request->input('prodi');
+            
+            Jadwal::whereHas('mataKuliah', function ($query) use ($selectedProdi) {
+                $query->where('kode_prodi', $selectedProdi);
+            })->update(['status' => 'Disetujui']);
 
-        // Ambil hanya jadwal berdasarkan prodi yang dipilih
-        $jadwals = Jadwal::whereHas('mataKuliah', function ($query) use ($selectedProdi) {
-            $query->where('kode_prodi', $selectedProdi);
-        })->get();
-
-        // Perbarui status hanya untuk jadwal yang difilter
-        foreach ($jadwals as $jadwal) {
-            $jadwal->status = 'Disetujui';
-            $jadwal->save();
+            return $this->redirectWithSuccess('Semua jadwal untuk prodi yang dipilih berhasil disetujui.');
+        } catch (\Exception $e) {
+            return $this->redirectWithError('Terjadi kesalahan saat menyetujui semua jadwal.');
         }
-
-        return back()->with('success', 'Semua jadwal untuk prodi yang dipilih berhasil disetujui.');
     }
 
-    public function setAllRuang(Request $request)
+    private function redirectWithSuccess($message)
     {
-        $selectedProdi = $request->input('prodi');
-        $status_ketersediaan = $request->input('status_ketersediaan');
+        return redirect()->back()->with('success', $message);
+    }
 
-        // Ambil hanya ruang yang terkait dengan prodi yang dipilih
-        $ruangs = Ruang::when($selectedProdi, function ($query, $selectedProdi) {
-            return $query->whereHas('jadwal', function ($query) use ($selectedProdi) {
-                $query->whereHas('mataKuliah', function ($query) use ($selectedProdi) {
-                    $query->where('kode_prodi', $selectedProdi);
-                });
-            });
-        })->get();
-
-        // Perbarui status ketersediaan untuk ruang yang relevan
-        foreach ($ruangs as $ruang) {
-            if (isset($status_ketersediaan[$ruang->kode_ruang])) {
-                $ruang->status_ketersediaan = $status_ketersediaan[$ruang->kode_ruang];
-                $ruang->save();
-            }
-        }
-
-        return back()->with('success', 'Semua status ruang untuk prodi yang dipilih berhasil diperbarui.');
+    private function redirectWithError($message)
+    {
+        return redirect()->back()->with('error', $message);
     }
 }

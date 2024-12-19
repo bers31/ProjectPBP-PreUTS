@@ -96,7 +96,6 @@
       <x-navbar.list href="{{ route('users.index') }}" >Users</x-navbar.list>
       <x-navbar.list href="{{ route('mahasiswa.index') }}" >Mahasiswa</x-navbar.list>
       <x-navbar.list href="{{ route('dosen.index') }}" >Dosen</x-navbar.list>
-      <x-navbar.list href="{{ route('ruang.index') }}" >Ruang</x-navbar.list>
     @endif
   </ul>
 
@@ -118,7 +117,6 @@
       <x-navbar.list href="{{ route('users.index') }}" >Users</x-navbar.list>
       <x-navbar.list href="{{ route('mahasiswa.index') }}" >Mahasiswa</x-navbar.list>
       <x-navbar.list href="{{ route('dosen.index') }}" >Dosen</x-navbar.list>
-      <x-navbar.list href="{{ route('ruang.index') }}" >Ruang</x-navbar.list>
     @endif
   </div>
 </div>

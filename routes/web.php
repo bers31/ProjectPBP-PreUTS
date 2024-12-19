@@ -68,26 +68,26 @@ Route::middleware(['auth'])->group(function () {
       ->middleware('role:dosen'); // Check for 'dosen' role
 
     Route::middleware(['auth', 'role:dekan'])->group(function () {
-        Route::get('/dekan/dashboard', [DekanController::class, 'index'])->name('dekan.dashboard');
+        Route::get('/dekan/dashboard', [DekanController::class, 'dashboard'])->name('dekan.dashboard');
         Route::post('/dekan/dashboard/set-jadwal', [DekanController::class, 'setJadwal'])->name('dekan.setJadwal');
-        Route::post('/dekan/dashboard/set-ruang', [DekanController::class, 'setRuang'])->name('dekan.setRuang');
-    }); // Check for 'dekan' role
-
-    Route::middleware(['auth'])->group(function () {
-        // Rute untuk setujui semua jadwal
         Route::post('/dekan/set-all-jadwal', [DekanController::class, 'setAllJadwal'])->name('dekan.setAllJadwal');
-
-        // Rute untuk tetapkan semua status ruang
-        Route::post('/dekan/set-all-ruang', [DekanController::class, 'setAllRuang'])->name('dekan.setAllRuang');
+        // Route untuk menyetujui perubahan ruangan
+        Route::post('/dekan/approve-room-change/{id}', [DekanController::class, 'approve'])->name('dekan.approveRoomChange');
+        // Route untuk menolak perubahan ruangan
+        Route::post('/dekan/reject-room-change/{id}', [DekanController::class, 'reject'])->name('dekan.rejectRoomChange');
+        Route::post('/dekan/approveAllRoomChanges', [DekanController::class, 'approveAllRoomChanges'])->name('dekan.approveAllRoomChanges');
+        Route::post('/dekan/rejectAllRoomChanges', [DekanController::class, 'rejectAllRoomChanges'])->name('dekan.rejectAllRoomChanges');
     });
 
     Route::middleware(['auth', 'role:akademik'])->group(function () {
         Route::get('/akademik/dashboard', [AkademikController::class, 'index'])->name('akademik.dashboard');
-        // Rute untuk memperbarui ruang secara individu
-        Route::post('/akademik/update-ruang', [AkademikController::class, 'updateRuang'])->name('akademik.updateRuang');
-
-        // Rute untuk memperbarui ruang secara massal
-        Route::post('/akademik/update-all-ruang', [AkademikController::class, 'updateAllRuang'])->name('akademik.updateAllRuang');
+        Route::resource('/akademik/ruang', RuangController::class)
+            ->name('index', 'ruang.index')
+            ->name('create', 'ruang.create')
+            ->name('store', 'ruang.store')
+            ->name('edit', 'ruang.edit')
+            ->name('update', 'ruang.update')
+            ->name('destroy', 'ruang.destroy');
     });
 
     // Student status_akademik route
@@ -205,11 +205,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
                                                         ->name('edit','dosen.edit')
                                                         ->name('create','dosen.create')
                                                         ->name('update','dosen.update'); // CRUD routes for users
-
-    Route::resource('/admin/ruang', RuangController::class)->name('index','ruang.index')
-                                                        ->name('edit','ruang.edit')
-                                                        ->name('create','ruang.create')
-                                                        ->name('update','ruang.update'); // CRUD routes for ruang
 
                             
     Route::post('/admin/create-users', [AdminController::class, 'createUsersFromLecturersAndStudents'])->name('admin.createUsers');
